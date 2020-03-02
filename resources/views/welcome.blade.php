@@ -113,11 +113,43 @@
                 <img class="skills-item__content" src="{{ asset('icons/css.svg') }}" alt="CSS3" />
                 <span class="skills-item__content skills-item__content--second">CSS3</span>
             </div>
+            <div class="skills__item">
+                <img class="skills-item__content" src="{{ asset('icons/javascript.svg') }}" alt="Javascript" />
+                <span class="skills-item__content skills-item__content--second">Javascript</span>
+            </div>
+            <div class="skills__item">
+                <img class="skills-item__content" src="{{ asset('icons/php.svg') }}" alt="PHP" />
+                <span class="skills-item__content skills-item__content--second">PHP</span>
+            </div>
+            <div class="skills__item">
+                <img class="skills-item__content" src="{{ asset('icons/illustrator.svg') }}" alt="Illustrator" />
+                <span class="skills-item__content skills-item__content--second">Illustrator</span>
+            </div>
+            <div class="skills__item">
+                <img class="skills-item__content" src="{{ asset('icons/git.svg') }}" alt="Git" />
+                <span class="skills-item__content skills-item__content--second">Git</span>
+            </div>
+            <div class="skills__item">
+                <img class="skills-item__content" src="{{ asset('icons/react.svg') }}" alt="ReactJS" />
+                <span class="skills-item__content skills-item__content--second">ReactJS</span>
+            </div>
+            <div class="skills__item">
+                <img class="skills-item__content" src="{{ asset('icons/laravel.svg') }}" alt="Laravel" />
+                <span class="skills-item__content skills-item__content--second">Laravel</span>
+            </div>
+            <div class="skills__item">
+                <img class="skills-item__content" src="{{ asset('icons/sass.svg') }}" alt="Sass" />
+                <span class="skills-item__content skills-item__content--second">Sass</span>
+            </div>
+            <div class="skills__item">
+                <img class="skills-item__content" src="{{ asset('icons/bootstrap.svg') }}" alt="Bootstrap" />
+                <span class="skills-item__content skills-item__content--second">Bootstrap</span>
+            </div>
         </article>
     </section>
 
-    <section class="portfolio --hidden">
-        <h2 class="portfolio__heading">My Portfolio</h2>
+    <section class="portfolio">
+        <h2 class="portfolio__heading">My <span class="--primary">Portfolio</span></h2>
         <article class="portfolio__content">
             <a class="portfolio__item">
                 <img src="{{ asset('images/proncar.jpg') }}" alt="Proncar" class="portfolio-item__image" />
@@ -131,7 +163,7 @@
         </article>
     </section>
 
-    <section class="quotes --hidden">
+    <section class="quotes">
         <span class="quotes__item quotes__item--active">
             “My vision is to build Website’s & Web Applications for the future. Keeping
             in mind the rapid changing technology and being ahead of the rest.”
@@ -141,7 +173,7 @@
         </span>
     </section>
 
-    <section class="contact --hidden">
+    <section class="contact">
         <h2 class="contact__heading">
             Now that is enough about me, <br />
             let’s talk about you and your idea’s!
@@ -159,7 +191,7 @@
         </article>
     </section>
 
-    <footer class="footer --hidden">
+    <footer class="footer">
             <span class="footer__content">
                 Made with <i class="fa fa-heart footer__heart"></i> by StPronk
             </span>
