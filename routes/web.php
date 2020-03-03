@@ -11,10 +11,27 @@
 |
 */
 
+Auth::routes(['register' => false]);
+
+Route::group([
+    'middleware' => ['auth'],
+    'prefix' => 'admin'
+], function () {
+    Route::get('/', 'HomeController@index')->name('home');
+
+    Route::group([
+       'middleware' => ['isAdmin']
+    ], function () {
+        Route::get('/users', 'UserController@index')->name('user.index');
+    });
+});
+
+/**
+ * ROUTES THAT SHOULD SHOW THE WEB IT SELF SHOULD BE UNDER THIS LINE
+ *
+ * AUTH ROUTES SHOULD BE ABOVE
+ */
+
 Route::get('/', function () {
     return view('welcome');
 });
-
-Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');

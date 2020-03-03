@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -20,12 +20,21 @@ class User extends Authenticatable
     ];
 
     /**
+     * The attributes that are guarded from mass assignment
+     *
+     * @var array
+     */
+    protected $guarded = [
+        'is_admin'
+    ];
+
+    /**
      * The attributes that should be hidden for arrays.
      *
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password', 'remember_token', 'is_admin'
     ];
 
     /**
@@ -35,5 +44,15 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'is_admin' => 'boolean'
     ];
+
+    /**
+     * Returns boolean to check if the user is a admin
+     *
+     * @return mixed
+     */
+    public function isAdmin () {
+        return $this->is_admin;
+    }
 }
