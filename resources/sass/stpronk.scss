@@ -48,6 +48,7 @@ html, body {
     flex-direction: column;
     align-content: flex-end;
   }
+
   &-wrapper {
     &__heading {
       @include text($font-primary, 60pt, normal, 100%, $color-base-light, center);

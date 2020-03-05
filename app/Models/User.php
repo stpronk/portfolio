@@ -55,4 +55,18 @@ class User extends Authenticatable
     public function isAdmin () {
         return $this->is_admin;
     }
+
+
+    /**
+     * Made to search some specific field on the user Model
+     *
+     * @param String $value
+     *
+     * @return mixed
+     */
+    public static function search(String $value){
+        return self::where('id', 'like', "%{$value}%")
+            ->orWhere('name', 'like', "%{$value}%")
+            ->orWhere('email', 'like', "%{$value}%");
+    }
 }

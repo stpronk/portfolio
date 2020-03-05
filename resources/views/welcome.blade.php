@@ -37,9 +37,9 @@
 
 </head>
 <body>
-<nav class="--hidden">
-    {{--        Navigation is not in order for now --}}
-</nav>
+{{--<nav class="--hidden">--}}
+{{--    --}}{{--        Navigation is not in order for now --}}
+{{--</nav>--}}
 
 <main class="container">
 
