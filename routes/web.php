@@ -11,6 +11,16 @@
 |
 */
 
+Route::get('/', function () {
+    return view('welcome');
+});
+
+
+/**
+ * ROUTES THAT ARE AUTH RELATED
+ *
+ * These router all have the admin prefix (Except for the auth routes)
+ */
 Auth::routes(['register' => false]);
 
 Route::group([
@@ -20,18 +30,8 @@ Route::group([
     Route::get('/', 'HomeController@index')->name('home');
 
     Route::group([
-       'middleware' => ['isAdmin']
+        'middleware' => ['isAdmin']
     ], function () {
-        Route::get('/users', 'UserController@index')->name('user.index');
+        Route::get('/users', 'UserController@index')->name('users.index');
     });
-});
-
-/**
- * ROUTES THAT SHOULD SHOW THE WEB IT SELF SHOULD BE UNDER THIS LINE
- *
- * AUTH ROUTES SHOULD BE ABOVE
- */
-
-Route::get('/', function () {
-    return view('welcome');
 });
