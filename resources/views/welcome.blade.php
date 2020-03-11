@@ -180,14 +180,17 @@
         </h2>
         <article class="contact__content">
             <div class="contact__social">
-                <a class="social__item">
-                    <img src="{{ asset('icons/whatsapp.svg') }}" alt="whatsapp" />
+                <a class="contact-social__item">
+                    <img class="contact-social__icon" src="{{ asset('icons/whatsapp.svg') }}" alt="whatsapp" />
                 </a>
-                <a class="social__item">
-                    <img src="{{ asset('icons/mail.svg') }}" alt="mail" />
+                <a class="contact-social__item">
+                    <img class="contact-social__icon" src="{{ asset('icons/mail.svg') }}" alt="mail" />
                 </a>
             </div>
-            <span class="contact__output"></span>
+            <div class="contact__information contact__information--active">
+                <span class="contact-information__output">0683776295</span>
+                <i class="fa fa-files-o"></i>
+            </div>
         </article>
     </section>
 
