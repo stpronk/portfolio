@@ -16,12 +16,89 @@
 
 
 html, body {
+  scroll-behavior: smooth;
   font-family: $font-primary;
   overflow-x: hidden;
 }
 
-.nav {
-  // Not in order right now
+.navigation {
+  display: block;
+  position: fixed;
+  z-index: 100;
+  top: 50%;
+  transform: translateY(-50%) translateX(calc(-100% + 35px));
+  transition: ease-in-out transform 0.2s;
+
+  @media (max-width: $query-middle) {
+      display: none;
+  }
+
+  &--active {
+    transform: translateY(-50%) translateX(0);
+  }
+
+  &:before,
+  &:after {
+    content: '';
+    display: block;
+    height: 25px;
+    width: auto;
+    border-color: $color-base-light;
+    border-style: solid;
+    background-color: $color-base-dark;
+  }
+
+  &:before {
+    border-width: 2px 2px 0 0;
+    border-top-right-radius: 100%;
+  }
+
+  &:after {
+    border-width: 0 2px 2px 0;
+    border-bottom-right-radius: 100%;
+  }
+
+  &__list {
+    border-style: solid;
+    border-color: $color-base-light;
+    border-width: 0 2px 0 0;
+    background-color: $color-base-dark;
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+    margin: 0 auto auto;
+    padding: 0;
+  }
+
+  &__item {
+    @include text($font-primary-bold, 12pt, normal, 100%, $color-base-light);
+
+    color: darken($color-base-light, 15%);
+    padding: 20px 10px 20px 5px;
+    cursor: pointer;
+    transition: all 0.1s ease-in-out;
+    text-align: right;
+
+    &:hover {
+      color: $color-base-light;
+    }
+
+    &--disabled {
+      cursor: not-allowed;
+      color: darken($color-base-light, 60%);
+
+      &:hover {
+        color: darken($color-base-light, 60%);
+      }
+    }
+  }
+
+  &__icon {
+    pointer-events: none;
+    width: 16px;
+    padding-left: 5px;
+    text-align: center;
+  }
 }
 
 /**
@@ -58,8 +135,7 @@ html, body {
     &__heading {
       @include text($font-primary, 60pt, normal, 100%, $color-base-light, center);
       @include textModifiers();
-      padding: 30px 15px;
-      margin: auto auto 0;
+      margin: auto;
       text-shadow: 3px 3px #000;
 
       @media (max-width: $query-large) {
@@ -79,59 +155,12 @@ html, body {
       }
     }
 
-    &__navigation {
-      display: flex;
-      flex-direction: row;
-      list-style: none;
-      margin: 0 auto auto;
-      padding: 0;
-
-      @media (max-width: $query-middle) {
-        margin: 0 0 auto 0;
-      }
-
-      @media (max-width: 332px) {
-        display: none;
-      }
-    }
-
     &__scroll {
       margin: 0 auto;
       padding: 0;
 
       &:hover {
         cursor: pointer;
-      }
-    }
-  }
-
-  &-navigation {
-    &__item {
-      @include text($font-primary-bold, 12pt, normal, 100%, $color-base-light);
-
-      color: darken($color-base-light, 15%);
-      padding: 20px 30px;
-      border-radius: 0;
-      border-color: darken($color-base-light, 60%);
-      border-style: solid;
-      border-width: 3px 0;
-      cursor: pointer;
-      transition: all 0.1s ease-in-out;
-
-      &:hover {
-        color: $color-base-light;
-        border-color: $color-base-light;
-      }
-
-      &--disabled {
-        cursor: not-allowed;
-        color: darken($color-base-light, 60%);
-        border-color: darken($color-base-light, 60%);
-
-        &:hover {
-          color: darken($color-base-light, 60%);
-          border-color: darken($color-base-light, 60%);
-        }
       }
     }
   }

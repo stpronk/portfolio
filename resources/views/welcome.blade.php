@@ -37,12 +37,22 @@
 
 </head>
 <body>
-{{--<nav class="--hidden">--}}
-{{--    --}}{{--        Navigation is not in order for now --}}
-{{--</nav>--}}
+
+<nav class="navigation">
+    <ul class="navigation__list">
+        <li class="navigation__item" data-target="about">
+            About <i class="navigation__icon fa fa-user"></i>
+        </li>
+        <li class="navigation__item" data-target="portfolio">
+            Portfolio <i class="navigation__icon fa fa-briefcase"></i>
+        </li>
+        <li class="navigation__item navigation__item--disabled">
+            Blog <i class="navigation__icon fa fa-book"></i>
+        </li>
+    </ul>
+</nav>
 
 <main class="container">
-
     <header class="intro">
         <img class="intro__background" src="{{ asset('images/header.jpeg') }}" alt="stpronk heading"/>
         <div class="intro__wrapper">
@@ -180,10 +190,10 @@
         </h2>
         <article class="contact__content">
             <div class="contact__social">
-                <a class="contact-social__item">
+                <a class="contact-social__item" data-content="0683776295">
                     <img class="contact-social__icon" src="{{ asset('icons/whatsapp.svg') }}" alt="whatsapp" />
                 </a>
-                <a class="contact-social__item">
+                <a class="contact-social__item" data-content="stpronk@gmail.com">
                     <img class="contact-social__icon" src="{{ asset('icons/mail.svg') }}" alt="mail" />
                 </a>
             </div>
