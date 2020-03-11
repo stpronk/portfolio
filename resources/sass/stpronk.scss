@@ -23,6 +23,10 @@ html, body {
   // Not in order right now
 }
 
+/**
+ * INTRO SECTION
+ */
+
 .intro {
   width: 100%;
   height: 100vh;
@@ -146,6 +150,9 @@ html, body {
   }
 }
 
+/**
+ * ABOUT SECTION
+ */
 .about {
   @include container($color-base-light) {
     flex-direction: row;
@@ -229,6 +236,9 @@ html, body {
   }
 }
 
+/**
+ * SKILLS SECTION
+ */
 .skills {
   @include container($color-secondary-dark) {
     flex-direction: column;
@@ -296,6 +306,9 @@ html, body {
   }
 }
 
+/**
+ * PORTFOLIO SECTION
+ */
 .portfolio {
   @include container($color-base-light) {
     color: $color-base-dark;
@@ -342,18 +355,36 @@ html, body {
   }
 }
 
+/**
+ * QUOTES SECTION
+ */
 .quotes {
-  @include container($color-primary) {
+  @include container($color-primary, 25px) {
     color: $color-base-light;
+  }
+
+  &__item {
+    @include text($font-primary, 16pt, normal, 1.5, $color-base-light, center);
+    display: none;
+
+    &--active {
+      display: block;
+    }
   }
 }
 
+/**
+ * CONTACT SECTION
+ */
 .contact {
   @include container($color-secondary-dark) {
     color: $color-base-light;
   };
 }
 
+/**
+ * FOOTER SECTION
+ */
 .footer {
   @include container($color-base-light);
 

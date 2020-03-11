@@ -13,15 +13,15 @@
   }
 }
 
-@mixin container($background-color) {
+@mixin container($background-color, $padding: 0) {
   display: flex;
-  padding: 0 calc((100vw - #{$query-container}) / 2);
+  padding: $padding calc((100vw - #{$query-container}) / 2);
   max-width: $query-container;
   height: auto;
   background-color: $background-color;
 
   @media all and (max-width: $query-container) {
-    padding: 0;
+    padding: $padding;
   }
 
   @content
