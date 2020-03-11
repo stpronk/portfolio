@@ -65,13 +65,8 @@
                 <br class="intro-heading__break intro-heading__break--second">
                 a <span class="--bold">Developer"</span>
             </h1>
-            <ul class="intro-wrapper__navigation">
-                <li class="intro-navigation__item">About</li>
-                <li class="intro-navigation__item">Portfolio</li>
-                <li class="intro-navigation__item intro-navigation__item--disabled">Blog</li>
-            </ul>
-            <a class="intro-wrapper__scroll">
-                <svg width="150" viewBox="0 0 200 50">
+            <a class="intro-wrapper__scroll" data-target="about">
+                <svg width="150" viewBox="0 0 200 50" style="pointer-events: none">
                     <polygon points="0,0 100,35 200,0 100,27.5  0,0" style="stroke:none;stroke-width:0;fill:white"></polygon>
                 </svg>
             </a>
