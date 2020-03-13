@@ -251,17 +251,19 @@ html, body {
   &-social {
     &__link {
       margin: 10px 10px 0;
+      transform: scale(1);
+      transition: transform 0.1s ease-in-out;
+
+      &:hover{
+        cursor: pointer;
+        transform: scale(1.1);
+      }
     }
 
     &__icon {
       height: 90px;
       width: 90px;
-      transform: scale(1);
-      transition: transform 0.1s ease-in-out;
-
-      &:hover {
-        transform: scale(1.1);
-      }
+      pointer-events: none;
     }
   }
 }
@@ -395,7 +397,7 @@ html, body {
  * QUOTES SECTION
  */
 .quotes {
-  @include container($color-primary, 25px) {
+  @include container($color-primary-light, 25px) {
     color: $color-base-light;
   }
 
@@ -443,17 +445,19 @@ html, body {
   &-social {
     &__item {
       margin: 10px;
-    }
-
-    &__icon {
-      height: 90px;
-      width: 90px;
+      cursor: pointer;
       transform: scale(1);
       transition: transform 0.1s ease-in-out;
 
       &:hover {
         transform: scale(1.1);
       }
+    }
+
+    &__icon {
+      height: 90px;
+      width: 90px;
+      pointer-events: none;
     }
   }
 
@@ -470,6 +474,28 @@ html, body {
     &--active {
       display: block;
     }
+  }
+
+  &__copy {
+    cursor: pointer;
+    transform: scale(1);
+    transition: transform 0.1s ease-in-out;
+
+    &:hover {
+      transform: scale(1.1);
+    }
+
+    &-input {
+      position: absolute;
+      right: 100vw;
+      opacity: 1;
+    }
+  }
+
+  &__footer {
+    @include text($font-primary, 16pt, normal, 1.5, $color-base-light, center);
+
+    margin: 25px 0 0;
   }
 }
 

@@ -40,10 +40,10 @@
 
 <nav class="navigation">
     <ul class="navigation__list">
-        <li class="navigation__item" data-target="about">
+        <li class="navigation__item" data-function="target-reader" data-target="about" data-navigation="true">
             About <i class="navigation__icon fa fa-user"></i>
         </li>
-        <li class="navigation__item" data-target="portfolio">
+        <li class="navigation__item" data-function="target-reader" data-target="portfolio" data-navigation="true">
             Portfolio <i class="navigation__icon fa fa-briefcase"></i>
         </li>
         <li class="navigation__item navigation__item--disabled">
@@ -65,7 +65,7 @@
                 <br class="intro-heading__break intro-heading__break--second">
                 a <span class="--bold">Developer"</span>
             </h1>
-            <a class="intro-wrapper__scroll" data-target="about">
+            <a class="intro-wrapper__scroll" data-function="target-reader" data-target="about">
                 <svg width="150" viewBox="0 0 200 50" style="pointer-events: none">
                     <polygon points="0,0 100,35 200,0 100,27.5  0,0" style="stroke:none;stroke-width:0;fill:white"></polygon>
                 </svg>
@@ -94,13 +94,13 @@
             </p>
 
             <div class="about-content__social">
-                <a href="https://facebook.com/steve.pronk" class="about-social__link" target="_blank">
+                <a class="about-social__link" data-function="target-reader" data-target="https://facebook.com/steve.pronk">
                     <img class="about-social__icon" src="{{ asset('icons/facebook.svg') }}" alt="facebook">
                 </a>
-                <a href="https://instagram.com/stpronk" class="about-social__link" target="_blank">
+                <a class="about-social__link" data-function="target-reader" data-target="https://instagram.com/stpronk">
                     <img class="about-social__icon" src="{{ asset('icons/instagram.svg') }}" alt="instagram">
                 </a>
-                <a href="https://twitter.com/stpronk" class="about-social__link" target="_blank">
+                <a class="about-social__link" data-function="target-reader" data-target="https://twitter.com/stpronk">
                     <img class="about-social__icon" src="{{ asset('icons/twitter.svg') }}" alt="twitter">
                 </a>
             </div>
@@ -157,13 +157,25 @@
         <h2 class="portfolio__heading">My <span class="--primary">Portfolio</span></h2>
         <article class="portfolio__content">
             <a class="portfolio__item">
-                <img src="{{ asset('images/proncar.jpg') }}" alt="Proncar" class="portfolio-item__image" />
+                <img src="{{ asset('images/proncar.jpg') }}"
+                     alt="Proncar"
+                     class="portfolio-item__image"
+                     data-function="target-reader"
+                     data-target="http://proncar.nl/"/>
             </a>
             <a class="portfolio__item">
-                <img src="{{ asset('images/maritiem.jpg') }}" alt="Maritiem" class="portfolio-item__image" />
+                <img src="{{ asset('images/maritiem.jpg') }}"
+                     alt="Maritiem"
+                     class="portfolio-item__image"
+                     data-function="target-reader"
+                     data-target="http://maritiemdistrict.nl/"/>
             </a>
             <a class="portfolio__item">
-                <img src="{{ asset('images/coders.jpg') }}" alt="Coders Academy" class="portfolio-item__image" />
+                <img src="{{ asset('images/coders.jpg') }}"
+                     alt="Coders Academy"
+                     class="portfolio-item__image"
+                     data-function="target-reader"
+                     data-target="http://codersacademy.nl/">
             </a>
         </article>
     </section>
@@ -185,18 +197,22 @@
         </h2>
         <article class="contact__content">
             <div class="contact__social">
-                <a class="contact-social__item" data-content="0683776295">
+                <a class="contact-social__item" data-function="contact" data-content="0683776295">
                     <img class="contact-social__icon" src="{{ asset('icons/whatsapp.svg') }}" alt="whatsapp" />
                 </a>
-                <a class="contact-social__item" data-content="stpronk@gmail.com">
+                <a class="contact-social__item" data-function="contact" data-content="stpronk@gmail.com">
                     <img class="contact-social__icon" src="{{ asset('icons/mail.svg') }}" alt="mail" />
                 </a>
             </div>
-            <div class="contact__information contact__information--active">
+            <div class="contact__information">
                 <span class="contact-information__output">0683776295</span>
-                <i class="fa fa-files-o"></i>
+                <i data-function="contact-copy" class="contact__copy fa fa-files-o"></i>
+                <input class="contact__copy-input" value="">
             </div>
         </article>
+        <p class="contact__footer">
+            Hope to hear from you soon!
+        </p>
     </section>
 
     <footer class="footer">
