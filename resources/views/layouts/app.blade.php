@@ -46,9 +46,19 @@
                             </a>
 
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="assignmentsDropdown">
+                                <h6 class="dropdown-header">Javascript</h6>
                                 <a class="dropdown-item text-justify" href="{{ route('assignment.dealer') }}">
-                                    <i class="fa fa-car"></i> {{ __('Dealer') }}
+                                    {{ __('Dealer') }}
                                 </a>
+
+{{--                                <hr/>--}}
+
+{{--                                <h6 class="dropdown-header">--}}
+{{--                                    PHP--}}
+{{--                                </h6>--}}
+{{--                                <a class="dropdown-item text-justify" href="{{ route('assignment.dealer') }}">--}}
+{{--                                    {{ __('RPG Game') }}--}}
+{{--                                </a>--}}
                             </div>
                         </li>
 
