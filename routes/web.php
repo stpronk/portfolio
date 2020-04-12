@@ -23,11 +23,25 @@ Route::get('/', function () {
  */
 Auth::routes(['register' => false]);
 
+/**
+ * ASSIGNMENTS ROUTES
+ */
+Route::group([
+    'prefix' => 'assignments',
+], function () {
+    Route::get('dealer', 'AssignmentController@dealer')->name('assignment.dealer');
+});
+
+/**
+ * ADMIN ROUTES
+ */
 Route::group([
     'middleware' => ['auth'],
     'prefix' => 'admin'
 ], function () {
     Route::get('/', 'HomeController@index')->name('home');
+
+    Route::get('/playground/wysiwyg', 'PlaygroundController@wysiwyg')->name('playground.wysiwyg');
 
     Route::group([
         'middleware' => ['isAdmin']

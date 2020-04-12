@@ -38,19 +38,20 @@
 </head>
 <body>
 
-<nav class="navigation">
-    <ul class="navigation__list">
-        <li class="navigation__item" data-function="target-reader" data-target="about" data-navigation="true">
-            About <i class="navigation__icon fa fa-user"></i>
-        </li>
-        <li class="navigation__item" data-function="target-reader" data-target="portfolio" data-navigation="true">
-            Portfolio <i class="navigation__icon fa fa-briefcase"></i>
-        </li>
-        <li class="navigation__item navigation__item--disabled">
-            Blog <i class="navigation__icon fa fa-book"></i>
-        </li>
-    </ul>
-</nav>
+{{---------------------------- Disabled the naviagtion ----------------------------}}
+{{--<nav class="navigation">--}}
+{{--    <ul class="navigation__list">--}}
+{{--        <li class="navigation__item" data-function="target-reader" data-target="about" data-navigation="true">--}}
+{{--            About <i class="navigation__icon fa fa-user"></i>--}}
+{{--        </li>--}}
+{{--        <li class="navigation__item" data-function="target-reader" data-target="portfolio" data-navigation="true">--}}
+{{--            Portfolio <i class="navigation__icon fa fa-briefcase"></i>--}}
+{{--        </li>--}}
+{{--        <li class="navigation__item navigation__item--disabled">--}}
+{{--            Blog <i class="navigation__icon fa fa-book"></i>--}}
+{{--        </li>--}}
+{{--    </ul>--}}
+{{--</nav>--}}
 
 <main class="container">
     <header class="intro">
