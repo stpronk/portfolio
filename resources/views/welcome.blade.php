@@ -75,7 +75,7 @@
     </header>
 
     <section class="about">
-        <img class="about__image" src="{{ asset('images/StevePronk_new.jpg') }}" alt="Steve Pronk"/>
+        <img class="about__image" src="{{ asset('images/stevepronk.jpeg') }}" alt="Steve Pronk"/>
         <article class="about__content">
             <h2 class="about-content__heading">
                 About <span class="--primary">me</span>
