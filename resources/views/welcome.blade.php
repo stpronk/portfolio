@@ -96,13 +96,13 @@
 
             <div class="about-content__social">
                 <a class="about-social__link" data-function="target-reader" data-target="https://facebook.com/steve.pronk">
-                    <img class="about-social__icon" src="{{ asset('icons/facebook.svg') }}" alt="facebook">
+                    <img class="about-social__icon" src="{{ asset('images/facebook.svg') }}" alt="facebook">
                 </a>
                 <a class="about-social__link" data-function="target-reader" data-target="https://instagram.com/stpronk">
-                    <img class="about-social__icon" src="{{ asset('icons/instagram.svg') }}" alt="instagram">
+                    <img class="about-social__icon" src="{{ asset('images/instagram.svg') }}" alt="instagram">
                 </a>
                 <a class="about-social__link" data-function="target-reader" data-target="https://twitter.com/stpronk">
-                    <img class="about-social__icon" src="{{ asset('icons/twitter.svg') }}" alt="twitter">
+                    <img class="about-social__icon" src="{{ asset('images/twitter.svg') }}" alt="twitter">
                 </a>
             </div>
         </article>
@@ -112,43 +112,43 @@
         <h2 class="skills__heading">My <span class="--primary">Skills</span></h2>
         <article class="skills__content">
             <div class="skills__item">
-                <img class="skills-item__content" src="{{ asset('icons/html.svg') }}" alt="HTML5" />
+                <img class="skills-item__content" src="{{ asset('images/html.svg') }}" alt="HTML5" />
                 <span class="skills-item__content skills-item__content--second">HTML5</span>
             </div>
             <div class="skills__item">
-                <img class="skills-item__content" src="{{ asset('icons/css.svg') }}" alt="CSS3" />
+                <img class="skills-item__content" src="{{ asset('images/css.svg') }}" alt="CSS3" />
                 <span class="skills-item__content skills-item__content--second">CSS3</span>
             </div>
             <div class="skills__item">
-                <img class="skills-item__content" src="{{ asset('icons/javascript.svg') }}" alt="Javascript" />
+                <img class="skills-item__content" src="{{ asset('images/javascript.svg') }}" alt="Javascript" />
                 <span class="skills-item__content skills-item__content--second">Javascript</span>
             </div>
             <div class="skills__item">
-                <img class="skills-item__content" src="{{ asset('icons/php.svg') }}" alt="PHP" />
+                <img class="skills-item__content" src="{{ asset('images/php.svg') }}" alt="PHP" />
                 <span class="skills-item__content skills-item__content--second">PHP</span>
             </div>
             <div class="skills__item">
-                <img class="skills-item__content" src="{{ asset('icons/illustrator.svg') }}" alt="Illustrator" />
+                <img class="skills-item__content" src="{{ asset('images/illustrator.svg') }}" alt="Illustrator" />
                 <span class="skills-item__content skills-item__content--second">Illustrator</span>
             </div>
             <div class="skills__item">
-                <img class="skills-item__content" src="{{ asset('icons/git.svg') }}" alt="Git" />
+                <img class="skills-item__content" src="{{ asset('images/git.svg') }}" alt="Git" />
                 <span class="skills-item__content skills-item__content--second">Git</span>
             </div>
             <div class="skills__item">
-                <img class="skills-item__content" src="{{ asset('icons/react.svg') }}" alt="ReactJS" />
+                <img class="skills-item__content" src="{{ asset('images/react.svg') }}" alt="ReactJS" />
                 <span class="skills-item__content skills-item__content--second">ReactJS</span>
             </div>
             <div class="skills__item">
-                <img class="skills-item__content" src="{{ asset('icons/laravel.svg') }}" alt="Laravel" />
+                <img class="skills-item__content" src="{{ asset('images/laravel.svg') }}" alt="Laravel" />
                 <span class="skills-item__content skills-item__content--second">Laravel</span>
             </div>
             <div class="skills__item">
-                <img class="skills-item__content" src="{{ asset('icons/sass.svg') }}" alt="Sass" />
+                <img class="skills-item__content" src="{{ asset('images/sass.svg') }}" alt="Sass" />
                 <span class="skills-item__content skills-item__content--second">Sass</span>
             </div>
             <div class="skills__item">
-                <img class="skills-item__content" src="{{ asset('icons/bootstrap.svg') }}" alt="Bootstrap" />
+                <img class="skills-item__content" src="{{ asset('images/bootstrap.svg') }}" alt="Bootstrap" />
                 <span class="skills-item__content skills-item__content--second">Bootstrap</span>
             </div>
         </article>
@@ -199,10 +199,10 @@
         <article class="contact__content">
             <div class="contact__social">
                 <a class="contact-social__item" data-function="contact" data-content="0683776295">
-                    <img class="contact-social__icon" src="{{ asset('icons/whatsapp.svg') }}" alt="whatsapp" />
+                    <img class="contact-social__icon" src="{{ asset('images/whatsapp.svg') }}" alt="whatsapp" />
                 </a>
                 <a class="contact-social__item" data-function="contact" data-content="stpronk@gmail.com">
-                    <img class="contact-social__icon" src="{{ asset('icons/mail.svg') }}" alt="mail" />
+                    <img class="contact-social__icon" src="{{ asset('images/mail.svg') }}" alt="mail" />
                 </a>
             </div>
             <div class="contact__information">
