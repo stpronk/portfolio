@@ -69,12 +69,15 @@ class stpronk {
     document.querySelector(this.contact.copy.selector).addEventListener('click', (event) => {
       this.contactCopy(event);
     });
-    document.querySelector(this.navigation.selector).addEventListener('mouseenter',  (event) => {
-     this.navigationToggle(event, true);
-    }, false);
-    document.querySelector(this.navigation.selector).addEventListener('mouseleave',  (event) => {
-      this.navigationToggle(event)
-    }, false);
+
+    if( this.navigation.selector ) {
+      document.querySelector(this.navigation.selector).addEventListener('mouseenter', (event) => {
+        this.navigationToggle(event, true);
+      }, false);
+      document.querySelector(this.navigation.selector).addEventListener('mouseleave', (event) => {
+        this.navigationToggle(event)
+      }, false);
+    }
   }
 
   targetReader (event) {
