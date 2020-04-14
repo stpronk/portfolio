@@ -51,14 +51,4 @@ export class Dealer {
 
     this.app.setLocalStorage('cars', this.cars);
   }
-
-  /**
-   * Get the car by UUID
-   *
-   * @param uuid
-   * @returns {*}
-   */
-  getCarByUuid ( uuid ) {
-    return this.cars[uuid].drivenMiles();
-  }
 }
