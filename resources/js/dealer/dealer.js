@@ -28,7 +28,6 @@ export class Dealer {
    * Persist a new car
    *
    * @param attributes
-   * @param key
    */
   persist( attributes = {} ) {
     if ( !attributes.uuid ) {
