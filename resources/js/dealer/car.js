@@ -9,7 +9,7 @@ export class Car {
     }
 
     if( this.attributes.fuel_left === parseFloat(attributes.fuel_left) && this.attributes.mileage < parseFloat(attributes.mileage) ) {
-      attributes.fuel_left = this.updateFuelLeft( parseFloat(attributes.mileage), parseFloat(attributes.consumption) );
+      attributes.fuel_left = this.updateFuelLeft( parseFloat(attributes.mileage), parseFloat(attributes.consumption), parseFloat(attributes.fuel_tank ) );
     }
 
     this.attributes = this.map( attributes );
@@ -19,8 +19,8 @@ export class Car {
     return this.attributes.mileage + ( (this.attributes.fuel_left - fuel_left) * consumption);
   }
 
-  updateFuelLeft ( mileage, consumption ) {
-    return this.attributes.fuel_left - ( (mileage - this.attributes.mileage ) / consumption);
+  updateFuelLeft ( mileage, consumption, interval ) {
+    return ((((mileage - this.attributes.mileage ) / consumption - this.attributes.fuel_left ) % interval ) - interval ) * -1;
   }
 
   /**
