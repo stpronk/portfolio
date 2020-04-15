@@ -20,7 +20,7 @@ export class Car {
   }
 
   updateFuelLeft ( mileage, consumption, interval ) {
-    return ((((mileage - this.attributes.mileage ) / consumption - this.attributes.fuel_left ) % interval ) - interval ) * -1;
+    return (( Math.floor((mileage - this.attributes.mileage ) / consumption - this.attributes.fuel_left ) % interval ) - interval ) * -1;
   }
 
   /**
