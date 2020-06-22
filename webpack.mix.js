@@ -14,6 +14,7 @@ const mix = require('laravel-mix');
 mix.js('resources/js/app.js', 'public/js')
    .js('resources/js/stpronk.js', 'public/js')
    .js('resources/js/dealer/app.js', 'public/js/dealer.js')
+   .js('resources/js/rtsg/app.js', 'public/js/rtsg.js')
     .sass('resources/sass/app.scss', 'public/css')
     .sass('resources/sass/stpronk.scss', 'public/css')
     .copy('resources/fonts', 'public/fonts')

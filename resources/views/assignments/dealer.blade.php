@@ -159,7 +159,7 @@
             </div>
         </div>
 
-        <div id="car-cards" class="row col-8" style="align-content: flex-start">
+        <div id="car-cards" class="row col-12 col-md-8 col no-gutters align-content-start">
 {{--            Cards are injected through Javascript           --}}
         </div>
     </div>

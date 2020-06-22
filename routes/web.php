@@ -30,6 +30,7 @@ Route::group([
     'prefix' => 'assignments',
 ], function () {
     Route::get('dealer', 'AssignmentController@dealer')->name('assignment.dealer');
+    Route::get('rtsg', 'AssignmentController@rtsg')->name('assignment.rtsg');
 });
 
 /**
