@@ -85,6 +85,7 @@
                         <li>Wanneer "fuel" gewijzigd wordt, moet de "mileage" automatish gewijzigd worden op basis van "consumption"</li>
                         <li>Wanneer "mileage" gewijzigd wordt, moet de "fuel" automatish gewijzigd worden op basis van "consumption"</li>
                         <li>Wanneer "fuel" en "mileage" bijde gewijzigd worden, wordt neits automatisch gewijzigd</li>
+                        <li>Auto's moeten worden opgeslagen in de localstorage</li>
                         <li>Gebruik maken van Javascript classes en deze met elkaar laten communiseren</li>
                         <li>Code moet op een logishe manier worden opgebouwd</li>
                         <li>Code moet DRY (Don't repeat yourself) zijn</li>
