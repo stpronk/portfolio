@@ -51,14 +51,15 @@
                                     {{ __('Dealer') }}
                                 </a>
 
-{{--                                <hr/>--}}
+                                <hr/>
 
-{{--                                <h6 class="dropdown-header">--}}
-{{--                                    PHP--}}
-{{--                                </h6>--}}
-{{--                                <a class="dropdown-item text-justify" href="{{ route('assignment.dealer') }}">--}}
-{{--                                    {{ __('RPG Game') }}--}}
-{{--                                </a>--}}
+                                <h6 class="dropdown-header">
+                                    PHP
+                                </h6>
+                                <a class="dropdown-item text-justify" href="#">
+                                    {{ __('N/A') }}
+                                </a>
+
                             </div>
                         </li>
 
