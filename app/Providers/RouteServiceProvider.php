@@ -30,8 +30,6 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
-
         parent::boot();
     }
 
@@ -42,11 +40,22 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function map()
     {
+        $this->mapBindings();
+
         $this->mapApiRoutes();
 
         $this->mapWebRoutes();
+    }
 
-        //
+    /**
+     * Define the "Bindings" for all off the application
+     *
+     * @return void
+     */
+    protected function mapBindings() {
+        Route::middleware('web')
+            ->namespace($this->namespace)
+            ->group(base_path('routes/bindings.php'));
     }
 
     /**

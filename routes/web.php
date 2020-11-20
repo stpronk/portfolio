@@ -11,6 +11,8 @@
 |
 */
 
+use Illuminate\Support\Facades\Auth;
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -30,6 +32,21 @@ Route::group([
     'prefix' => 'assignments',
 ], function () {
     Route::get('dealer', 'AssignmentController@dealer')->name('assignment.dealer');
+});
+
+/**
+ * FINANCE ROUTES
+ */
+Route::group([
+    'middleware' => ['auth'],
+    'prefix' => 'finance',
+    'namespace' => 'Finance'
+], function () {
+    Route::get('/', 'FinanceController@index')->name('finance.index');
+    Route::post('/store', 'FinanceController@store')->name('finance.store');
+
+    Route::get('/{group}', 'FinanceController@group')->name('finance.group');
+    Route::post('/{group}/category/store', 'CategoryController@store')->name('finance.category.store');
 });
 
 /**

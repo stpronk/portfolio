@@ -63,6 +63,21 @@
                             </div>
                         </li>
 
+                        @if (Auth::check())
+
+                            <li class="nav-item dropdown mx-3">
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    {{ __('Finance') }} <span class="caret"></span>
+                                </a>
+
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item text-justify" href="{{ route('finance.index') }}">
+                                        <i class="fa fa-money"></i> {{ __('Overview') }}
+                                    </a>
+                                </div>
+                            </li>
+                        @endif
+
                         @guest
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
@@ -79,12 +94,14 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    @if (Auth::user()->isAdmin())
+                                    @if(Auth::user()->isAdmin())
                                         <a class="dropdown-item text-justify" href="{{ route('users.index') }}">
-                                           <i class="fa fa-users"></i> {{ __('Users') }}
+                                            <i class="fa fa-users"></i> {{ __('Users') }}
                                         </a>
-                                        <hr>
+
+                                        <hr />
                                     @endif
+
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">

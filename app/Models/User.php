@@ -2,13 +2,15 @@
 
 namespace App\Models;
 
+use App\Models\Finance\Group;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
-    use Notifiable;
+    use Notifiable, HasFactory;
 
     /**
      * The attributes that are mass assignable.
@@ -56,7 +58,6 @@ class User extends Authenticatable
         return $this->is_admin;
     }
 
-
     /**
      * Made to search some specific field on the user Model
      *
@@ -68,5 +69,12 @@ class User extends Authenticatable
         return self::where('id', 'like', "%{$value}%")
             ->orWhere('name', 'like', "%{$value}%")
             ->orWhere('email', 'like', "%{$value}%");
+    }
+
+    /**
+     * RELATIONS
+     */
+    public function FinanceGroups () {
+        return $this->hasMany(Group::class, 'owner_id', 'id');
     }
 }
