@@ -29,12 +29,7 @@ class CategoryTest extends TestCase
     public function test_user_should_be_able_to_create_a_new_category_while_being_validated ()
     {
         $user  = $this->login();
-        $group = $this->createGroup($user);
-
-        // -- Assert that the database has been set up correctly
-        $this->assertDatabaseCount('users', 1)
-            ->assertDatabaseCount('finance_group', 1)
-            ->assertDatabaseCount('finance_category', 0);
+        $group = $this->group($user);
 
         // -- Post wrong form
         $category = [
@@ -64,13 +59,8 @@ class CategoryTest extends TestCase
     public function test_user_should_be_able_to_updated_an_existing_category_while_being_validated ()
     {
         $user  = $this->login();
-        $group = $this->createGroup($user, 1);
+        $group = $this->group($user, 1);
         $existingCategory = $group->Categories->first();
-
-        // -- Assert that the database has been set up correctly
-        $this->assertDatabaseCount('users', 1)
-            ->assertDatabaseCount('finance_group', 1)
-            ->assertDatabaseCount('finance_category', 1);
 
         // -- Post wrong form
         $category = [
@@ -103,14 +93,8 @@ class CategoryTest extends TestCase
     public function test_user_should_be_able_to_delete_a_category_set_all_attached_expenses_to_null ()
     {
         $user  = $this->login();
-        $group = $this->createGroup($user, 1, 3);
+        $group = $this->group($user, 1, 3);
         $category = $group->Categories->first();
-
-        // -- Assert that the database has been set up correctly
-        $this->assertDatabaseCount('users', 1)
-            ->assertDatabaseCount('finance_group', 1)
-            ->assertDatabaseCount('finance_category', 1)
-            ->assertDatabaseCount('finance_expense', 3);
 
         Livewire::test(CategoriesLivewire::class, ['group' => $group])
             ->set('category.id', $category->id)
