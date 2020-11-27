@@ -4,6 +4,7 @@ namespace Tests\Unit\Finance\Livewire;
 
 use App\Http\Livewire\Finance\Categories as CategoriesLivewire;
 use App\Models\Finance\Category;
+use App\Models\Finance\Expense;
 use App\Models\Finance\Group;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -96,13 +97,21 @@ class CategoryTest extends TestCase
         $group = $this->group($user, 1, 3);
         $category = $group->Categories->first();
 
+        // -- Check the expense before they get deleted and afterwards
+        $this->assertSame(3, Expense::where('finance_category_id', $category->id)->count());
+
+        // -- Create the test on the livewire class
         Livewire::test(CategoriesLivewire::class, ['group' => $group])
             ->set('category.id', $category->id)
-            ->call('delete');
-            // Assert it's not in the component anymore
+            ->assertSet('category', ['id' => $category->id])
+            ->call('delete')
+            ->assertSet('category', []);
 
         // -- Assert that the record is missing from the database
+        $this->assertDatabaseMissing('finance_category', $category->toArray());
 
-        // -- Assert that all expenses has been made null where the category was present
+        // -- Assert that the finance expense record is still in the database but without the right ID
+        $this->assertDatabaseCount('finance_expense', 3);
+        $this->assertSame(0, Expense::where('finance_category_id', $category->id)->count());
     }
 }

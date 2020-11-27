@@ -5,6 +5,8 @@ namespace App\Http\Livewire\Finance;
 use App\Models\Finance\Category;
 use \App\Models\Finance\Group as GroupModel;
 use Livewire\Component;
+use PhpParser\Node\Stmt\Foreach_;
+use PhpParser\Node\Stmt\Return_;
 
 class Categories extends Component
 {
@@ -48,6 +50,14 @@ class Categories extends Component
         $category->update();
 
         return $this->categories = $this->group->load('Categories')->Categories->toArray();
+    }
+
+    public function delete()
+    {
+        $category = Category::find($this->category['id']);
+        $category->delete();
+
+        return $this->category = [];
     }
 
     public function render()
