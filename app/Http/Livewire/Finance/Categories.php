@@ -14,12 +14,12 @@ class Categories extends Component
 
     public $categories = [];
 
-    public $category = [];
+    public $categoryValues = [];
 
     public $rules = [
-        'category.name'             => 'string|max:255',
-        'category.color'            => 'string|max:7',
-        'category.finance_group_id' => 'int|exists:App\Models\Finance\Group,id',
+        'categoryValues.name'             => 'string|max:255',
+        'categoryValues.color'            => 'string|max:7',
+        'categoryValues.finance_group_id' => 'int|exists:App\Models\Finance\Group,id',
     ];
 
     public function mount(GroupModel $group)
@@ -30,34 +30,16 @@ class Categories extends Component
 
     public function create()
     {
-        // -- validate the content
         $this->validate();
 
-        $category = new Category($this->category);
+        $category = new Category($this->categoryValues);
         $category->save();
 
+        // -- empty the category
+        $this->categoryValues = [];
+
+        // -- Return with the new Category
         return $this->categories = $this->group->load('Categories')->Categories->toArray();
-    }
-
-    public function update(Category $category)
-    {
-        $this->validate();
-
-        $category->name = $this->category['name'];
-        $category->color = $this->category['color'];
-        $category->finance_group_id = $this->category['finance_group_id'];
-
-        $category->update();
-
-        return $this->categories = $this->group->load('Categories')->Categories->toArray();
-    }
-
-    public function delete()
-    {
-        $category = Category::find($this->category['id']);
-        $category->delete();
-
-        return $this->category = [];
     }
 
     public function render()

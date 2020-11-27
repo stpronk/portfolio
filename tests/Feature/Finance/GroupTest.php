@@ -11,6 +11,9 @@ class GroupTest extends TestCase
 {
     use RefreshDatabase;
 
+    /**
+     *
+     */
     public function test_user_can_create_a_new_finance_group_and_redirects_to_the_new_group_page_while_being_validated ()
     {
         $user = $this->login();

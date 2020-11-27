@@ -13,6 +13,9 @@ class GroupTest extends TestCase
 {
     use RefreshDatabase;
 
+    /**
+     *
+     */
     public function test_group_component_loads_the_correct_group_into_itself_and_passes_it_through_to_the_view ()
     {
         $group = Group::factory()
