@@ -5,8 +5,6 @@ namespace App\Http\Livewire\Finance;
 use App\Models\Finance\Category;
 use \App\Models\Finance\Group as GroupModel;
 use Livewire\Component;
-use PhpParser\Node\Stmt\Foreach_;
-use PhpParser\Node\Stmt\Return_;
 
 class Categories extends Component
 {
@@ -25,9 +23,9 @@ class Categories extends Component
      * @var array
      */
     public $rules = [
-        'categoryValues.name'             => 'string|max:255',
-        'categoryValues.color'            => 'string|max:7',
-        'categoryValues.finance_group_id' => 'int|exists:App\Models\Finance\Group,id',
+        'category.name'             => 'string|max:255',
+        'category.color'            => 'string|max:7',
+        'category.finance_group_id' => 'int|exists:App\Models\Finance\Group,id',
     ];
 
     /**
@@ -42,7 +40,7 @@ class Categories extends Component
     }
 
     /**
-     * Create a category
+     * Create a Category
      *
      * @return mixed
      */
@@ -50,20 +48,86 @@ class Categories extends Component
     {
         $this->validate();
 
-        $category = new Category($this->categoryValues);
+        $category = new Category($this->category);
         $category->save();
 
-        // -- empty the category
-        $this->categoryValues = [];
+        $this->category = [];
 
-        // -- Return with the new Category
+        return $this->reloadCategories();
+    }
+
+    /**
+     * Update a Category
+     *
+     * @param \App\Models\Finance\Category $category
+     *
+     * @return mixed
+     */
+    public function update(Category $category)
+    {
+        $this->validate();
+
+        $category->name = $this->category['name'];
+        $category->color = $this->category['color'];
+        $category->finance_group_id = $this->category['finance_group_id'];
+
+        $category->update();
+
+        return $this->reloadCategories();
+    }
+
+    /**
+     * Before delete
+     *
+     * @param \App\Models\Finance\Category $category
+     *
+     * @return bool
+     */
+    public function beforeDelete(Category $category)
+    {
+        $this->category = $category;
+
+        return true;
+    }
+
+    /**
+     * Cancel the delete
+     *
+     * @return bool
+     */
+    public function cancelDelete()
+    {
+        $this->category = [];
+
+        return true;
+    }
+
+    /**
+     * Delete a Category
+     *
+     * @return mixed
+     */
+    public function delete() {
+        $this->category->delete();
+        $this->category = [];
+
+        return $this->reloadCategories();
+    }
+
+    /**
+     * Reload the Categories
+     *
+     * @return mixed
+     */
+    private function reloadCategories ()
+    {
         return $this->categories = $this->group->load('Categories')->Categories->toArray();
     }
 
     /**
      * Render the component
      *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function render()
     {

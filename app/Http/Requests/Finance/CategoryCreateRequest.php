@@ -9,16 +9,7 @@ use Illuminate\Http\Exceptions\HttpResponseException;
 
 class CategoryCreateRequest extends FormRequest
 {
-//    public $category;
-
-    public function rules()
-    {
-        return [
-            'name'             => 'required|string|max:255',
-            'color'            => 'required|string|max:7',
-            'finance_group_id' => 'required|int|exists:App\Models\Finance\Group,id',
-        ];
-    }
+    public $category;
 
     /**
      * Determine if the user is authorized to make this request.
@@ -28,6 +19,15 @@ class CategoryCreateRequest extends FormRequest
     public function authorize()
     {
         return true;
+    }
+
+    public function rules()
+    {
+        return [
+            'name'             => 'required|string|max:255',
+            'color'            => 'required|string|max:7',
+            'finance_group_id' => 'required|int|exists:App\Models\Finance\Group,id',
+        ];
     }
 
     public function save()

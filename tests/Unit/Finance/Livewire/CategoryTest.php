@@ -40,28 +40,28 @@ class CategoryTest extends TestCase
         $group = $this->group($user);
 
         // -- Post wrong form
-        $categoryValues = [
+        $category = [
             'name' => 'Some name',
             'color' => '9784326y38742',
             'finance_group_id' => 'Not a ID'
         ];
 
         Livewire::test(CategoriesLivewire::class, ['group' => $group])
-            ->set('categoryValues', $categoryValues)
+            ->set('category', $category)
             ->call('create');
 
-        $this->assertDatabaseMissing('finance_category', $categoryValues);
+        $this->assertDatabaseMissing('finance_category', $category);
 
         // -- Post correct form
-        $categoryValues = Category::factory(['finance_group_id' => $group->id])->make();
+        $category = Category::factory(['finance_group_id' => $group->id])->make();
 
         Livewire::test(CategoriesLivewire::class, ['group' => $group])
-            ->set('categoryValues', $categoryValues->toArray())
+            ->set('category', $category->toArray())
             ->call('create')
-            ->assertViewHas('categories', [ $group->Categories->toArray()[] = Category::where('name', $categoryValues->name)->first()->toArray() ])
+            ->assertViewHas('categories', [ $group->Categories->toArray()[] = Category::where('name', $category->name)->first()->toArray() ])
         ;
 
-        $this->assertDatabaseHas('finance_category', $categoryValues->toArray());
+        $this->assertDatabaseHas('finance_category', $category->toArray());
     }
 
     /**
@@ -74,29 +74,31 @@ class CategoryTest extends TestCase
         $existingCategory = $group->Categories->first();
 
         // -- Post wrong form
-        $categoryValues = [
+        $category = [
             'name' => 'Some name',
             'color' => '9784326y38742',
             'finance_group_id' => 'Not a ID'
         ];
 
-        Livewire::test(CategoryLivewire::class, ['group' => $group, 'category' => $existingCategory])
-            ->set('categoryValues', $categoryValues)
+        Livewire::test(CategoriesLivewire::class, ['group' => $group])
+            ->set('category', $category)
             ->call('update')
-            ->assertHasErrors(['categoryValues.color' => 'max', 'categoryValues.finance_group_id' => 'integer']);
+            ->assertHasErrors(['category.color' => 'max', 'category.finance_group_id' => 'integer']);
 
-        $this->assertDatabaseMissing('finance_category', $categoryValues);
+        $this->assertDatabaseMissing('finance_category', $category);
         $this->assertDatabaseHas('finance_category', $existingCategory->toArray());
 
         // -- Post correct form
-        $categoryValues = Category::factory(['finance_group_id' => $group->id])->make();
+        $category = Category::factory(['finance_group_id' => $group->id])->make();
 
-        Livewire::test(CategoryLivewire::class, ['group' => $group, 'category' => $existingCategory])
-            ->set('categoryValues', $categoryValues->toArray())
-            ->call('update', $existingCategory)
-            ->assertEmitted('updatedCategory');
+        Livewire::test(CategoriesLivewire::class, ['group' => $group])
+            ->set('category', $category->toArray())
+            ->call('update')
+            ->assertEmitted('updatedCategory')
+            ->assertViewHas('categories', $group->Categories->toArray())
+        ;
 
-        $this->assertDatabaseHas('finance_category', $categoryValues->toArray());
+        $this->assertDatabaseHas('finance_category', $category->toArray());
         $this->assertDatabaseMissing('finance_category', $existingCategory->pluck('name', 'color')->toArray());
     }
 
@@ -109,17 +111,13 @@ class CategoryTest extends TestCase
         $group = $this->group($user, 1, 3);
         $category = $group->Categories->first();
 
-        // -- Check the expense before they get deleted and afterwards
-        $this->assertSame(3, Expense::where('finance_category_id', $category->id)->count());
-
-        // -- Create the test on the livewire class
-        Livewire::test(CategoryLivewire::class, ['group' => $group, 'category' => $category])
+        Livewire::test(CategoriesLivewire::class, ['group' => $group])
+            ->call('beforeDelete', $category->id)
             ->call('delete')
-            ->assertEmitted('deletedCategory')
-            ->assertSet('category', null);
+            ->assertNotSet('categories.*.id', $category->id)
+            ->assertSet('category', [])
+            ->assertEmitted('deletedCategory');
 
-        // -- Assert that the record is missing from the database
-        $this->assertDatabaseMissing('finance_category', $category->toArray());
 
         // -- Assert that the finance expense record is still in the database but without the right ID
         $this->assertDatabaseCount('finance_expense', 3);
