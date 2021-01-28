@@ -12,12 +12,7 @@ class Categories extends Component
 
     public $categories = [];
 
-    /**
-     * Used for creating new categories
-     *
-     * @var array
-     */
-    public $categoryValues = [];
+    public $category = [];
 
     /**
      * @var array
@@ -53,6 +48,8 @@ class Categories extends Component
 
         $this->category = [];
 
+        $this->fireEvent('createdCategory', []);
+
         return $this->reloadCategories();
     }
 
@@ -72,6 +69,8 @@ class Categories extends Component
         $category->finance_group_id = $this->category['finance_group_id'];
 
         $category->update();
+
+        $this->fireEvent('updatedCategory', []);
 
         return $this->reloadCategories();
     }
@@ -110,6 +109,8 @@ class Categories extends Component
     public function delete() {
         $this->category->delete();
         $this->category = [];
+
+        $this->fireEvent('deletedCategory', []);
 
         return $this->reloadCategories();
     }
