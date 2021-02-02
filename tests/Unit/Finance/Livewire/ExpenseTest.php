@@ -25,4 +25,19 @@ class ExpenseTest extends TestCase
             ->assertSet('expenses', $group->Expenses->toArray())
             ->assertViewHas('expenses', $group->Expenses->toArray());
     }
+
+    public function test_user_should_be_able_to_create_a_new_expense_while_being_validated () {
+        // TODO: Create test
+        $this->assertTrue(false);
+    }
+
+    public function test_user_should_be_able_to_updated_an_existing_expense_while_being_validated () {
+        // TODO: Create test
+        $this->assertTrue(false);
+    }
+
+    public function test_user_should_be_able_to_delete_an_existing_expense () {
+        // TODO: Create test
+        $this->assertTrue(false);
+    }
 }
