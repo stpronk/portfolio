@@ -22,7 +22,7 @@ class GroupTest extends TestCase
             ->for(User::factory(), 'Owner')
             ->create();
 
-        Livewire::test(GroupLivewire::class, ['group' => $group])
+        $this->groupLivewire($group)
             ->assertSet('group', $group)
             ->assertViewHas('group', $group);
     }

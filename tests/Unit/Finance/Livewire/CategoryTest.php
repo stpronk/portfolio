@@ -26,7 +26,7 @@ class CategoryTest extends TestCase
             ->has(Category::factory()->count(3), 'Categories')
             ->create();
 
-        Livewire::test(CategoriesLivewire::class, ['group' => $group])
+        $this->categoryLivewire($group)
             ->assertSet('categories', $group->Categories->toArray())
             ->assertViewHas('categories', $group->Categories->toArray());
     }
@@ -46,15 +46,16 @@ class CategoryTest extends TestCase
             'finance_group_id' => 'Not a ID'
         ];
 
-        Livewire::test(CategoriesLivewire::class, ['group' => $group])
-            ->call('create', $category);
+        $this->categoryLivewire($group)
+            ->call('create', $category)
+            ->assertHasErrors(['color' => 'max', 'finance_group_id' => 'integer']);;
 
         $this->assertDatabaseMissing('finance_category', $category);
 
         // -- Post correct form
         $category = Category::factory(['finance_group_id' => $group->id])->make();
 
-        Livewire::test(CategoriesLivewire::class, ['group' => $group])
+        $this->categoryLivewire($group)
             ->call('create', $category->toArray())
             ->assertViewHas('categories', [ $group->Categories->toArray()[] = Category::where('name', $category->name)->first()->toArray() ])
         ;
@@ -79,7 +80,7 @@ class CategoryTest extends TestCase
             'finance_group_id' => 'Not a ID'
         ];
 
-        Livewire::test(CategoriesLivewire::class, ['group' => $group])
+        $this->categoryLivewire($group)
             ->call('update', $category, $existingCategory)
             ->assertHasErrors(['color' => 'max', 'finance_group_id' => 'integer']);
 
@@ -91,7 +92,7 @@ class CategoryTest extends TestCase
 
         $existingCategoryArray = $existingCategory->toArray();
 
-        Livewire::test(CategoriesLivewire::class, ['group' => $group])
+        $this->categoryLivewire($group)
             ->call('update', $category->toArray(), $existingCategory)
             ->assertEmitted('updatedCategory')
             ->assertViewHas('categories', $group->Categories->toArray())
@@ -110,7 +111,7 @@ class CategoryTest extends TestCase
         $group = $this->group($user, 1, 3);
         $category = $group->Categories->first();
 
-        Livewire::test(CategoriesLivewire::class, ['group' => $group])
+        $this->categoryLivewire($group)
             ->call('delete', $category)
             ->assertNotSet('categories.*.id', $category->id)
             ->assertEmitted('deletedCategory');

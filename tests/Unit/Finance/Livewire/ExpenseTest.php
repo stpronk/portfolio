@@ -21,7 +21,7 @@ class ExpenseTest extends TestCase
             ->has(Expense::factory()->count(3), 'Expenses')
             ->create();
 
-        Livewire::test(ExpensesLivewire::class, ['group' => $group])
+        $this->expenseLivewire($group)
             ->assertSet('expenses', $group->Expenses->toArray())
             ->assertViewHas('expenses', $group->Expenses->toArray());
     }

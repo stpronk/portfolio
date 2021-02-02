@@ -2,16 +2,21 @@
 
 namespace Tests;
 
+use App\Http\Livewire\Finance\Expenses as ExpensesLivewire;
+use App\Http\Livewire\Finance\Group as GroupLivewire;
 use App\Models\Finance\Category;
 use App\Models\Finance\Expense;
 use App\Models\Finance\Group;
 use App\Models\User;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
-use phpDocumentor\Reflection\Types\Integer;
+use Livewire\Livewire;
+use App\Http\Livewire\Finance\Categories as CategoriesLivewire;
 
 abstract class TestCase extends BaseTestCase
 {
     use CreatesApplication;
+
+    // ------------------------ Global helper functions ------------------------ //
 
     /**
      * Login with a user account (Could be an admin account)
@@ -108,4 +113,41 @@ abstract class TestCase extends BaseTestCase
             'finance_group_id' => $group->id
         ])->count($count)->create();
     }
+
+
+    // ------------------------ Livewire instances ------------------------ //
+
+    /**
+     * Create a Group livewire instance
+     *
+     * @param \App\Models\Finance\Group $group
+     *
+     * @return \Livewire\Testing\TestableLivewire
+     */
+    public function groupLivewire(Group $group) {
+        return Livewire::test(GroupLivewire::class, ['group' => $group]);
+    }
+
+    /**
+     * Create a Category livewire instance
+     *
+     * @param \App\Models\Finance\Group $group
+     *
+     * @return \Livewire\Testing\TestableLivewire
+     */
+    public function categoryLivewire(Group $group) {
+        return Livewire::test(CategoriesLivewire::class, ['group' => $group]);
+    }
+
+    /**
+     * Create an Expense livewire instance
+     *
+     * @param \App\Models\Finance\Group $group
+     *
+     * @return \Livewire\Testing\TestableLivewire
+     */
+    public function expenseLivewire(Group $group) {
+        return Livewire::test(ExpensesLivewire::class, ['group' => $group]);
+    }
+
 }
