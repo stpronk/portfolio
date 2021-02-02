@@ -9,8 +9,15 @@ use Livewire\Component;
 
 class Categories extends Component
 {
+
+    /**
+     * @var
+     */
     public $group;
 
+    /**
+     * @var array
+     */
     public $categories = [];
 
     /**
