@@ -47,8 +47,7 @@ class CategoryTest extends TestCase
         ];
 
         Livewire::test(CategoriesLivewire::class, ['group' => $group])
-            ->set('category', $category)
-            ->call('create');
+            ->call('create', $category);
 
         $this->assertDatabaseMissing('finance_category', $category);
 
@@ -56,8 +55,7 @@ class CategoryTest extends TestCase
         $category = Category::factory(['finance_group_id' => $group->id])->make();
 
         Livewire::test(CategoriesLivewire::class, ['group' => $group])
-            ->set('category', $category->toArray())
-            ->call('create')
+            ->call('create', $category->toArray())
             ->assertViewHas('categories', [ $group->Categories->toArray()[] = Category::where('name', $category->name)->first()->toArray() ])
         ;
 
@@ -82,9 +80,8 @@ class CategoryTest extends TestCase
         ];
 
         Livewire::test(CategoriesLivewire::class, ['group' => $group])
-            ->set('category', $category)
-            ->call('update')
-            ->assertHasErrors(['category.color' => 'max', 'category.finance_group_id' => 'integer']);
+            ->call('update', $category, $existingCategory)
+            ->assertHasErrors(['color' => 'max', 'finance_group_id' => 'integer']);
 
         $this->assertDatabaseMissing('finance_category', $category);
         $this->assertDatabaseHas('finance_category', $existingCategory->toArray());
@@ -95,8 +92,7 @@ class CategoryTest extends TestCase
         $existingCategoryArray = $existingCategory->toArray();
 
         Livewire::test(CategoriesLivewire::class, ['group' => $group])
-            ->set('category', $category->toArray())
-            ->call('update', $existingCategory)
+            ->call('update', $category->toArray(), $existingCategory)
             ->assertEmitted('updatedCategory')
             ->assertViewHas('categories', $group->Categories->toArray())
         ;
@@ -115,10 +111,8 @@ class CategoryTest extends TestCase
         $category = $group->Categories->first();
 
         Livewire::test(CategoriesLivewire::class, ['group' => $group])
-            ->call('beforeDelete', $category->id)
-            ->call('delete')
+            ->call('delete', $category)
             ->assertNotSet('categories.*.id', $category->id)
-            ->assertSet('category', [])
             ->assertEmitted('deletedCategory');
 
 

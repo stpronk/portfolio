@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Finance;
 
 use App\Models\Finance\Category;
 use \App\Models\Finance\Group as GroupModel;
+use \Illuminate\Support\Facades\Validator;
 use Livewire\Component;
 
 class Categories extends Component
@@ -12,15 +13,13 @@ class Categories extends Component
 
     public $categories = [];
 
-    public $category = [];
-
     /**
      * @var array
      */
     public $rules = [
-        'category.name'             => 'string|max:255',
-        'category.color'            => 'string|max:7',
-        'category.finance_group_id' => 'int|exists:App\Models\Finance\Group,id',
+        'name'             => 'string|max:255',
+        'color'            => 'string|max:7',
+        'finance_group_id' => 'int|exists:App\Models\Finance\Group,id',
     ];
 
     /**
@@ -37,16 +36,16 @@ class Categories extends Component
     /**
      * Create a Category
      *
+     * @param array $values
+     *
      * @return mixed
      */
-    public function create()
+    public function create(array $values)
     {
-        $this->validate();
+        $values = Validator::validate($values, $this->rules);
 
-        $category = new Category($this->category);
+        $category = new Category($values);
         $category->save();
-
-        $this->category = [];
 
         $this->emit('createdCategory');
 
@@ -56,19 +55,16 @@ class Categories extends Component
     /**
      * Update a Category
      *
-     * @param \App\Models\Finance\Category $category
+     * @param array                        $values
+     * @param \App\Models\Finance\Category $existingCategory
      *
      * @return mixed
      */
-    public function update(Category $category)
+    public function update(array $values, Category $existingCategory)
     {
-        $this->validate();
-//
-//        $category->name = $this->category['name'];
-//        $category->color = $this->category['color'];
-//        $category->finance_group_id = $this->category['finance_group_id'];
+        $values = Validator::validate($values, $this->rules);
 
-        $category->update($this->category);
+        $existingCategory->update($values);
 
         $this->emit('updatedCategory');
 
@@ -76,39 +72,15 @@ class Categories extends Component
     }
 
     /**
-     * Before delete
-     *
-     * @param \App\Models\Finance\Category $category
-     *
-     * @return bool
-     */
-    public function beforeDelete(Category $category)
-    {
-        $this->category = $category;
-
-        return true;
-    }
-
-    /**
-     * Cancel the delete
-     *
-     * @return bool
-     */
-    public function cancelDelete()
-    {
-        $this->category = [];
-
-        return true;
-    }
-
-    /**
      * Delete a Category
      *
+     * @param \App\Models\Finance\Category $existingCategory
+     *
      * @return mixed
+     * @throws \Exception
      */
-    public function delete() {
-        $this->category->delete();
-        $this->category = [];
+    public function delete(Category $existingCategory) {
+        $existingCategory->delete();
 
         $this->emit('deletedCategory');
 
