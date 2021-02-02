@@ -22,6 +22,11 @@ class Expenses extends Component
         $this->expenses = $group->Expenses->toArray();
     }
 
+    /**
+     * Render the component
+     *
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
     public function render()
     {
         return view('livewire.finance.expenses', [
