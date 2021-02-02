@@ -48,7 +48,7 @@ class Categories extends Component
 
         $this->category = [];
 
-        $this->fireEvent('createdCategory', []);
+        $this->emit('createdCategory');
 
         return $this->reloadCategories();
     }
@@ -63,14 +63,14 @@ class Categories extends Component
     public function update(Category $category)
     {
         $this->validate();
+//
+//        $category->name = $this->category['name'];
+//        $category->color = $this->category['color'];
+//        $category->finance_group_id = $this->category['finance_group_id'];
 
-        $category->name = $this->category['name'];
-        $category->color = $this->category['color'];
-        $category->finance_group_id = $this->category['finance_group_id'];
+        $category->update($this->category);
 
-        $category->update();
-
-        $this->fireEvent('updatedCategory', []);
+        $this->emit('updatedCategory');
 
         return $this->reloadCategories();
     }
@@ -110,7 +110,7 @@ class Categories extends Component
         $this->category->delete();
         $this->category = [];
 
-        $this->fireEvent('deletedCategory', []);
+        $this->emit('deletedCategory');
 
         return $this->reloadCategories();
     }

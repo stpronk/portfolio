@@ -23,7 +23,7 @@ class CategoryFactory extends Factory
     public function definition()
     {
         return [
-            'name'             => $this->faker->title,
+            'name'             => $this->faker->name,
             'color'            => $this->faker->hexColor,
             'finance_group_id' => Group::factory(),
         ];

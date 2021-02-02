@@ -75,6 +75,7 @@ class CategoryTest extends TestCase
 
         // -- Post wrong form
         $category = [
+            'id' => $existingCategory->id,
             'name' => 'Some name',
             'color' => '9784326y38742',
             'finance_group_id' => 'Not a ID'
@@ -89,17 +90,19 @@ class CategoryTest extends TestCase
         $this->assertDatabaseHas('finance_category', $existingCategory->toArray());
 
         // -- Post correct form
-        $category = Category::factory(['finance_group_id' => $group->id])->make();
+        $category = Category::factory(['id' => $existingCategory->id, 'finance_group_id' => $group->id])->make();
+
+        $existingCategoryArray = $existingCategory->toArray();
 
         Livewire::test(CategoriesLivewire::class, ['group' => $group])
             ->set('category', $category->toArray())
-            ->call('update')
+            ->call('update', $existingCategory)
             ->assertEmitted('updatedCategory')
             ->assertViewHas('categories', $group->Categories->toArray())
         ;
 
         $this->assertDatabaseHas('finance_category', $category->toArray());
-        $this->assertDatabaseMissing('finance_category', $existingCategory->pluck('name', 'color')->toArray());
+        $this->assertDatabaseMissing('finance_category', $existingCategoryArray);
     }
 
     /**
