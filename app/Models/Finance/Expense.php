@@ -19,7 +19,7 @@ class Expense extends Model
         1 => 'INCOME'
     ];
 
-    public function getTypeAttribute ()
+    public function getTypeNameAttribute ()
     {
         return self::$TYPES[$this->type];
     }
