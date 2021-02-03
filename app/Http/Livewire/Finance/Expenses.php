@@ -73,6 +73,23 @@ class Expenses extends Component
     }
 
     /**
+     * Delete an Expense
+     *
+     * @param \App\Models\Finance\Expense $expense
+     *
+     * @return mixed
+     * @throws \Exception
+     */
+    public function delete(Expense $expense) {
+        $expense->delete();
+
+        $this->emit('deletedExpense');
+
+        return $this->reloadExpenses();
+    }
+
+
+    /**
      * Reload the Expenses
      *
      * @return mixed

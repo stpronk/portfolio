@@ -94,7 +94,18 @@ class ExpenseTest extends TestCase
     }
 
     public function test_user_should_be_able_to_delete_an_existing_expense () {
-        // TODO: Create test
-        $this->assertTrue(true);
+        $user  = $this->login();
+        $group = $this->group($user, 1, 3);
+        $expense = $group->Expenses->first();
+
+        $this->expenseLivewire($group)
+            ->call('delete', $expense)
+            ->assertNotSet('expenses.*.id', $expense->id)
+            ->assertEmitted('deletedExpense');
+
+
+        // -- Assert that the finance expense record is still in the database but without the right ID
+        $this->assertDatabaseCount('finance_expense', 2);
+        $this->assertSame(0, Expense::where('id', $expense->id)->count());
     }
 }
