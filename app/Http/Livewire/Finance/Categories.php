@@ -63,15 +63,15 @@ class Categories extends Component
      * Update a Category
      *
      * @param array                        $values
-     * @param \App\Models\Finance\Category $existingCategory
+     * @param \App\Models\Finance\Category $category
      *
      * @return mixed
      */
-    public function update(array $values, Category $existingCategory)
+    public function update(array $values, Category $category)
     {
         $values = Validator::validate($values, $this->rules);
 
-        $existingCategory->update($values);
+        $category->update($values);
 
         $this->emit('updatedCategory');
 
