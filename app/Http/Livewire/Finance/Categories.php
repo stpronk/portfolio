@@ -81,13 +81,13 @@ class Categories extends Component
     /**
      * Delete a Category
      *
-     * @param \App\Models\Finance\Category $existingCategory
+     * @param \App\Models\Finance\Category $category
      *
      * @return mixed
      * @throws \Exception
      */
-    public function delete(Category $existingCategory) {
-        $existingCategory->delete();
+    public function delete(Category $category) {
+        $category->delete();
 
         $this->emit('deletedCategory');
 
