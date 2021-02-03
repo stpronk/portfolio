@@ -2,7 +2,9 @@
 
 namespace App\Http\Livewire\Finance;
 
+use App\Models\Finance\Expense;
 use App\Models\Finance\Group as GroupModel;
+use Illuminate\Support\Facades\Validator;
 use Livewire\Component;
 
 class Expenses extends Component
@@ -10,6 +12,16 @@ class Expenses extends Component
     public $group;
 
     public $expenses = [];
+
+    public $rules = [
+        'name'                => 'string|max:255',
+        'type'                => 'integer',
+        'amount'              => 'integer',
+        'date'                => 'date',
+        'notes'               => 'string|max:255',
+        'finance_group_id'    => 'integer|exists:finance_group,id',
+        'finance_category_id' => 'integer|exists:finance_category,id|nullable',
+    ];
 
     /**
      * Mount the component
@@ -20,6 +32,33 @@ class Expenses extends Component
     {
         $this->group = $group;
         $this->expenses = $group->Expenses->toArray();
+    }
+
+    /**
+     * Create an Expense
+     *
+     * @param array $values
+     */
+    public function create(array $values)
+    {
+        $values = Validator::validate($values, $this->rules);
+
+        $expense = new Expense($values);
+        $expense->save();
+
+        $this->emit('createdExpense');
+
+        return $this->reloadExpenses();
+    }
+
+    /**
+     * Reload the Expenses
+     *
+     * @return mixed
+     */
+    private function reloadExpenses ()
+    {
+        return $this->expenses = $this->group->load('Expenses')->Expenses->toArray();
     }
 
     /**

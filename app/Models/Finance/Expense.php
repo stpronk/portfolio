@@ -11,6 +11,8 @@ class Expense extends Model
 
     protected $table = 'finance_expense';
 
+    protected $guarded = [];
+
     static public $EXPENSE = 0;
     static public $INCOME = 1;
 

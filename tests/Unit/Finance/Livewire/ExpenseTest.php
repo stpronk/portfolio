@@ -27,8 +27,32 @@ class ExpenseTest extends TestCase
     }
 
     public function test_user_should_be_able_to_create_a_new_expense_while_being_validated () {
-        // TODO: Create test
-        $this->assertTrue(false);
+
+        $user  = $this->login();
+        $group = $this->group($user);
+
+        // -- Post wrong form
+        $expense = Expense::factory([
+            'name'             => [],
+            'amount'           => 'not an integer',
+            'finance_group_id' => $group->id,
+        ])->make();
+
+        $this->expenseLivewire($group)
+            ->call('create', $expense->toArray())
+            ->assertHasErrors(['name' => 'string', 'amount' => 'integer']);;
+
+        $this->assertDatabaseMissing('finance_expense', $expense->toArray());
+
+        // -- Post correct form
+        $expense = Expense::factory(['finance_group_id' => $group->id,])->make();
+
+        $this->expenseLivewire($group)
+            ->call('create', $expense->toArray())
+            ->assertViewHas('expenses', [ $group->Expenses->toArray()[] = Expense::where('name', $expense->name)->first()->toArray() ])
+        ;
+
+        $this->assertDatabaseHas('finance_expense', $expense->toArray());
     }
 
     public function test_user_should_be_able_to_updated_an_existing_expense_while_being_validated () {
