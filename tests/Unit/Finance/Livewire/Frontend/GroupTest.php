@@ -1,12 +1,10 @@
 <?php
 
-namespace Tests\Unit\Finance\Livewire;
+namespace Tests\Unit\Finance\Livewire\Frontend;
 
-use App\Http\Livewire\Finance\Group as GroupLivewire;
 use App\Models\Finance\Group;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Livewire\Livewire;
 use Tests\TestCase;
 
 class GroupTest extends TestCase
