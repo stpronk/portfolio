@@ -21,6 +21,14 @@ class Expense extends Model
         1 => 'INCOME'
     ];
 
+    protected $casts = [
+        'finance_category_id' => 'integer',
+        'finance_group_id' => 'integer',
+        'created_at' => 'datetime:Y-m-d H:i:s',
+        'updated_at' => 'datetime:Y-m-d H:i:s',
+        'deleted_at' => 'datetime:Y-m-d H:i:s'
+    ];
+
     public function getTypeNameAttribute ()
     {
         return self::$TYPES[$this->type];

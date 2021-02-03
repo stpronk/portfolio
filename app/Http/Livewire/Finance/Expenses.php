@@ -38,6 +38,8 @@ class Expenses extends Component
      * Create an Expense
      *
      * @param array $values
+     *
+     * @return mixed
      */
     public function create(array $values)
     {
@@ -47,6 +49,25 @@ class Expenses extends Component
         $expense->save();
 
         $this->emit('createdExpense');
+
+        return $this->reloadExpenses();
+    }
+
+    /**
+     * Update a Expense
+     *
+     * @param array                       $values
+     * @param \App\Models\Finance\Expense $expense
+     *
+     * @return mixed
+     */
+    public function update(array $values, Expense $expense)
+    {
+        $values = Validator::validate($values, $this->rules);
+
+        $expense->update($values);
+
+        $this->emit('updatedExpense');
 
         return $this->reloadExpenses();
     }

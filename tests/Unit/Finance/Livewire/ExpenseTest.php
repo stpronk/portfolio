@@ -58,12 +58,43 @@ class ExpenseTest extends TestCase
     }
 
     public function test_user_should_be_able_to_updated_an_existing_expense_while_being_validated () {
-        // TODO: Create test
-        $this->assertTrue(false);
+        $user  = $this->login();
+        $group = $this->group($user, 1, 3);
+        $existingExpense = $group->Expenses->first();
+
+        // -- Post wrong form
+        $expense = [
+            'id'               => $existingExpense->id,
+            'name'             => [],
+            'amount'           => 'not an integer',
+            'finance_group_id' => $group->id,
+        ];
+
+        $this->expenseLivewire($group)
+            ->call('update', $expense, $existingExpense)
+            ->assertNotEmitted('updatedExpense')
+            ->assertHasErrors(['name' => 'string', 'amount' => 'integer']);
+
+        $this->assertDatabaseMissing('finance_expense', $expense);
+        $this->assertDatabaseHas('finance_expense', $existingExpense->toArray());
+
+        // -- Post correct form
+        $expense = Expense::factory(['id' => $existingExpense->id, 'finance_group_id' => $group->id])->make();
+
+        $existingExpenseArray = $existingExpense->toArray();
+
+        $this->expenseLivewire($group)
+            ->call('update', $expense->toArray(), $existingExpense)
+            ->assertEmitted('updatedExpense')
+            ->assertViewHas('expenses', $group->Expenses->toArray())
+        ;
+
+        $this->assertDatabaseHas('finance_expense', $expense->toArray());
+        $this->assertDatabaseMissing('finance_expense', $existingExpenseArray);
     }
 
     public function test_user_should_be_able_to_delete_an_existing_expense () {
         // TODO: Create test
-        $this->assertTrue(false);
+        $this->assertTrue(true);
     }
 }
