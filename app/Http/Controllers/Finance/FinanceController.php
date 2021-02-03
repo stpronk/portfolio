@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Finance;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Finance\GroupCreateRequest;
 use App\Models\Finance\Group;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class FinanceController extends Controller
 {
@@ -16,7 +18,9 @@ class FinanceController extends Controller
      */
     public function index ()
     {
-        return view('finance.index');
+        return view('finance.index', [
+            'groups' => Auth::user()->FinanceGroups
+        ]);
     }
 
     /**
@@ -33,10 +37,23 @@ class FinanceController extends Controller
         ]);
     }
 
-    public function store (GroupCreateRequest $request)
+    public function createGroup (GroupCreateRequest $request)
     {
         $group = $request->save();
 
         return redirect()->route('finance.group', ['group' => $group->id]);
+    }
+
+    public function deleteGroup (Request $request)
+    {
+        $group = Group::find($request->get('group_id'));
+
+        if($group->owner_id !== Auth::id() || !Auth::user()->is_admin) {
+            throw new \Exception('You are not allowed to delete this group!', 403);
+        }
+
+        $group->delete();
+
+        return redirect()->route('finance.index');
     }
 }

@@ -43,10 +43,10 @@ Route::group([
     'namespace' => 'Finance'
 ], function () {
     Route::get('/', 'FinanceController@index')->name('finance.index');
-    Route::post('/store', 'FinanceController@store')->name('finance.store');
-
     Route::get('/{group}', 'FinanceController@group')->name('finance.group');
-    Route::post('/{group}/category/store', 'CategoryController@store')->name('finance.category.store');
+
+    Route::post('/group/create', 'FinanceController@createGroup')->name('finance.group.create');
+    Route::delete('group/delete', 'FinanceController@deleteGroup')->name('finance.group.delete');
 });
 
 /**

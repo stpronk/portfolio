@@ -1,5 +1,5 @@
 @extends('layouts.app')
 
 @section('content')
-    Finance || {{ $group->name }}
+    <livewire:finance.group :group="$group"/>
 @endsection
