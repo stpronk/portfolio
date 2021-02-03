@@ -26,7 +26,7 @@ class Categories extends Component
     public $rules = [
         'name'             => 'string|max:255',
         'color'            => 'string|max:7',
-        'finance_group_id' => 'int|exists:App\Models\Finance\Group,id',
+        'finance_group_id' => 'integer|exists:App\Models\Finance\Group,id',
     ];
 
     /**
