@@ -40,6 +40,7 @@ class ExpenseTest extends TestCase
 
         $this->expenseLivewire($group)
             ->call('create', $expense->toArray())
+            ->assertNotEmitted('createdExpense')
             ->assertHasErrors(['name' => 'string', 'amount' => 'integer']);;
 
         $this->assertDatabaseMissing('finance_expense', $expense->toArray());
@@ -49,6 +50,7 @@ class ExpenseTest extends TestCase
 
         $this->expenseLivewire($group)
             ->call('create', $expense->toArray())
+            ->assertEmitted('createdExpense')
             ->assertViewHas('expenses', [ $group->Expenses->toArray()[] = Expense::where('name', $expense->name)->first()->toArray() ])
         ;
 
