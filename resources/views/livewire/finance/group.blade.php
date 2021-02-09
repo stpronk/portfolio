@@ -15,9 +15,9 @@
             <div class="card-header">
                 Expenses
             </div>
-            <div class="card-body">
+            <table class="card-body table mb-0">
                 <livewire:finance.expenses :group="$group" />
-            </div>
+            </table>
         </div>
     </div>
 

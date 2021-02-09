@@ -31,7 +31,7 @@ class Expenses extends Component
     public function mount(GroupModel $group)
     {
         $this->group = $group;
-        $this->expenses = $group->Expenses->toArray();
+        $this->expenses = $group->Expenses->load('Category')->toArray();
     }
 
     /**

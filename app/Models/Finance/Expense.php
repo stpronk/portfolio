@@ -4,6 +4,7 @@ namespace App\Models\Finance;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Support\Casts\ExpenseType;
 
 class Expense extends Model
 {
@@ -24,12 +25,13 @@ class Expense extends Model
     protected $casts = [
         'finance_category_id' => 'integer',
         'finance_group_id' => 'integer',
+        'type' => ExpenseType::class,
         'created_at' => 'datetime:Y-m-d H:i:s',
         'updated_at' => 'datetime:Y-m-d H:i:s',
         'deleted_at' => 'datetime:Y-m-d H:i:s'
     ];
 
-    public function getTypeNameAttribute ()
+    public function castTypeAttribute ()
     {
         return self::$TYPES[$this->type];
     }
