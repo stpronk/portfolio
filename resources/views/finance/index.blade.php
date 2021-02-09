@@ -39,6 +39,7 @@
         </table>
     </div>
 
+    {{-- Create a Group modal --}}
     <div class="modal fade" id="create-group" tabindex="-1" role="dialog">
         <form method="post" action="{{ route('finance.group.create') }}">
             @csrf
@@ -68,6 +69,7 @@
         </form>
     </div>
 
+    {{-- Delete a Group modal --}}
     <div class="modal fade" id="delete-group" tabindex="-1" role="dialog">
         <form method="post" action="{{ route('finance.group.delete') }}">
             @csrf
@@ -98,6 +100,7 @@
 
 @section('scripts')
     <script>
+        {{-- Add correct information when deleting a group --}}
         document.querySelectorAll('[data-target="#delete-group"]').forEach(function (element) {
             element.addEventListener('click', function (event) {
                 document.getElementById('group-id').value = event.currentTarget.getAttribute('data-group-id');
