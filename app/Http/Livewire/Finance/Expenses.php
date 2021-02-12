@@ -15,7 +15,7 @@ class Expenses extends Component
 
     public $rules = [
         'name'                => 'string|max:255',
-        'type'                => 'integer',
+        'type'                => 'string',
         'amount'              => 'integer',
         'date'                => 'date',
         'notes'               => 'string|max:255',

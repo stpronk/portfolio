@@ -71,12 +71,12 @@ class AuthorizationTest extends TestCase
      */
     public function test_user_has_access_to_the_create_function()
     {
-        $this->post('/finance/store', Group::factory()->make()->toArray())
+        $this->post('/finance/group/create', Group::factory()->make()->toArray())
             ->assertLocation('/login');
 
         $user = $this->login();
 
-        $this->post('/finance/store', Group::factory()->make(['owner_id' => $user->id])->toArray())
+        $this->post('/finance/group/create', Group::factory()->make(['owner_id' => $user->id])->toArray())
             ->assertLocation("/finance/1");
     }
 

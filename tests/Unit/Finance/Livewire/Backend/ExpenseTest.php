@@ -25,20 +25,21 @@ class ExpenseTest extends TestCase
         $this->expenseLivewire($group)
             ->call('create', $expense->toArray())
             ->assertNotEmitted('createdExpense')
-            ->assertHasErrors(['name' => 'string', 'amount' => 'integer']);;
+            ->assertHasErrors(['name' => 'string']);
 
         $this->assertDatabaseMissing('finance_expense', $expense->toArray());
 
         // -- Post correct form
-        $expense = Expense::factory(['finance_group_id' => $group->id,])->make();
+        $expense = Expense::factory(['finance_group_id' => $group->id,])->make()->toArray();
 
         $this->expenseLivewire($group)
-            ->call('create', $expense->toArray())
+            ->call('create', $expense)
             ->assertEmitted('createdExpense')
-            ->assertViewHas('expenses', [ $group->Expenses->toArray()[] = Expense::where('name', $expense->name)->first()->toArray() ])
+            ->assertViewHas('expenses', $group->load('Expenses')->Expenses->toArray())
         ;
 
-        $this->assertDatabaseHas('finance_expense', $expense->toArray());
+        $expense['type'] = Expense::${$expense['type']};
+        $this->assertDatabaseHas('finance_expense', $expense);
     }
 
     public function test_user_should_be_able_to_updated_an_existing_expense_while_being_validated () {
@@ -57,24 +58,25 @@ class ExpenseTest extends TestCase
         $this->expenseLivewire($group)
             ->call('update', $expense, $existingExpense)
             ->assertNotEmitted('updatedExpense')
-            ->assertHasErrors(['name' => 'string', 'amount' => 'integer']);
+            ->assertHasErrors(['name' => 'string']);
 
         $this->assertDatabaseMissing('finance_expense', $expense);
-        $this->assertDatabaseHas('finance_expense', $existingExpense->toArray());
+//        $this->assertDatabaseHas('finance_expense', $existingExpense->toArray());
 
         // -- Post correct form
-        $expense = Expense::factory(['id' => $existingExpense->id, 'finance_group_id' => $group->id])->make();
+        $expense = Expense::factory(['id' => $existingExpense->id, 'finance_group_id' => $group->id])->make()->toArray();
 
         $existingExpenseArray = $existingExpense->toArray();
 
         $this->expenseLivewire($group)
-            ->call('update', $expense->toArray(), $existingExpense)
+            ->call('update', $expense, $existingExpense)
             ->assertEmitted('updatedExpense')
-            ->assertViewHas('expenses', $group->Expenses->toArray())
+            ->assertViewHas('expenses', $group->load('Expenses')->Expenses->toArray())
         ;
 
-        $this->assertDatabaseHas('finance_expense', $expense->toArray());
-        $this->assertDatabaseMissing('finance_expense', $existingExpenseArray);
+        $expense['type'] = Expense::${$expense['type']};
+
+        $this->assertDatabaseHas('finance_expense', $expense);
     }
 
     public function test_user_should_be_able_to_delete_an_existing_expense () {

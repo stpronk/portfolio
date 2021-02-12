@@ -18,15 +18,31 @@ class Categories extends Component
     /**
      * @var array
      */
-    public $categories = [];
+    public $categories;
+
+    /**
+     * @var mixed
+     */
+    public $selected;
+
+    /**
+     * @var boolean
+     */
+    public $new;
+    public $update;
+
+    /**
+     * @var array
+     */
+    public $values;
 
     /**
      * @var array
      */
     public $rules = [
-        'name'             => 'string|max:255',
-        'color'            => 'string|max:7',
-        'finance_group_id' => 'integer|exists:App\Models\Finance\Group,id',
+        'name'             => 'required|string|max:255',
+        'color'            => 'nullable|string|max:7',
+        'finance_group_id' => 'required|integer|exists:App\Models\Finance\Group,id',
     ];
 
     /**
@@ -38,6 +54,27 @@ class Categories extends Component
     {
         $this->group = $group;
         $this->categories = $group->Categories->toArray();
+
+        $this->selected = '';
+        $this->new = false;
+        $this->update = false;
+        $this->values = [
+            'name'             => '',
+            'color'            => '',
+            'finance_group_id' => $this->group->id,
+        ];
+    }
+
+    /**
+     * Create a new instance in the front-end
+     *
+     * @return bool
+     */
+    public function new()
+    {
+        $this->values = [];
+
+        return $this->new = !$this->new;
     }
 
     /**
@@ -47,9 +84,10 @@ class Categories extends Component
      *
      * @return mixed
      */
-    public function create(array $values)
+    public function create()
     {
-        $values = Validator::validate($values, $this->rules);
+        $this->values['finance_group_id'] = $this->group->id;
+        $values = Validator::validate($this->values, $this->rules);
 
         $category = new Category($values);
         $category->save();
@@ -60,6 +98,39 @@ class Categories extends Component
     }
 
     /**
+     * Prepare for update in the front-end
+     *
+     * @return array
+     */
+    public function prepareUpdate()
+    {
+        if($this->selected === '') {
+            return $this->reloadCategories();
+        }
+
+        $this->update = true;
+        $category = Category::find($this->selected);
+
+        $this->values = [
+            'name' => $category->name,
+            'color' => $category->color,
+            'finance_group_id' => $category->finance_group_id
+        ];
+
+        return $this->values;
+    }
+
+    /**
+     * Cancel update
+     */
+    public function cancelUpdate()
+    {
+        $this->update = false;
+        $this->values = [];
+        $this->selected = '';
+    }
+
+    /**
      * Update a Category
      *
      * @param array                        $values
@@ -67,14 +138,16 @@ class Categories extends Component
      *
      * @return mixed
      */
-    public function update(array $values, Category $category)
+    public function update()
     {
-        $values = Validator::validate($values, $this->rules);
+        $values = Validator::validate($this->values, $this->rules);
+        $category = Category::find($this->selected);
 
         $category->update($values);
 
         $this->emit('updatedCategory');
 
+        $this->update = false;
         return $this->reloadCategories();
     }
 
@@ -86,8 +159,8 @@ class Categories extends Component
      * @return mixed
      * @throws \Exception
      */
-    public function delete(Category $category) {
-        $category->delete();
+    public function delete() {
+        Category::find($this->selected)->delete();
 
         $this->emit('deletedCategory');
 
@@ -101,6 +174,17 @@ class Categories extends Component
      */
     private function reloadCategories ()
     {
+        $this->values = [];
+        $this->selected = '';
+
+        if($this->new === true) {
+            $this->new = false;
+        }
+
+        if($this->update === true) {
+            $this->update = false;
+        }
+
         return $this->categories = $this->group->load('Categories')->Categories->toArray();
     }
 
@@ -112,7 +196,11 @@ class Categories extends Component
     public function render()
     {
         return view('livewire.finance.categories', [
-            'categories' => $this->categories
+            'categories' => $this->categories,
+            'selectedCategory' => $this->selected !== '' ? Category::findOrFail($this->selected)->toArray() : '',
+
+            'new' => $this->new,
+            'values' => $this->values
         ]);
     }
 }

@@ -14,6 +14,8 @@ class Expense extends Model
 
     protected $guarded = [];
 
+    protected $with = ['Category'];
+
     static public $EXPENSE = 0;
     static public $INCOME = 1;
 
@@ -25,16 +27,12 @@ class Expense extends Model
     protected $casts = [
         'finance_category_id' => 'integer',
         'finance_group_id' => 'integer',
+        'amount' => 'integer',
         'type' => ExpenseType::class,
         'created_at' => 'datetime:Y-m-d H:i:s',
         'updated_at' => 'datetime:Y-m-d H:i:s',
         'deleted_at' => 'datetime:Y-m-d H:i:s'
     ];
-
-    public function castTypeAttribute ()
-    {
-        return self::$TYPES[$this->type];
-    }
 
     /**
      * RELATIONS

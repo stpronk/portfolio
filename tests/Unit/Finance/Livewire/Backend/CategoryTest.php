@@ -22,14 +22,14 @@ class CategoryTest extends TestCase
         // -- Post wrong form
         $category = [
             'name' => 'Some name',
-            'color' => '9784326y38742',
-            'finance_group_id' => 'Not a ID'
+            'color' => '9784326y38742'
         ];
 
         $this->categoryLivewire($group)
-            ->call('create', $category)
+            ->set('values', $category)
+            ->call('create')
             ->assertNotEmitted('createdCategory')
-            ->assertHasErrors(['color' => 'max', 'finance_group_id' => 'integer']);;
+            ->assertHasErrors(['color' => 'max']);;
 
         $this->assertDatabaseMissing('finance_category', $category);
 
@@ -37,7 +37,8 @@ class CategoryTest extends TestCase
         $category = Category::factory(['finance_group_id' => $group->id])->make();
 
         $this->categoryLivewire($group)
-            ->call('create', $category->toArray())
+            ->set('values', $category->toArray())
+            ->call('create')
             ->assertEmitted('createdCategory')
             ->assertViewHas('categories', [ $group->Categories->toArray()[] = Category::where('name', $category->name)->first()->toArray() ])
         ;
@@ -58,14 +59,15 @@ class CategoryTest extends TestCase
         $category = [
             'id' => $existingCategory->id,
             'name' => 'Some name',
-            'color' => '9784326y38742',
-            'finance_group_id' => 'Not a ID'
+            'color' => '9784326y38742'
         ];
 
         $this->categoryLivewire($group)
-            ->call('update', $category, $existingCategory)
+            ->set('values', $category)
+            ->set('selected', $existingCategory->id)
+            ->call('update', $existingCategory)
             ->assertNotEmitted('updatedCategory')
-            ->assertHasErrors(['color' => 'max', 'finance_group_id' => 'integer']);
+            ->assertHasErrors(['color' => 'max']);
 
         $this->assertDatabaseMissing('finance_category', $category);
         $this->assertDatabaseHas('finance_category', $existingCategory->toArray());
@@ -76,9 +78,11 @@ class CategoryTest extends TestCase
         $existingCategoryArray = $existingCategory->toArray();
 
         $this->categoryLivewire($group)
-            ->call('update', $category->toArray(), $existingCategory)
+            ->set('values', $category->toArray())
+            ->set('selected', $existingCategory->id)
+            ->call('update')
             ->assertEmitted('updatedCategory')
-            ->assertViewHas('categories', $group->Categories->toArray())
+            ->assertViewHas('categories', $group->load('Categories')->Categories->toArray())
         ;
 
         $this->assertDatabaseHas('finance_category', $category->toArray());
@@ -95,7 +99,8 @@ class CategoryTest extends TestCase
         $category = $group->Categories->first();
 
         $this->categoryLivewire($group)
-            ->call('delete', $category)
+            ->set('selected', $category->id)
+            ->call('delete')
             ->assertNotSet('categories.*.id', $category->id)
             ->assertEmitted('deletedCategory');
 

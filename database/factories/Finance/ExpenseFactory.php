@@ -25,7 +25,7 @@ class ExpenseFactory extends Factory
     {
         return [
             'name'                => $this->faker->title,
-            'type'                => $this->faker->randomKey(Expense::$TYPES),
+            'type'                => Expense::$TYPES[$this->faker->randomKey(Expense::$TYPES)],
             'amount'              => $this->faker->randomNumber(5),
             'date'                => $this->faker->date(),
             'notes'               => $this->faker->sentence,

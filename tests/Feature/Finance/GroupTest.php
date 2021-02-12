@@ -24,7 +24,7 @@ class GroupTest extends TestCase
             'owner_id' => 'some_owner'
         ];
 
-        $this->post('/finance/store', $group)
+        $this->post('/finance/group/create', $group)
             ->assertLocation('/'); // Redirect back to the last page which is the home page
 
         $this->assertDatabaseMissing('finance_group', $group);
@@ -32,7 +32,7 @@ class GroupTest extends TestCase
         //--- Post a correct form
         $group = Group::factory(['owner_id' => $user->id])->make()->toArray();
 
-        $this->post('/finance/store', $group)
+        $this->post('/finance/group/create', $group)
             ->assertLocation("/finance/1"); // Redirect to the new group
 
         $this->assertDatabaseHas('finance_group', $group);
