@@ -20,12 +20,24 @@ class Category extends Model
         'name', 'color', 'finance_group_id'
     ];
 
+    protected $appends = [
+        'expenses_count'
+    ];
+
     protected $casts = [
         'finance_group_id' => 'integer',
         'created_at' => 'datetime:Y-m-d H:i:s',
         'updated_at' => 'datetime:Y-m-d H:i:s',
         'deleted_at' => 'datetime:Y-m-d H:i:s'
     ];
+
+    /**
+     * HELPERS
+     */
+    public function getExpensesCountAttribute()
+    {
+        return $this->Expenses()->count();
+    }
 
     /**
      * RELATIONS

@@ -13,6 +13,11 @@ class Expenses extends Component
 
     public $expenses = [];
 
+    protected $listeners = [
+        'updatedCategory' => 'reloadExpenses',
+        'deletedCategory' => 'reloadExpenses'
+    ];
+
     public $rules = [
         'name'                => 'string|max:255',
         'type'                => 'string',
@@ -88,13 +93,12 @@ class Expenses extends Component
         return $this->reloadExpenses();
     }
 
-
     /**
      * Reload the Expenses
      *
      * @return mixed
      */
-    private function reloadExpenses ()
+    public function reloadExpenses ()
     {
         return $this->expenses = $this->group->load('Expenses')->Expenses->toArray();
     }

@@ -28,8 +28,9 @@ class Categories extends Component
     /**
      * @var boolean
      */
-    public $new;
+    public $settings;
     public $update;
+    public $delete;
 
     /**
      * @var array
@@ -56,7 +57,7 @@ class Categories extends Component
         $this->categories = $group->Categories->toArray();
 
         $this->selected = '';
-        $this->new = false;
+        $this->settings = false;
         $this->update = false;
         $this->values = [
             'name'             => '',
@@ -68,13 +69,25 @@ class Categories extends Component
     /**
      * Create a new instance in the front-end
      *
-     * @return bool
+     * @return array
      */
     public function new()
     {
-        $this->values = [];
+        return $this->values = [
+            'name'             => '',
+            'color'            => '',
+            'finance_group_id' => $this->group->id,
+        ];
+    }
 
-        return $this->new = !$this->new;
+    /**
+     * toggle settings variable
+     *
+     * @return bool
+     */
+    public function toggleSettings()
+    {
+        return $this->settings = !$this->settings;
     }
 
     /**
@@ -100,16 +113,17 @@ class Categories extends Component
     /**
      * Prepare for update in the front-end
      *
+     * @param int $id
+     *
      * @return array
      */
-    public function prepareUpdate()
+    public function prepareUpdate(int $id)
     {
-        if($this->selected === '') {
-            return $this->reloadCategories();
-        }
+        $this->reloadCategories();
 
         $this->update = true;
-        $category = Category::find($this->selected);
+        $this->selected = $id;
+        $category = Category::find($id);
 
         $this->values = [
             'name' => $category->name,
@@ -125,9 +139,7 @@ class Categories extends Component
      */
     public function cancelUpdate()
     {
-        $this->update = false;
-        $this->values = [];
-        $this->selected = '';
+        return $this->reloadCategories();
     }
 
     /**
@@ -152,6 +164,25 @@ class Categories extends Component
     }
 
     /**
+     * Prepare for delete in the front-end
+     *
+     * @param int $id
+     *
+     * @return array
+     */
+    public function prepareDelete(int $id)
+    {
+        $this->reloadCategories();
+
+        $this->delete = true;
+        $this->selected = $id;
+        $category = Category::find($id);
+
+        return $this->selected;
+    }
+
+
+    /**
      * Delete a Category
      *
      * @param \App\Models\Finance\Category $category
@@ -167,6 +198,11 @@ class Categories extends Component
         return $this->reloadCategories();
     }
 
+    public function cancelDelete()
+    {
+        return $this->reloadCategories();
+    }
+
     /**
      * Reload the Categories
      *
@@ -177,12 +213,12 @@ class Categories extends Component
         $this->values = [];
         $this->selected = '';
 
-        if($this->new === true) {
-            $this->new = false;
-        }
-
         if($this->update === true) {
             $this->update = false;
+        }
+
+        if($this->delete === true) {
+            $this->delete = false;
         }
 
         return $this->categories = $this->group->load('Categories')->Categories->toArray();
@@ -197,9 +233,9 @@ class Categories extends Component
     {
         return view('livewire.finance.categories', [
             'categories' => $this->categories,
-            'selectedCategory' => $this->selected !== '' ? Category::findOrFail($this->selected)->toArray() : '',
+            'selectedCategory' => $this->selected !== '' ? Category::findOrFail($this->selected)->toArray() : null,
 
-            'new' => $this->new,
+            'settings' => $this->settings,
             'values' => $this->values
         ]);
     }

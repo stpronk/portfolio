@@ -66,8 +66,6 @@ class ExpenseTest extends TestCase
         // -- Post correct form
         $expense = Expense::factory(['id' => $existingExpense->id, 'finance_group_id' => $group->id])->make()->toArray();
 
-        $existingExpenseArray = $existingExpense->toArray();
-
         $this->expenseLivewire($group)
             ->call('update', $expense, $existingExpense)
             ->assertEmitted('updatedExpense')
