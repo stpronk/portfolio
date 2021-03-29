@@ -1,21 +1,21 @@
 // Normalize
-@import "normalize";
+@import "web/normalize";
 
 // Variables
-@import 'variables';
+@import 'web/variables';
 
 // Fonts
-@import "fonts";
-@import "~font-awesome/scss/font-awesome";
+@import "web/fonts";
+@import "../../node_modules/font-awesome/scss/font-awesome";
 
 // Import mixins
-@import "mixins";
+@import "web/mixins";
 
 // Import helper classes
-@import "helpers";
+@import "web/helpers";
 
 // Import all the sections
-@import "sections/all";
+@import "web/sections/all";
 
 // Some basic styling
 html, body {

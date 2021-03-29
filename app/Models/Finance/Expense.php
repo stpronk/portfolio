@@ -2,6 +2,7 @@
 
 namespace App\Models\Finance;
 
+use App\Support\Casts\Amount;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Support\Casts\ExpenseType;
@@ -27,8 +28,9 @@ class Expense extends Model
     protected $casts = [
         'finance_category_id' => 'integer',
         'finance_group_id' => 'integer',
-        'amount' => 'integer',
+        'amount' => Amount::class,
         'type' => ExpenseType::class,
+        'date' => 'date:d/m/Y',
         'created_at' => 'datetime:Y-m-d H:i:s',
         'updated_at' => 'datetime:Y-m-d H:i:s',
         'deleted_at' => 'datetime:Y-m-d H:i:s'

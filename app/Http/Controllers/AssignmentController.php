@@ -8,10 +8,10 @@ class AssignmentController extends Controller
 {
     public function dealer ()
     {
-//        include "https://travalli.nl/administrator/includes/inidb.php";
-//
-//        dd(var_dump());
-
         return view('assignments.dealer');
+    }
+
+    public function eventPlanner () {
+        return view('assignments.eventPlanner');
     }
 }

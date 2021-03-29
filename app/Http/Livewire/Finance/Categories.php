@@ -37,6 +37,11 @@ class Categories extends Component
      */
     public $values;
 
+    protected $listeners = [
+        'createdExpense' => 'reloadVariables',
+        'deletedExpense' => 'reloadVariables'
+    ];
+
     /**
      * @var array
      */
@@ -59,6 +64,8 @@ class Categories extends Component
         $this->selected = '';
         $this->settings = false;
         $this->update = false;
+        $this->delete = false;
+
         $this->values = [
             'name'             => '',
             'color'            => '',
@@ -107,7 +114,7 @@ class Categories extends Component
 
         $this->emit('createdCategory');
 
-        return $this->reloadCategories();
+        return $this->reloadVariables();
     }
 
     /**
@@ -119,7 +126,7 @@ class Categories extends Component
      */
     public function prepareUpdate(int $id)
     {
-        $this->reloadCategories();
+        $this->reloadVariables();
 
         $this->update = true;
         $this->selected = $id;
@@ -139,14 +146,11 @@ class Categories extends Component
      */
     public function cancelUpdate()
     {
-        return $this->reloadCategories();
+        return $this->reloadVariables();
     }
 
     /**
      * Update a Category
-     *
-     * @param array                        $values
-     * @param \App\Models\Finance\Category $category
      *
      * @return mixed
      */
@@ -160,7 +164,7 @@ class Categories extends Component
         $this->emit('updatedCategory');
 
         $this->update = false;
-        return $this->reloadCategories();
+        return $this->reloadVariables();
     }
 
     /**
@@ -172,7 +176,7 @@ class Categories extends Component
      */
     public function prepareDelete(int $id)
     {
-        $this->reloadCategories();
+        $this->reloadVariables();
 
         $this->delete = true;
         $this->selected = $id;
@@ -195,12 +199,17 @@ class Categories extends Component
 
         $this->emit('deletedCategory');
 
-        return $this->reloadCategories();
+        return $this->reloadVariables();
     }
 
+    /**
+     * Cancel Delete
+     *
+     * @return mixed
+     */
     public function cancelDelete()
     {
-        return $this->reloadCategories();
+        return $this->reloadVariables();
     }
 
     /**
@@ -208,7 +217,7 @@ class Categories extends Component
      *
      * @return mixed
      */
-    private function reloadCategories ()
+    public function reloadVariables ()
     {
         $this->values = [];
         $this->selected = '';

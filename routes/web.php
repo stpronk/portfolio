@@ -24,6 +24,7 @@ Route::get('/', function () {
  * These router all have the admin prefix (Except for the auth routes)
  */
 Auth::routes(['register' => false]);
+Route::get('/dashboard', 'HomeController@index')->name('home');
 
 /**
  * ASSIGNMENTS ROUTES
@@ -31,7 +32,9 @@ Auth::routes(['register' => false]);
 Route::group([
     'prefix' => 'assignments',
 ], function () {
-    Route::get('dealer', 'AssignmentController@dealer')->name('assignment.dealer');
+    Route::get('/', 'AssignmentController@index')->name('assignments');
+    Route::get('/dealer', 'AssignmentController@dealer')->name('assignment.dealer');
+    Route::get('/event-planner', 'AssignmentController@eventPlanner')->name('assignment.event-planner');
 });
 
 /**
@@ -56,13 +59,12 @@ Route::group([
     'middleware' => ['auth'],
     'prefix' => 'admin'
 ], function () {
-    Route::get('/', 'HomeController@index')->name('home');
-
     Route::get('/playground/wysiwyg', 'PlaygroundController@wysiwyg')->name('playground.wysiwyg');
 
     Route::group([
         'middleware' => ['isAdmin']
     ], function () {
         Route::get('/users', 'UserController@index')->name('users.index');
+        Route::get('/site', 'SiteController@index')->name('site.index');
     });
 });

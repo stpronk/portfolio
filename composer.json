@@ -37,6 +37,10 @@
         }
     },
     "autoload": {
+        "files": [
+            "app/Support/Helpers/Quotes.php",
+            "app/Support/Helpers/View.php"
+        ],
         "psr-4": {
             "App\\": "app/",
             "Database\\Factories\\": "database/factories/",

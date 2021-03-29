@@ -1,4 +1,4 @@
-<div class="col-12 col-md-4 col-lg-3">
+<div class="col-12 col-lg-3">
     <div class="card">
         <div class="card-header d-flex">
             <span class="flex-fill">Category</span>
@@ -62,7 +62,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">Create new Category</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <button type="button" class="close" data-dismiss="modal" ari    a-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>

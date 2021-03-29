@@ -13,14 +13,22 @@
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
 
-// Layouts
-@import 'layouts/app';
+// Auth import
+@import './auth/login';
 
-// Assignments
-@import "assignments/dealer";
-@import "assignments/eventPlanner";
+// Set all content to the center
+html {
+  min-height: 100%;
+}
 
-// Shitty background for an open modal
-.bg-black-50 {
-  background-color: rgba(0,0,0,0.5);
+body {
+  min-height: 100%;
+  font-family: $font-primary;
+  background-color: $body-bg;
+}
+
+#app {
+  min-height: 100%;
+  display: flex;
+  align-items: center;
 }

@@ -12,16 +12,22 @@ class Expenses extends Component
     public $group;
 
     public $expenses = [];
+    public $categories = [];
+    public $values = [];
+
+    public $selected;
+    public $new;
+    public $update;
 
     protected $listeners = [
-        'updatedCategory' => 'reloadExpenses',
-        'deletedCategory' => 'reloadExpenses'
+        'updatedCategory' => 'reloadVariables',
+        'deletedCategory' => 'reloadVariables'
     ];
 
     public $rules = [
         'name'                => 'string|max:255',
         'type'                => 'string',
-        'amount'              => 'integer',
+        'amount'              => 'numeric',
         'date'                => 'date',
         'notes'               => 'string|max:255',
         'finance_group_id'    => 'integer|exists:finance_group,id',
@@ -36,7 +42,26 @@ class Expenses extends Component
     public function mount(GroupModel $group)
     {
         $this->group = $group;
-        $this->expenses = $group->Expenses->load('Category')->toArray();
+        $this->expenses = array_values($group->Expenses->load('Category')->sortByDesc('date')->toArray());
+        $this->categories = $group->Categories->toArray();
+        $this->values = [
+            'finance_group_id' => $group->id,
+            'type' => Expense::$TYPES[0]
+        ];
+
+        $this->new = false;
+        $this->update = false;
+
+        $this->selected = '';
+    }
+
+    public function toggleCreate()
+    {
+        if( $this->new ) {
+            return $this->reloadVariables();
+        }
+
+        return $this->new = !$this->new;
     }
 
     /**
@@ -46,17 +71,48 @@ class Expenses extends Component
      *
      * @return mixed
      */
-    public function create(array $values)
+    public function create()
     {
-        $values = Validator::validate($values, $this->rules);
+        $values = Validator::validate($this->values, $this->rules);
 
         $expense = new Expense($values);
         $expense->save();
 
         $this->emit('createdExpense');
 
-        return $this->reloadExpenses();
+        $this->reloadVariables();
+
+        return $this->new = true;
     }
+
+    /**
+     * Prepare update
+     *
+     * @param int $id
+     *
+     * @return array
+     */
+    public function prepareUpdate(int $id)
+    {
+        $this->reloadVariables();
+
+        $this->update = true;
+        $this->selected = $id;
+        $expense = Expense::find($id);
+
+        $this->values = [
+            'date'                => $expense->date,
+            'name'                => $expense->name,
+            'amount'              => $expense->amount,
+            'type'                => $expense->type,
+            'notes'               => $expense->notes,
+            'finance_category_id' => $expense->finance_category_id,
+            'finance_group_id'    => $expense->finance_group_id,
+        ];
+
+        return $this->values;
+    }
+
 
     /**
      * Update a Expense
@@ -66,15 +122,21 @@ class Expenses extends Component
      *
      * @return mixed
      */
-    public function update(array $values, Expense $expense)
+    public function update()
     {
-        $values = Validator::validate($values, $this->rules);
+        $values = Validator::validate($this->values, $this->rules);
+        $expense = Expense::find($this->selected);
 
         $expense->update($values);
 
         $this->emit('updatedExpense');
 
         return $this->reloadExpenses();
+    }
+
+    public function cancelUpdate()
+    {
+        return $this->reloadVariables();
     }
 
     /**
@@ -98,9 +160,22 @@ class Expenses extends Component
      *
      * @return mixed
      */
-    public function reloadExpenses ()
+    public function reloadVariables ()
     {
-        return $this->expenses = $this->group->load('Expenses')->Expenses->toArray();
+        $this->expenses = array_values($this->group->load('Expenses')->Expenses->sortByDesc('date')->toArray());
+        $this->categories = $this->group->load('Categories')->Categories->toArray();
+
+        $this->selected = '';
+        $this->values = [
+            'finance_group_id' => $this->group->id,
+            'type' => Expense::$TYPES[0]
+        ];
+
+        $this->new = false;
+        $this->update = false;
+
+
+        return null;
     }
 
     /**
@@ -111,7 +186,10 @@ class Expenses extends Component
     public function render()
     {
         return view('livewire.finance.expenses', [
-            'expenses' => $this->expenses
+            'expenses' => $this->expenses,
+            'categories' => $this->categories,
+
+            'selectedExpense' => $this->selected !== '' ? Expense::findOrFail($this->selected)->toArray() : null,
         ]);
     }
 }
