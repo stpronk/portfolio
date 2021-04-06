@@ -18,6 +18,7 @@ class Expenses extends Component
     public $selected;
     public $new;
     public $update;
+    public $keep;
 
     protected $listeners = [
         'updatedCategory' => 'reloadVariables',
@@ -82,7 +83,10 @@ class Expenses extends Component
 
         $this->reloadVariables();
 
-        return $this->new = true;
+        if( $this->keep ) {
+            return $this->new = true;
+        }
+        return $this->new = false;
     }
 
     /**

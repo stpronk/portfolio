@@ -6,13 +6,14 @@
 @import "imports/fonts";
 @import "~font-awesome/scss/font-awesome";
 
+// Bootstrap
+@import '~bootstrap/scss/bootstrap';
+
 // Helpers
 @import "imports/helpers";
 @import "imports/backgrounds";
 @import "imports/tables";
-
-// Bootstrap
-@import '~bootstrap/scss/bootstrap';
+@import "imports/form";
 
 // Layouts
 @import 'layouts/app';

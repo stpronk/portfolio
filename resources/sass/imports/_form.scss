@@ -1,0 +1,46 @@
+@import "variables";
+
+.fancy-checkbox {
+  color: $dark;
+
+  .input-checkbox {
+    margin-top: 2px;
+    position: relative;
+    appearance: none;
+    outline: none;
+    width: 30px;
+    height: 15px;
+    border-radius: 20px;
+    background: $light;
+    box-shadow: none;
+    cursor: pointer;
+    overflow: hidden;
+    transition: 0.3s;
+
+    &:checked {
+      background: $primary;
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 1px;
+      left: 1px;
+      border-radius: inherit;
+      width: 13px;
+      height: 13px;
+      background: #9d9d9d;
+      transition: inherit;
+    }
+
+    &:checked::after {
+      left: calc(100% - 14px);
+      background: $light;
+    }
+  }
+
+  .input-label {
+    margin-left: 5px;
+    cursor: pointer;
+  }
+}
