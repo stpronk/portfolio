@@ -13,17 +13,10 @@
                 @endif
             </div>
         </div>
-        <div id="expenses-accordion" class="card-body mb-0 p-0 table-checkered">
 
-            {{-- New expense form --}}
-            @if($new)
-                @include('livewire.finance.components.expenses.create')
-            @endif
-
-            {{-- All expenses --}}
-            @include('livewire.finance.components.expenses.list', [
-                'expenses' => $expenses
-            ])
-        </div>
+        {{-- All expenses --}}
+        @include('livewire.finance.components.expenses.list', [
+            'expenses' => $expenses
+        ])
     </div>
 </div>
