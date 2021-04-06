@@ -29,3 +29,21 @@ $font-primary-bold: 'AvenirNextLTPro-Bold';
     font-family: $font-primary-bold;
   }
 }
+
+.text-size {
+  &__extra-small {
+    font-size: 10px;
+  }
+
+  &__small {
+    font-size: 12px;
+  }
+
+  &__normal {
+    font-size: 18px;
+  }
+
+  &__large {
+    font-size: 21px;
+  }
+}

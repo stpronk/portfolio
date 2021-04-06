@@ -1,121 +1,56 @@
 <div class="col-12 col-lg-9 mb-4 mb-lg-0">
-    <div class="card">
-        <div class="card-header">
+    <div class="card rounded-0 border-0">
+        <div class="card-header bg-light text-dark border-bottom border-primary rounded-0">
             Expenses
         </div>
-        <table class="card-body table mb-0">
-            <thead>
-                <tr>
-                    <th style="min-width: 150px">Date</th>
-                    <th style="min-width: 150px">Name</th>
-                    <th style="min-width: 150px">Amount</th>
-                    <th style="min-width: 150px">Type</th>
-                    <th style="min-width: 150px">Category</th>
-                    <th style="min-width: 120px">Notes</th>
-                    <th>Options</th>
-                </tr>
-            </thead>
-            <tbody>
-                @forelse( $expenses as $expense )
-                    <tr style="background-color: {{ $expense['category']['color'] ?? '' }}">
+        <div id="expenses-accordion" class="card-body mb-0 p-0 table-checkered">
+            @forelse( $expenses as $key => $expense )
+                <div class="table-checkered__row d-flex flex-row px-3 pt-2 pb-1"
+                     style="border-left: 7px solid {{ $expense['category'] ? $expense['category']['color'] : 'rgba(0,0,0,0)' }}"
+                     data-toggle="collapse" data-target="#expense-collapse-{{$key}}" aria-controls="expense-collapse-{{$key}}"
+                >
+                    <div class="flex-fill">
+                        <span class="d-block text-size__normal">{{ $expense['name'] }}</span>
+                        <span class="d-block text-size__extra-small">{{ $expense['category'] ? $expense['category']['name'] : '-' }}</span>
+                    </div>
+                    <div class="m-auto text-right">
+                        <span class="d-block text-size__normal {{ $expense['type'] === \App\Models\Finance\Expense::$TYPES[0] ? 'text-danger' : 'text-success' }}">{{ $expense['amount'] }}</span>
+                        <span class="d-block text-muted text-size__extra-small">{{ $expense['date'] }}</span>
+                    </div>
+                </div>
+                <div id="expense-collapse-{{$key}}" class="collapse table-checkered__collapse" data-parent="#expenses-accordion">
+                    <div class="d-flex flex-row w-100 justify-content-between pl-4 pr-2 py-2">
 
-                        @if($update && $selectedExpense['id'] === $expense['id'])
-                            <td>
-                                <input type="date" class="form-control" wire:model.defer="values.date" placeholder="date...">
-                            </td>
-                            <td>
-                                <input type="string" class="form-control" wire:model.defer="values.name" placeholder="name...">
-                            </td>
-                            <td>
-                                <input type="number" min="0" step="0.01" class="form-control" wire:model.defer="values.amount" placeholder="amount...">
-                            </td>
-                            <td>
-                                <select wire:model.defer="values.type" class="form-control">
-                                    @foreach (\App\Models\Finance\Expense::$TYPES as $type)
-                                        <option value="{{ $type }}">{{ ucfirst($type) }}</option>
-                                    @endforeach
-                                </select>
-                            </td>
-                            <td>
-                                <select class="form-control" wire:model.defer="values.finance_category_id">
-                                    <option value="" checked>None</option>
-                                    @foreach ($categories as $category)
-                                        <option value="{{ $category['id'] }}">{{ $category['name'] }}</option>
-                                    @endforeach
-                                </select>
-                            </td>
-                            <td>
-                                <input type="string" class="form-control" wire:model.defer="values.notes" placeholder="Note..">
-                            </td>
-                            <td class="text-right btn-group btn-group-sm">
-                                <button class="btn btn-danger btn-outline-light" wire:click="cancelUpdate()"><i class="fa fa-ban"></i></button>
-                                <button class="btn btn-success btn-outline-light" wire:click="update()"><i class="fa fa-floppy-o"></i></button>
-                            </td>
-                        @else
-                            <td>{{ $expense['date'] }}</td>
-                            <td>{{ $expense['name'] }}</td>
-                            <td>{{ $expense['amount'] }}</td>
-                            <td>{{ ucfirst($expense['type']) }}</td>
-                            <td>{{ $expense['category']['name'] ?? '-' }}</td>
-                            <td>{{ $expense['notes'] ?? '-' }}</td>
-                            <td class="btn-group btn-group-sm border-top-1">
-                                <button class="btn btn-primary btn-outline-light" wire:click="prepareUpdate({{ $expense['id'] }})"><i class="fa fa-pencil"></i></button>
-                                <button class="btn btn-danger btn-outline-light"><i class="fa fa-trash"></i></button>
-                            </td>
-                        @endif
+                        <div class="flex-fill d-flex flex-column w-100 text-size__small">
+                            <div class="d-flex flex-row w-100 pb-2 pr-1 justify-content-between">
+                                <span class="pr-4">Notes </span>
+                                <span>{{ $expense['notes'] ?? '-' }}</span>
+                            </div>
+                            <div class="d-flex flex-row w-100 justify-content-between">
+                                <span class="pr-4">Created at </span>
+                                <span>{{ \Carbon\Carbon::create($expense['created_at'])->format('Y-m-d H:i:s') }}</span>
+                            </div>
+                            <div class="d-flex flex-row w-1000 justify-content-between">
+                                <span class="pr-4">Updated at </span>
+                                <span>{{ \Carbon\Carbon::create($expense['updated_at'])->format('Y-m-d H:i:s') }}</span>
+                            </div>
+                        </div>
 
-                    </tr>
-                @empty
-                    <tr>
-                        <td class="text-center" colspan="6">There are no expenses yet!</td>
-                    </tr>
-                @endforelse
+                        <div class="d-flex flex-row justify-content-end pl-2 ml-4 border-left">
+                            <div class="btn-group btn-group-sm btn-group-vertical">
+                                <button class="btn btn-link" wire:click="prepareUpdate({{ $expense['id'] }})"><i class="fa fa-pencil"></i></button>
+                                <button class="btn btn-link"><i class="fa fa-trash"></i></button>
+                            </div>
+                        </div>
 
-                @if($new)
-                    <tr>
-                        <td>
-                            <input type="date" class="form-control" wire:model.defer="values.date" placeholder="date...">
-                        </td>
-                        <td>
-                            <input type="string" class="form-control" wire:model.defer="values.name" placeholder="name...">
-                        </td>
-                        <td>
-                            <input type="number" min="0" step="0.01" class="form-control" wire:model.defer="values.amount" placeholder="amount...">
-                        </td>
-                        <td>
-                            <select wire:model.defer="values.type" class="form-control">
-                                @foreach (\App\Models\Finance\Expense::$TYPES as $type)
-                                    <option value="{{ $type }}">{{ ucfirst($type) }}</option>
-                                @endforeach
-                            </select>
-                        </td>
-                        <td>
-                            <select class="form-control" wire:model.defer="values.finance_category_id">
-                                <option value="" checked>None</option>
-                                @foreach ($categories as $category)
-                                    <option value="{{ $category['id'] }}">{{ $category['name'] }}</option>
-                                @endforeach
-                            </select>
-                        </td>
-                        <td>
-                            <input type="string" class="form-control" wire:model.defer="values.notes" placeholder="Note..">
-                        </td>
-                        <td class="text-right">
-                            <button class="btn btn-success" wire:click="create()"><i class="fa fa-floppy-o"></i></button>
-                        </td>
-                    </tr>
-                @endif()
+                    </div>
 
-                <tr>
-                    <td colspan="7">
-                        @if($new)
-                            <button class="btn btn-danger" wire:click="toggleCreate()">Cancel <i class="fa fa-ban"></i></button>
-                        @else
-                            <button class="btn btn-success" wire:click="toggleCreate()">Add <i class="fa fa-plus"></i></button>
-                        @endif
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+                </div>
+            @empty
+                <div class="w-100 text-center text-size__large p-3">
+                    There are no expenses yet!
+                </div>
+            @endforelse
+        </div>
     </div>
 </div>

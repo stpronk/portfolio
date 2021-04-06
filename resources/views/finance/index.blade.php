@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="card">
-        <div class="card-header d-flex flex-row">
+    <div class="card rounded-0 border-0">
+        <div class="card-header d-flex flex-row bg-light text-dark border-bottom border-primary rounded-0">
             <div class="flex-fill">
                 Finance Groups
             </div>

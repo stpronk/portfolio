@@ -1,6 +1,6 @@
 <div class="col-12 col-lg-3">
-    <div class="card">
-        <div class="card-header d-flex">
+    <div class="card border-0 rounded-0">
+        <div class="card-header d-flex bg-light text-dark border-bottom border-primary rounded-0">
             <span class="flex-fill">Category</span>
             <div class="btn-group">
                 <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#new-category"><i class="fa fa-plus"></i></button>
