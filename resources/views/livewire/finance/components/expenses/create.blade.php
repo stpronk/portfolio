@@ -3,17 +3,17 @@
         <div class="d-flex flex-column w-100 px-2">
             <div class="form-group">
                 <label for="date" class="form-check-label">Date</label>
-                <input id="date" type="date" class="form-control" wire:model.defer="values.date" placeholder="date...">
+                <input id="date" type="date" class="form-control" wire:model.defer="values.date" placeholder="...">
             </div>
 
             <div class="form-group">
                 <label for="name" class="form-check-label">Name</label>
-                <input id="name" type="string" class="form-control" wire:model.defer="values.name" placeholder="name...">
+                <input id="name" type="string" class="form-control" wire:model.defer="values.name" placeholder="...">
             </div>
 
             <div class="form-group">
                 <label for="amount" class="form-check-label">Amount</label>
-                <input id="amount" type="number" min="0" step="0.01" class="form-control" wire:model.defer="values.amount" placeholder="amount...">
+                <input id="amount" type="number" min="0" step="0.01" class="form-control" wire:model.defer="values.amount" placeholder="...">
             </div>
         </div>
 
@@ -39,7 +39,7 @@
 
             <div class="form-group">
                 <label for="notes" class="form-check-label">Notes</label>
-                <input id="notes" type="string" class="form-control" wire:model.defer="values.notes" placeholder="Note..">
+                <input id="notes" type="string" class="form-control" wire:model.defer="values.notes" placeholder="...">
             </div>
         </div>
     </div>
