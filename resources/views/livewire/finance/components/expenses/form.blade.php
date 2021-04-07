@@ -2,9 +2,9 @@
     <div class="d-flex flex-column w-100 px-2">
         <div class="form-group">
             <label for="date" class="form-check-label">Date</label>
-            <input id="date" type="date" class="form-control @error('date') is-invalid @enderror" wire:model.defer="values.date" placeholder="...">
+            <input id="date" type="date" class="form-control @error('date') is-invalid @enderror" wire:model.defer="values.date" placeholder="..." autofocus>
             @error('date')
-            <span class="invalid-feedback">{{ $message }}</span>
+                <span class="invalid-feedback">{{ $message }}</span>
             @enderror
         </div>
 
