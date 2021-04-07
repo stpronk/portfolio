@@ -26,10 +26,10 @@ class Expenses extends Component
     ];
 
     public $rules = [
-        'name'                => 'string|max:255',
-        'type'                => 'string',
-        'amount'              => 'numeric',
-        'date'                => 'date',
+        'name'                => 'required|string|max:255',
+        'type'                => 'required|string',
+        'amount'              => 'required|numeric',
+        'date'                => 'required|date',
         'notes'               => 'string|max:255|nullable',
         'finance_group_id'    => 'integer|exists:finance_group,id',
         'finance_category_id' => 'integer|exists:finance_category,id|nullable',
