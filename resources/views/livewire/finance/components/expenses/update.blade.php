@@ -3,9 +3,7 @@
     @include('livewire.finance.components.expenses.form')
 
     <div class="d-flex px-2 justify-content-end">
-        <div class="btn-group btn-group">
-            <button class="btn btn-success" wire:click="update()"><i class="fa fa-floppy-o"></i></button>
-            <button class="btn btn-danger" wire:click="cancelUpdate()"><i class="fa fa-ban"></i></button>
-        </div>
+        <button class="btn btn-success mr-2" wire:click="update()"><i class="fa fa-floppy-o"></i></button>
+        <button class="btn btn-danger" wire:click="cancelUpdate()"><i class="fa fa-ban"></i></button>
     </div>
 </div>

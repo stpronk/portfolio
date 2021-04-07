@@ -13,7 +13,7 @@
 </div>
 <div id="expense-collapse-{{$key}}" class="collapse table-checkered__collapse{{ $selected === $expense['id'] ? ' show' : '' }}" data-parent="#expenses-accordion">
 
-    @if($selected === $expense['id'])
+    @if($selectedExpense['id'] ?? '' === $expense['id'])
         @include('livewire.finance.components.expenses.update')
     @else
         <div class="d-flex flex-row w-100 justify-content-between pl-4 pr-2 py-2">
@@ -39,7 +39,6 @@
                     <button class="btn btn-link"><i class="fa fa-trash"></i></button>
                 </div>
             </div>
-        @endif
-    </div>
-
+        </div>
+    @endif
 </div>
