@@ -13,7 +13,7 @@
 </div>
 <div id="expense-collapse-{{$key}}" class="collapse table-checkered__collapse{{ $selected === $expense['id'] ? ' show' : '' }}" data-parent="#expenses-accordion">
 
-    @if(( $selectedExpense['id'] ?? '' ) !== $expense['id'] && $update)
+    @if(( $selectedExpense['id'] ?? '' ) === $expense['id'] && $update)
         @include('livewire.finance.components.expenses.update')
     @else
         <div class="d-flex flex-row w-100 justify-content-between pl-4 pr-2 py-2">
@@ -33,11 +33,9 @@
                 </div>
             </div>
 
-            <div class="d-flex flex-row justify-content-end pl-2 ml-4 border-left">
-                <div class="btn-group btn-group-sm btn-group-vertical">
-                    <button class="btn btn-link" wire:click="prepareUpdate({{ $expense['id'] }})"><i class="fa fa-pencil"></i></button>
-                    <button class="btn btn-link" wire:click="prepareDelete({{ $expense['id'] }})"><i class="fa fa-trash"></i></button>
-                </div>
+            <div class="d-flex flex-column justify-content-end pl-2 ml-4 border-left">
+                <a class="btn btn-link" wire:click="prepareUpdate({{ $expense['id'] }})"><i class="fa fa-pencil"></i></a>
+                <a class="btn btn-link" wire:click="prepareDelete({{ $expense['id'] }})"><i class="fa fa-trash"></i></a>
             </div>
         </div>
     @endif

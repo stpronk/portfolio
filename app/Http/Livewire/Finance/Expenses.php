@@ -103,17 +103,8 @@ class Expenses extends Component
 
         $this->update = true;
         $this->selected = $id;
-        $expense = Expense::find($id);
 
-        $this->values = [
-            'date'                => $expense->rawData['date'],
-            'name'                => $expense->name,
-            'amount'              => $expense->rawData['amount'],
-            'type'                => $expense->type,
-            'notes'               => $expense->notes,
-            'finance_category_id' => $expense->finance_category_id,
-            'finance_group_id'    => $expense->finance_group_id,
-        ];
+        $this->fillValues($id);
 
         return $this->values;
     }
@@ -155,17 +146,8 @@ class Expenses extends Component
 
         $this->delete = true;
         $this->selected = $id;
-        $expense = Expense::find($id);
 
-        $this->values = [
-            'date'                => $expense->rawData['date'],
-            'name'                => $expense->name,
-            'amount'              => $expense->rawData['amount'],
-            'type'                => $expense->type,
-            'notes'               => $expense->notes,
-            'finance_category_id' => $expense->finance_category_id,
-            'finance_group_id'    => $expense->finance_group_id,
-        ];
+        $this->fillValues($id);
 
         return $this->values;
     }
@@ -216,6 +198,27 @@ class Expenses extends Component
         $this->delete = false;
 
         return null;
+    }
+
+    /**
+     * Fill values as an helper function
+     *
+     * @param int $expenseId
+     *
+     * @return array
+     */
+    protected function fillValues(int $expenseId) {
+        $expense = Expense::find($expenseId);
+
+        return $this->values = [
+            'date'                => $expense->rawData['date'],
+            'name'                => $expense->name,
+            'amount'              => $expense->rawData['amount'],
+            'type'                => $expense->type,
+            'notes'               => $expense->notes,
+            'finance_category_id' => $expense->finance_category_id,
+            'finance_group_id'    => $expense->finance_group_id,
+        ];
     }
 
     /**
