@@ -30,7 +30,7 @@ class Expenses extends Component
         'type'                => 'string',
         'amount'              => 'numeric',
         'date'                => 'date',
-        'notes'               => 'string|max:255',
+        'notes'               => 'string|max:255|nullable',
         'finance_group_id'    => 'integer|exists:finance_group,id',
         'finance_category_id' => 'integer|exists:finance_category,id|nullable',
     ];
@@ -135,7 +135,7 @@ class Expenses extends Component
 
         $this->emit('updatedExpense');
 
-        return $this->reloadExpenses();
+        return $this->reloadVariables();
     }
 
     public function cancelUpdate()
@@ -156,7 +156,7 @@ class Expenses extends Component
 
         $this->emit('deletedExpense');
 
-        return $this->reloadExpenses();
+        return $this->reloadVariables();
     }
 
     /**
@@ -177,7 +177,6 @@ class Expenses extends Component
 
         $this->new = false;
         $this->update = false;
-
 
         return null;
     }

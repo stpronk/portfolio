@@ -8,7 +8,7 @@
 
             <div class="form-group">
                 <label for="name" class="form-check-label">Name</label>
-                <input id="name" type="string" class="form-control" wire:model.defer="values.name" placeholder="...">
+                <input id="name" type="text" class="form-control" wire:model.defer="values.name" placeholder="...">
             </div>
 
             <div class="form-group">
@@ -39,7 +39,7 @@
 
             <div class="form-group">
                 <label for="notes" class="form-check-label">Notes</label>
-                <input id="notes" type="string" class="form-control" wire:model.defer="values.notes" placeholder="...">
+                <input id="notes" type="text" class="form-control" wire:model.defer="values.notes" placeholder="...">
             </div>
         </div>
     </div>
