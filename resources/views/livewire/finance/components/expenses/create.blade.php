@@ -10,8 +10,8 @@
             </label>
         </div>
         <div class="btn-group btn-group">
-            <button class="btn btn-success" wire:click="create()"><i class="fa fa-floppy-o"></i></button>
-            <button class="btn btn-danger" wire:click="toggleCreate()"><i class="fa fa-ban"></i></button>
+            <button class="btn btn-link" wire:click="create()"><i class="fa fa-floppy-o"></i></button>
+            <button class="btn btn-link" wire:click="toggleCreate()"><i class="fa fa-ban"></i></button>
         </div>
     </div>
 </div>
