@@ -18,6 +18,7 @@ class Expenses extends Component
     public $selected;
     public $new;
     public $update;
+    public $delete;
     public $keep;
 
     protected $listeners = [
@@ -138,9 +139,35 @@ class Expenses extends Component
         return $this->reloadVariables();
     }
 
+    /**
+     * Cancel the update of an expense
+     */
     public function cancelUpdate()
     {
         return $this->reloadVariables();
+    }
+
+    /**
+     * Prepare Delete
+     */
+    public function prepareDelete(int $id) {
+        $this->reloadVariables();
+
+        $this->delete = true;
+        $this->selected = $id;
+        $expense = Expense::find($id);
+
+        $this->values = [
+            'date'                => $expense->rawData['date'],
+            'name'                => $expense->name,
+            'amount'              => $expense->rawData['amount'],
+            'type'                => $expense->type,
+            'notes'               => $expense->notes,
+            'finance_category_id' => $expense->finance_category_id,
+            'finance_group_id'    => $expense->finance_group_id,
+        ];
+
+        return $this->values;
     }
 
     /**
@@ -151,12 +178,21 @@ class Expenses extends Component
      * @return mixed
      * @throws \Exception
      */
-    public function delete(Expense $expense) {
+    public function delete() {
+        $expense = Expense::find($this->selected);
         $expense->delete();
 
         $this->emit('deletedExpense');
 
         return $this->reloadVariables();
+    }
+
+    /**
+     * Cancel the delete
+     */
+    public function cancelDelete ()
+    {
+        $this->reloadVariables();
     }
 
     /**
@@ -177,6 +213,7 @@ class Expenses extends Component
 
         $this->new = false;
         $this->update = false;
+        $this->delete = false;
 
         return null;
     }
