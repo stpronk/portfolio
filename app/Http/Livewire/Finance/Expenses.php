@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Finance;
 
 use App\Models\Finance\Expense;
 use App\Models\Finance\Group as GroupModel;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
 use Livewire\Component;
 
@@ -47,6 +48,7 @@ class Expenses extends Component
         $this->expenses = array_values($group->Expenses->load('Category')->sortByDesc('date')->toArray());
         $this->categories = $group->Categories->toArray();
         $this->values = [
+            'date' => Carbon::now()->format('Y-m-d'),
             'finance_group_id' => $group->id,
             'type' => Expense::$TYPES[0]
         ];
@@ -85,6 +87,9 @@ class Expenses extends Component
         $this->reloadVariables();
 
         if( $this->keep ) {
+            $this->values['date'] = $values['date'];
+            $this->values['finance_category_id'] = $values['finance_category_id'];
+
             return $this->new = true;
         }
         return $this->new = false;
@@ -189,6 +194,7 @@ class Expenses extends Component
 
         $this->selected = '';
         $this->values = [
+            'date' => Carbon::now()->format('Y-m-d'),
             'finance_group_id' => $this->group->id,
             'type' => Expense::$TYPES[0]
         ];
