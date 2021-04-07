@@ -105,9 +105,9 @@ class Expenses extends Component
         $expense = Expense::find($id);
 
         $this->values = [
-            'date'                => $expense->date,
+            'date'                => $expense->rawData['date'],
             'name'                => $expense->name,
-            'amount'              => $expense->amount,
+            'amount'              => $expense->rawData['amount'],
             'type'                => $expense->type,
             'notes'               => $expense->notes,
             'finance_category_id' => $expense->finance_category_id,

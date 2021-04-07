@@ -17,6 +17,8 @@ class Expense extends Model
 
     protected $with = ['Category'];
 
+    protected $appends = ['rawData'];
+
     static public $EXPENSE = 0;
     static public $INCOME = 1;
 
@@ -27,14 +29,25 @@ class Expense extends Model
 
     protected $casts = [
         'finance_category_id' => 'integer',
-        'finance_group_id' => 'integer',
-        'amount' => Amount::class,
-        'type' => ExpenseType::class,
-        'date' => 'date:d/m/Y',
-        'created_at' => 'datetime:Y-m-d H:i:s',
-        'updated_at' => 'datetime:Y-m-d H:i:s',
-        'deleted_at' => 'datetime:Y-m-d H:i:s'
+        'finance_group_id'    => 'integer',
+        'amount'              => Amount::class,
+        'type'                => ExpenseType::class,
+        'date'                => 'date:d/m/Y',
+        'created_at'          => 'datetime:Y-m-d H:i:s',
+        'updated_at'          => 'datetime:Y-m-d H:i:s',
+        'deleted_at'          => 'datetime:Y-m-d H:i:s',
+        'rawData'             => 'array',
     ];
+
+    /**
+     * CASTS
+     */
+    public function getRawDataAttribute () {
+        return [
+            'amount' => ($this->getRawOriginal('amount') / 100),
+            'date'   => $this->getRawOriginal('date')
+        ];
+    }
 
     /**
      * RELATIONS
