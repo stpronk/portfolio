@@ -44,3 +44,12 @@
     cursor: pointer;
   }
 }
+
+.form-group {
+  & .invalid-feedback {
+    display: block;
+    height: 0;
+    color: $danger;
+    font-size: 10px;
+  }
+}
