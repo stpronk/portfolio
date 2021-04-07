@@ -18,7 +18,12 @@
 
         <div class="form-group">
             <label for="amount" class="form-check-label">Amount</label>
-            <input id="amount" type="number" min="0" step="0.01" class="form-control @error('amount') is-invalid @enderror" wire:model.defer="values.amount" placeholder="...">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">€</span>
+                </div>
+                <input id="amount" type="number" min="0" step="0.01" class="form-control @error('amount') is-invalid @enderror" wire:model.defer="values.amount" placeholder="...">
+            </div>
             @error('amount')
             <span class="invalid-feedback">{{ $message }}</span>
             @enderror
