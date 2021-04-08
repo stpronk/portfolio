@@ -240,11 +240,19 @@ class Expenses extends Component
      */
     protected function loadExpenses ()
     {
-        return $this->expenses = $this->group->Expenses->load('Category')
+        $search = $this->search;
+        // TODO: this query doesn't work for some reason. it should work but the like functionality doesn't work for some reason and i'm not sure why :thinking_face:
+        // 'expenses.name' seem to work but search higher up does now work
+        // ->where('name', 'LIKE', $search)
+
+
+        return $this->expenses = $this->group->Expenses
+            ->load('Category')
             ->sortByDesc('date')
             ->groupBy(function ($val) {
                 return ['key' => Carbon::parse($val->date)->format('Y-m')];
-            })->toArray();
+            })
+            ->toArray();
     }
 
     /**
