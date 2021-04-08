@@ -16,8 +16,7 @@
 
         {{-- All expenses --}}
         @include('livewire.finance.components.expenses.list', [
-            'expenses' => $expenses,
-            'selected' => $selected
+            'expenses' => $expenses
         ])
     </div>
 
