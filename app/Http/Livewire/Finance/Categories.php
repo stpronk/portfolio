@@ -28,7 +28,7 @@ class Categories extends Component
     /**
      * @var boolean
      */
-    public $settings;
+    public $new;
     public $update;
     public $delete;
 
@@ -39,6 +39,7 @@ class Categories extends Component
 
     protected $listeners = [
         'createdExpense' => 'reloadVariables',
+        'updatedExpense' => 'reloadVariables',
         'deletedExpense' => 'reloadVariables'
     ];
 
@@ -74,27 +75,23 @@ class Categories extends Component
     }
 
     /**
-     * Create a new instance in the front-end
-     *
-     * @return array
-     */
-    public function new()
-    {
-        return $this->values = [
-            'name'             => '',
-            'color'            => '',
-            'finance_group_id' => $this->group->id,
-        ];
-    }
-
-    /**
      * toggle settings variable
      *
      * @return bool
      */
-    public function toggleSettings()
+    public function toggleCreate()
     {
-        return $this->settings = !$this->settings;
+        // Reset values when cancels
+        if( $this->new ) {
+            return $this->reloadVariables();
+        }
+
+        // Set selected on null
+        if ($this->selected !== '') {
+            $this->selected = '';
+        }
+
+        return $this->new = !$this->new;
     }
 
     /**
@@ -222,13 +219,9 @@ class Categories extends Component
         $this->values = [];
         $this->selected = '';
 
-        if($this->update === true) {
-            $this->update = false;
-        }
-
-        if($this->delete === true) {
-            $this->delete = false;
-        }
+        $this->new    = false;
+        $this->update = false;
+        $this->delete = false;
 
         return $this->categories = $this->group->load('Categories')->Categories->toArray();
     }
@@ -244,7 +237,6 @@ class Categories extends Component
             'categories' => $this->categories,
             'selectedCategory' => $this->selected !== '' ? Category::findOrFail($this->selected)->toArray() : null,
 
-            'settings' => $this->settings,
             'values' => $this->values
         ]);
     }
