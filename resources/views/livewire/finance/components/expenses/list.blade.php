@@ -4,19 +4,8 @@
         @include('livewire.finance.components.expenses.create')
     @endif
 
-{{--    TODO: Should be kept for the time being --}}
-{{--    @forelse( $expenses as $key => $expense )--}}
-{{--       @include('livewire.finance.components.expenses.list-item', [--}}
-{{--           'key'     => $key,--}}
-{{--           'expense' => $expense--}}
-{{--       ])--}}
-{{--    @empty--}}
-{{--        <div class="w-100 text-center text-size__large p-3">--}}
-{{--            There are no expenses yet!--}}
-{{--        </div>--}}
-{{--    @endforelse--}}
-
-    @forelse( $expensesByMonth as $date => $expenses )
+    {{-- Load the expenses in a monthly fashion --}}
+    @forelse( $expenses as $date => $monthlyExpenses )
         @if(!$loop->first)
             <div class="spacer mt-3"></div>
         @endif
@@ -28,7 +17,7 @@
         </div>
 
         <div class="table-checkered">
-            @foreach($expenses as $key => $expense)
+            @foreach($monthlyExpenses as $key => $expense)
                 @include('livewire.finance.components.expenses.list-item', [
                     'key'     => $date.$key,
                     'expense' => $expense

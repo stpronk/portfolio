@@ -45,7 +45,7 @@ class Expenses extends Component
     public function mount(GroupModel $group)
     {
         $this->group = $group;
-        $this->expenses = array_values($group->Expenses->load('Category')->sortByDesc('date')->toArray());
+        $this->expenses = $this->loadExpenses();
         $this->categories = $group->Categories->toArray();
         $this->values = [
             'date' => Carbon::now()->format('Y-m-d'),
@@ -234,6 +234,20 @@ class Expenses extends Component
     }
 
     /**
+     * Load the expenses
+     *
+     * @return mixed
+     */
+    protected function loadExpenses ()
+    {
+        return $this->expenses = $this->group->Expenses->load('Category')
+            ->sortByDesc('date')
+            ->groupBy(function ($val) {
+                return ['key' => Carbon::parse($val->date)->format('Y-m')];
+            })->toArray();
+    }
+
+    /**
      * Render the component
      *
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
@@ -243,12 +257,6 @@ class Expenses extends Component
         return view('livewire.finance.expenses', [
             'expenses' => $this->expenses,
             'categories' => $this->categories,
-            'expensesByMonth' =>
-                $this->group->Expenses->load('Category')
-                    ->sortByDesc('date')
-                    ->groupBy(function ($val) {
-                        return ['key' => Carbon::parse($val->date)->format('Y-m')];
-                    })->toArray(),
 
             'selectedExpense' => $this->selected !== '' ? Expense::findOrFail($this->selected)->toArray() : null,
         ]);
