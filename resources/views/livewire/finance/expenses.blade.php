@@ -1,3 +1,5 @@
+{{--@dd($expensesByMonth)--}}
+
 <div class="col-12 col-lg-9 mb-4 mb-lg-0">
     <div class="card rounded-0 border-0">
         <div class="card-header d-flex bg-light text-dark border-bottom border-primary rounded-0">

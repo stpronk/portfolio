@@ -243,6 +243,12 @@ class Expenses extends Component
         return view('livewire.finance.expenses', [
             'expenses' => $this->expenses,
             'categories' => $this->categories,
+            'expensesByMonth' =>
+                $this->group->Expenses->load('Category')
+                    ->sortByDesc('date')
+                    ->groupBy(function ($val) {
+                        return ['key' => Carbon::parse($val->date)->format('Y-m')];
+                    })->toArray(),
 
             'selectedExpense' => $this->selected !== '' ? Expense::findOrFail($this->selected)->toArray() : null,
         ]);
