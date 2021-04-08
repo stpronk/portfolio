@@ -27,7 +27,7 @@
                     <span class="pr-4">Created at </span>
                     <span>{{ \Carbon\Carbon::create($expense['created_at'])->format('Y-m-d H:i:s') }}</span>
                 </div>
-                <div class="d-flex flex-row w-1000 justify-content-between">
+                <div class="d-flex flex-row w-100 justify-content-between">
                     <span class="pr-4">Updated at </span>
                     <span>{{ \Carbon\Carbon::create($expense['updated_at'])->format('Y-m-d H:i:s') }}</span>
                 </div>
