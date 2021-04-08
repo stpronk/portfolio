@@ -239,6 +239,8 @@ class Expenses extends Component
 
 
         return $this->expenses = $this->group->Expenses
+            // TODO: This where in solution does work but is inefficient, should find a other solution
+            ->whereIn('id', Expense::where('name', 'like', '%'.$search.'%')->pluck('id'))
             ->load('Category')
             ->sortByDesc('date')
             ->groupBy(function ($val) {
