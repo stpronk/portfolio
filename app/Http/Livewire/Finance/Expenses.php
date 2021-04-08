@@ -21,6 +21,7 @@ class Expenses extends Component
     public $update;
     public $delete;
     public $keep;
+    public $search = '';
 
     protected $listeners = [
         'updatedCategory' => 'reloadVariables',
@@ -45,16 +46,7 @@ class Expenses extends Component
     public function mount(GroupModel $group)
     {
         $this->group = $group;
-        $this->expenses = $this->loadExpenses();
-        $this->categories = $group->Categories->toArray();
-        $this->values = [
-            'date' => Carbon::now()->format('Y-m-d'),
-            'finance_group_id' => $group->id,
-            'type' => Expense::$TYPES[0]
-        ];
-
-        $this->new = false;
-        $this->update = false;
+        $this->reloadVariables();
 
         $this->selected = '';
     }
@@ -195,7 +187,7 @@ class Expenses extends Component
      */
     public function reloadVariables ()
     {
-        $this->expenses = array_values($this->group->load('Expenses')->Expenses->sortByDesc('date')->toArray());
+        $this->expenses = $this->loadExpenses();
         $this->categories = $this->group->load('Categories')->Categories->toArray();
 
         $this->selected = '';
@@ -263,7 +255,7 @@ class Expenses extends Component
     public function render()
     {
         return view('livewire.finance.expenses', [
-            'expenses' => $this->expenses,
+            'expenses' => $this->loadExpenses(),
             'categories' => $this->categories,
 
             'selectedExpense' => $this->selected !== '' ? Expense::findOrFail($this->selected)->toArray() : null,

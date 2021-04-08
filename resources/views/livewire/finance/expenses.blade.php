@@ -7,7 +7,11 @@
                 Expenses
             </span>
 
-            <div class="btn-wrapper">
+            <div class="search mr-3">
+                <input class="form-control" wire:model.debounse.500ms="search" placeholder="Enter to search...">
+            </div>
+
+            <div class="btn-wrapper m-auto">
                 @if(!$new)
                     <button class="btn btn-link btn-sm" wire:click="toggleCreate()"><i class="fa fa-plus m-auto"></i></button>
                 @else
