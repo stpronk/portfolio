@@ -61,8 +61,14 @@ class Expenses extends Component
 
     public function toggleCreate()
     {
+        // Reset values when cancels
         if( $this->new ) {
             return $this->reloadVariables();
+        }
+
+        // Set selected on null
+        if ($this->selected !== '') {
+            $this->selected = '';
         }
 
         return $this->new = !$this->new;
