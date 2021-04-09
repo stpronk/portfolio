@@ -233,14 +233,14 @@ class Expenses extends Component
     protected function loadExpenses ()
     {
         $search = $this->search;
-        // TODO: this query doesn't work for some reason. it should work but the like functionality doesn't work for some reason and i'm not sure why :thinking_face:
-        // 'expenses.name' seem to work but search higher up does now work
-        // ->where('name', 'LIKE', $search)
 
-
-        return $this->expenses = $this->group->Expenses
-            // TODO: This where in solution does work but is inefficient, should find a other solution
-            ->whereIn('id', Expense::where('name', 'like', '%'.$search.'%')->pluck('id'))
+        return $this->expenses = $this->group
+            ->load(['Expenses' => function ($q) use ($search) {
+                $q->join('finance_category', 'finance_expense.finance_category_id', '=', 'finance_category.id')
+                  ->where('finance_expense.name', 'like', "%{$search}%")
+                  ->orWhere('notes', 'like', "%{$search}%")
+                  ->orWhere('finance_category.name', 'like', "%{$search}%");
+            }])->Expenses
             ->load('Category')
             ->sortByDesc('date')
             ->groupBy(function ($val) {
