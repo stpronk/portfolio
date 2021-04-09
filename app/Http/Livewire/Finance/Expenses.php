@@ -237,9 +237,10 @@ class Expenses extends Component
         return $this->expenses = $this->group
             ->load(['Expenses' => function ($q) use ($search) {
                 $q->join('finance_category', 'finance_expense.finance_category_id', '=', 'finance_category.id')
-                  ->where('finance_expense.name', 'like', "%{$search}%")
-                  ->orWhere('notes', 'like', "%{$search}%")
-                  ->orWhere('finance_category.name', 'like', "%{$search}%");
+                    ->where('finance_expense.name', 'like', "%{$search}%")
+                    ->orWhere('finance_expense.notes', 'like', "%{$search}%")
+                    ->orWhere('finance_category.name', 'like', "%{$search}%")
+                    ->select('finance_expense.*');
             }])->Expenses
             ->load('Category')
             ->sortByDesc('date')
