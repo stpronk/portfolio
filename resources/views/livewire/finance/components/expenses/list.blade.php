@@ -27,7 +27,7 @@
 
     @empty
         <div class="w-100 text-center text-size__large p-3">
-            There are no expenses yet!
+            There are no expenses found!
         </div>
     @endforelse
 </div>
