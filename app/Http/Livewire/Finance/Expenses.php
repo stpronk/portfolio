@@ -38,6 +38,10 @@ class Expenses extends Component
         'finance_category_id' => 'integer|exists:finance_category,id|nullable',
     ];
 
+    public $queryString = [
+        'search'
+    ];
+
     /**
      * Mount the component
      *
