@@ -239,19 +239,24 @@ class Expenses extends Component
         $search = $this->search;
 
         return $this->expenses = $this->group
+            // Load the correct Expenses from the group
             ->load(['Expenses' => function ($q) use ($search) {
                 $q->join('finance_category', 'finance_expense.finance_category_id', '=', 'finance_category.id')
                     ->where('finance_expense.name', 'like', "%{$search}%")
                     ->orWhere('finance_expense.notes', 'like', "%{$search}%")
                     ->orWhere('finance_category.name', 'like', "%{$search}%")
                     ->select('finance_expense.*');
-            }])->Expenses
+            }])
+
+            // Go further with the Expenses & load the categories
+            ->Expenses
             ->load('Category')
+
+            // Sort and group the expenses by date
             ->sortByDesc('date')
-            ->groupBy(function ($val) {
-                return ['key' => Carbon::parse($val->date)->format('Y-m')];
-            })
-            ->toArray();
+            ->groupBy(function ($expense) {
+                return Carbon::parse($expense->date)->format('Y-m');
+            })->toArray();
     }
 
     /**
