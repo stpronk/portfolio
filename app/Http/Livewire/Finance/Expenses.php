@@ -24,6 +24,7 @@ class Expenses extends Component
     public $search = '';
 
     protected $listeners = [
+        'createdCategory' => 'reloadVariables',
         'updatedCategory' => 'reloadVariables',
         'deletedCategory' => 'reloadVariables'
     ];
