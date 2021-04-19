@@ -60,7 +60,6 @@ return [
         'admin'    => true,
         'hide-sub-menu' => true,
         'sub-menu' => [
-
             [
                 'title' => 'Analytics',
                 'icon' => 'tachometer-alt',
