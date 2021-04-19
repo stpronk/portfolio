@@ -9,10 +9,18 @@ class Navigation {
 
     public $navigation;
 
+    /**
+     * Navigation constructor.
+     */
     public function __construct () {
         $this->navigation = require resource_path('variables/navigation.php');
     }
 
+    /**
+     * generate the General side menu
+     *
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
     public function generateMenu () {
         $navigation = Arr::where($this->navigation, function ($item, $key) {
             if ($item['admin']) {
@@ -32,7 +40,11 @@ class Navigation {
     }
 
     /**
+     * Generate the top menu
+     *
      * @throws \Exception
+     *
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|string
      */
     public function generateTopMenu () {
         $item = Arr::where($this->navigation, function ($item, $key) {
@@ -60,6 +72,11 @@ class Navigation {
         ]);
     }
 
+    /**
+     * Generate the Admin menu
+     *
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
     public function generateAdminMenu () {
         $navigation = Arr::where($this->navigation, function ($item, $key) {
             if (!$item['admin']) {
