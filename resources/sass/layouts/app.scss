@@ -42,3 +42,9 @@ body {
   font-size: 16px;
   border-width: 2px !important;
 }
+
+// TODO: Change the way the active state loads in
+.top--active {
+  border-bottom: 0.25rem solid $dark;
+  padding-bottom: 0.25rem !important;
+}
