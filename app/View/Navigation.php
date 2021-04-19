@@ -40,6 +40,25 @@ class Navigation {
     }
 
     /**
+     * Generate the Admin menu
+     *
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
+    public function generateAdminMenu () {
+        $navigation = Arr::where($this->navigation, function ($item, $key) {
+            if (!$item['admin']) {
+                return false;
+            }
+
+            return true;
+        });
+
+        return view('layouts.components.navigation.side.general', [
+            'navigation' => $navigation
+        ]);
+    }
+
+    /**
      * Generate the top menu
      *
      * @throws \Exception
@@ -69,25 +88,6 @@ class Navigation {
 
         return view('layouts.components.navigation.top.general', [
             'navigation' => Arr::first($item)['sub-menu']
-        ]);
-    }
-
-    /**
-     * Generate the Admin menu
-     *
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
-     */
-    public function generateAdminMenu () {
-        $navigation = Arr::where($this->navigation, function ($item, $key) {
-            if (!$item['admin']) {
-                return false;
-            }
-
-            return true;
-        });
-
-        return view('layouts.components.navigation.side.general', [
-            'navigation' => $navigation
         ]);
     }
 }
