@@ -25,6 +25,7 @@
         "vue-template-compiler": "^2.6.11"
     },
     "dependencies": {
+        "googleapis": "^71.0.0",
         "uuid": "^7.0.2"
     }
 }

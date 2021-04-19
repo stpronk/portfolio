@@ -65,6 +65,14 @@ Route::group([
         'middleware' => ['isAdmin']
     ], function () {
         Route::get('/users', 'UserController@index')->name('users.index');
-        Route::get('/site', 'SiteController@index')->name('site.index');
+
+        Route::group([
+            'prefix' => 'site',
+            'namespace' => 'Site'
+        ], function () {
+            Route::get('/', 'SiteController@index')->name('site.index');
+            Route::get('/portfolio', 'SiteController@portfolio')->name('site.portfolio');
+            Route::get('/analytics', 'SiteController@analytics')->name('site.analytics');
+        });
     });
 });

@@ -58,6 +58,23 @@ return [
         'route'    => route('site.index'),
         'auth'     => true,
         'admin'    => true,
-        'sub-menu' => null,
+        'hide-sub-menu' => true,
+        'sub-menu' => [
+
+            [
+                'title' => 'Analytics',
+                'icon' => 'tachometer-alt',
+                'route' => route('site.analytics'),
+                'auth' => true,
+                'admin' => true
+            ],
+            [
+                'title' => 'Portfolio',
+                'icon'  => 'briefcase',
+                'route' => route('site.portfolio'),
+                'auth'  => true,
+                'admin' => true,
+            ],
+        ],
     ]
 ];
