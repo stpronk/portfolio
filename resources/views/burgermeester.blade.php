@@ -84,6 +84,9 @@
     <div class="stem-container">
         <form class="form">
             <label class="stem-item">
+                <input type="radio" name="kandidaat" value="Lisa" class="input"/>Ramon
+            </label>
+            <label class="stem-item">
                 <input type="radio" name="kandidaat" value="Steve" class="input"/>Steve
             </label>
             <label class="stem-item">
