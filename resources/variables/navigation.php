@@ -4,7 +4,7 @@ return [
     'Dashboard' => [
         'title'    => 'Dashboard',
         'icon'     => 'th',
-        'route'    => route('home'),
+        'route'    => 'home',
         'auth'     => true,
         'admin'    => false,
         'sub-menu' => null,
@@ -12,21 +12,21 @@ return [
     'Assignments' => [
         'title' => 'Assignments',
         'icon' => 'files-o',
-        'route' => route('assignments'),
+        'route' => 'assignments',
         'auth' => false,
         'admin' => false,
         'sub-menu' => [
             [
                 'title' => 'Dealer',
                 'icon'  => 'car',
-                'route' => route('assignment.dealer'),
+                'route' => 'assignment.dealer',
                 'auth'  => false,
                 'admin' => false,
             ],
             [
                 'title' => 'Event planner',
                 'icon'  => 'calendar',
-                'route' => route('assignment.event-planner'),
+                'route' => 'assignment.event-planner',
                 'auth'  => false,
                 'admin' => false
             ]
@@ -35,7 +35,7 @@ return [
     'Finance'   => [
         'title'    => 'Finance',
         'icon'     => 'money',
-        'route'    => route('finance.index'),
+        'route'    => 'finance.index',
         'auth'     => true,
         'admin'    => false,
         'sub-menu' => null
@@ -47,7 +47,7 @@ return [
     'Users' => [
         'title'    => 'Users',
         'icon'     => 'users',
-        'route'    => route('users.index'),
+        'route'    => 'users.index',
         'auth'     => true,
         'admin'    => true,
         'sub-menu' => null,
@@ -55,7 +55,7 @@ return [
     'Site'  => [
         'title'    => 'Site',
         'icon'     => 'globe',
-        'route'    => route('site.index'),
+        'route'    => 'site.index',
         'auth'     => true,
         'admin'    => true,
         'hide-sub-menu' => true,
@@ -63,14 +63,14 @@ return [
             [
                 'title' => 'Analytics',
                 'icon' => 'tachometer-alt',
-                'route' => route('site.analytics'),
+                'route' => 'site.analytics',
                 'auth' => true,
                 'admin' => true
             ],
             [
                 'title' => 'Portfolio',
                 'icon'  => 'briefcase',
-                'route' => route('site.portfolio'),
+                'route' => 'site.portfolio',
                 'auth'  => true,
                 'admin' => true,
             ],

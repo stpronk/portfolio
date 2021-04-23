@@ -38,7 +38,7 @@
                 </div>
                 {{-- End --- Profile section --}}
 
-                {{ Navigation()->generateMenu() }}
+                {{ \Stpronk\View\Facades\Navigation::generateMenu() }}
 
                 {{-- Login/Logout section --}}
                 @guest
@@ -54,7 +54,7 @@
                                 Admin Area
                             </span>
 
-                            {{ Navigation()->generateAdminMenu()  }}
+                            {{ \Stpronk\View\Facades\Navigation::generateAdminMenu()  }}
                         </div>
                     @endif
                     {{-- End --- Admin nav --}}
@@ -75,7 +75,7 @@
 
         <div class="flex-fill d-flex flex-column">
             {{-- Top navigation --}}
-                {{ Navigation()->generateTopMenu()  }}
+                {{ \Stpronk\View\Facades\Navigation::generateTopMenu()  }}
             {{-- End --- Top navigation --}}
 
             {{-- Extension top navigation for assignment --}}

@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Services\Finance;
 use Illuminate\Support\ServiceProvider;
+use Stpronk\View\Facades\Navigation;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -24,6 +25,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        // TODO: this should not just include the array
+        Navigation::addToNav(require resource_path('variables/navigation.php'));
+
         $this->app->bind('Finance', Finance::class);
     }
 }

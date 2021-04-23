@@ -28,7 +28,7 @@
   "extra": {
     "laravel": {
       "providers" : [
-        "Stpronk\\View\\Providers\\ViewServiceProvider"
+        "Stpronk\\View\\Providers\\ViewServiceProvider",
       ]
     }
   },

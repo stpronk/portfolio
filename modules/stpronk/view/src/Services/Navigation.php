@@ -1,6 +1,6 @@
 <?php
 
-namespace App\View;
+namespace Stpronk\View\Services;
 
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
@@ -8,15 +8,21 @@ use Illuminate\Support\Str;
 
 class Navigation {
 
-    public $navigation;
+    public $navigation = [];
+
+    // TODO This compile system thingy should be changed to it will generate without a if statement
+    public $compiled = false;
 
     /**
      * Navigation constructor.
      */
     public function __construct () {
-        $this->navigation = require resource_path('variables/navigation.php');
+//        $this->navigation = require resource_path('variables/navigation.php');
+    }
 
-        $this->initCompiler();
+    //TODO: Should be changed so it can add items form anywhere in the application
+    public function addToNav ($array) {
+        $this->navigation = $array;
     }
 
     /**
@@ -25,6 +31,10 @@ class Navigation {
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function generateMenu () {
+        if(!$this->compiled) {
+            $this->initCompiler();
+        }
+
         $navigation = Arr::where($this->navigation, function ($item, $key) {
             if ($item['admin']) {
                 return false;
@@ -48,6 +58,10 @@ class Navigation {
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function generateAdminMenu () {
+        if(!$this->compiled) {
+            $this->initCompiler();
+        }
+
         $navigation = Arr::where($this->navigation, function ($item, $key) {
             if (!$item['admin']) {
                 return false;
@@ -69,6 +83,10 @@ class Navigation {
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|string
      */
     public function generateTopMenu () {
+        if(!$this->compiled) {
+            $this->initCompiler();
+        }
+
         $item = Arr::where($this->navigation, function ($item, $key) {
             if ( ! Str::contains( url()->current(), $item['route']) ) {
                 return false;
@@ -105,6 +123,7 @@ class Navigation {
             return [$key => $this->compiler($item)];
         })->toArray();
 
+        $this->compiled = true;
         return $this->navigation;
     }
 
@@ -123,6 +142,7 @@ class Navigation {
             })->toArray();
         }
 
+        $item['route'] = route($item['route']);
         $item['sub-active'] = $this->isSubActive($item);
         $item['active'] = $this->isActive($item);
         $item['has-sub'] = $this->hasSubMenu($item);
