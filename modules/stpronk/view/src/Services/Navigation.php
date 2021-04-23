@@ -8,21 +8,60 @@ use Illuminate\Support\Str;
 
 class Navigation {
 
+    /**
+     * @var array
+     */
     public $navigation = [];
+
+    /**
+     * @var string[]
+     */
+    protected $types = [
+        'default' => 'generateMenu',
+        'submenu' => 'generateSubMenu',
+        'admin'   => 'generateAdminMenu',
+    ];
 
     // TODO This compile system thingy should be changed to it will generate without a if statement
     public $compiled = false;
 
+
     /**
-     * Navigation constructor.
+     * Returns all the types that are available within the system
+     *
+     * if desired, could be overwritten within the app space to extend the types available
+     *
+     * @return string[]
      */
-    public function __construct () {
-//        $this->navigation = require resource_path('variables/navigation.php');
+    public function types() {
+        return $this->types;
     }
+
 
     //TODO: Should be changed so it can add items form anywhere in the application
     public function addToNav ($array) {
         $this->navigation = $array;
+        $this->compiled = false;
+    }
+
+    /**
+     * Generate a type for navigation that is desired
+     *
+     * @param null|string $type
+     *
+     * @return mixed
+     * @throws \Exception
+     */
+    public function generate (string $type = null) {
+        if(!$type) {
+            Throw new \Exception('A type needs to be given to the generate function, please refer to the documentation to the available types', 500);
+        }
+
+        if(isset($this->types()[$type])) {
+            return $this->{$this->types[$type]}();
+        }
+
+        Throw new \Exception('The type that has been given is not known within our system', 500);
     }
 
     /**
@@ -30,7 +69,7 @@ class Navigation {
      *
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
-    public function generateMenu () {
+    protected function generateMenu () {
         if(!$this->compiled) {
             $this->initCompiler();
         }
@@ -47,7 +86,7 @@ class Navigation {
             return true;
         });
 
-        return view('layouts.components.navigation.side.general', [
+        return view(config('view.navigation.views.default'), [
            'navigation' => $navigation
         ]);
     }
@@ -57,7 +96,7 @@ class Navigation {
      *
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
-    public function generateAdminMenu () {
+    protected function generateAdminMenu () {
         if(!$this->compiled) {
             $this->initCompiler();
         }
@@ -70,7 +109,7 @@ class Navigation {
             return true;
         });
 
-        return view('layouts.components.navigation.side.general', [
+        return view(config('view.navigation.views.admin'), [
             'navigation' => $navigation
         ]);
     }
@@ -82,7 +121,7 @@ class Navigation {
      *
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|string
      */
-    public function generateTopMenu () {
+    protected function generateSubMenu () {
         if(!$this->compiled) {
             $this->initCompiler();
         }
@@ -107,10 +146,20 @@ class Navigation {
             return '';
         }
 
-        return view('layouts.components.navigation.top.general', [
+        return view(config('view.navigation.views.submenu'), [
             'navigation' => Arr::first($item)['sub-menu']
         ]);
     }
+
+
+
+
+
+
+
+
+
+
 
     /**
      * Compile navigation to setup variables for the front-end
