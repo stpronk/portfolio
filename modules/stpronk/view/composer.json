@@ -1,0 +1,37 @@
+{
+  "name": "stpronk/view",
+  "type": "project",
+  "description": "View package",
+  "keywords": [
+    "view",
+    "stpronk"
+  ],
+  "license": "MIT",
+  "require": {
+    "stpronk/core": "dev-module-structure"
+  },
+  "require-dev": {},
+  "config": {
+    "optimize-autoloader": true,
+    "preferred-install": "dist",
+    "sort-packages": true
+  },
+  "autoload": {
+    "files": [],
+    "psr-4": {
+      "Stpronk\\View\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {}
+  },
+  "extra": {
+    "laravel": {
+      "providers" : [
+        "Stpronk\\View\\Providers\\ViewServiceProvider"
+      ]
+    }
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true
+}

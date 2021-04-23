@@ -10,13 +10,14 @@
     "require": {
         "php": "^7.3",
         "fideloper/proxy": "^4.2",
-        "guzzlehttp/guzzle": "^6.3",
         "fruitcake/laravel-cors": "^1.0",
+        "guzzlehttp/guzzle": "^6.3",
         "laravel/framework": "^8.0",
         "laravel/tinker": "^2.0",
         "laravel/ui": "^2.0",
         "livewire/livewire": "^2.0",
-      "ext-http": "*"
+        "stpronk/core": "dev-module-structure",
+        "stpronk/view": "dev-module-structure"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^2.6",
@@ -52,6 +53,16 @@
             "Tests\\": "tests/"
         }
     },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "./modules/stpronk/core"
+        },
+        {
+            "type": "path",
+            "url": "./modules/stpronk/view"
+        }
+    ],
     "minimum-stability": "dev",
     "prefer-stable": true,
     "scripts": {

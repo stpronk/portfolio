@@ -1,0 +1,35 @@
+{
+  "name": "stpronk/core",
+  "type": "project",
+  "description": "core setup",
+  "keywords": [
+    "core",
+    "stpronk"
+  ],
+  "license": "MIT",
+  "require": {},
+  "require-dev": {},
+  "config": {
+    "optimize-autoloader": true,
+    "preferred-install": "dist",
+    "sort-packages": true
+  },
+  "autoload": {
+    "files": [],
+    "psr-4": {
+      "Stpronk\\Core\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {}
+  },
+  "extra": {
+    "laravel": {
+      "providers" : [
+        "Stpronk\\Core\\Providers\\CoreServiceProvider"
+      ]
+    }
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true
+}
