@@ -30,7 +30,7 @@ class ViewServiceProvider extends ServiceProvider
             require $file;
         }
 
-        $this->app->bind('Navigation', Navigation::class);
+        $this->app->singleton('Navigation', Navigation::class);
     }
 
     /**

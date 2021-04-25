@@ -5,262 +5,221 @@ namespace Stpronk\View\Services;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use Stpronk\View\Services\Navigation\Item;
 
 class Navigation {
+
+    // TODO: Redo all the http error messages and codes
 
     /**
      * @var array
      */
-    public $navigation = [];
+    public $items = [];
 
     /**
+     * Available styles for the navigation
+     *
+     * Styles are imported through the config file in the constructor
+     *
      * @var string[]
      */
+    protected $styles = [];
+
+    /**
+     * Available types for the navigation
+     * TODO: Maybe find a way to make this more dynamic
+     *
+     * @var array
+     */
     protected $types = [
-        'default' => 'generateMenu',
-        'submenu' => 'generateSubMenu',
-        'admin'   => 'generateAdminMenu',
+        'general',
+        'admin',
+        'submenu'
     ];
 
-    // TODO This compile system thingy should be changed to it will generate without a if statement
-    public $compiled = false;
+    /**
+     * Navigation constructor.
+     *
+     * @param array $styles
+     * @param array $types
+     */
+    public function __construct(array $styles = [], array $types = [])
+    {
+        $this->styles = array_merge(config('view.navigation.styles'), $styles);
+        $this->types = array_merge($this->types, $types);
+    }
 
+    /**
+     * Returns all the styles that are available within the system
+     *
+     * if desired, could be overwritten within the app space when extending this class
+     *
+     * Types should be added within an array in the following fashion: [
+     *      'Name' => 'path.to.blade'
+     * ]
+     *
+     * @return array
+     */
+    protected function styles() {
+        return $this->styles;
+    }
 
     /**
      * Returns all the types that are available within the system
      *
-     * if desired, could be overwritten within the app space to extend the types available
+     * if desired, could be overwritten within the app space when extending this class
      *
-     * @return string[]
+     * @return array
      */
-    public function types() {
+    protected function types() {
         return $this->types;
     }
 
 
-    //TODO: Should be changed so it can add items form anywhere in the application
-    public function addToNav ($array) {
-        $this->navigation = $array;
-        $this->compiled = false;
+    /**
+     * Add an item to the navigation menu
+     *
+     * @param string $title
+     * @param string $icon
+     * @param string $routeName
+     * @param bool   $auth
+     * @param bool   $admin
+     * @param int    $order
+     *
+     * @param array  $options
+     *
+     * @return \Stpronk\View\Services\Navigation\Item
+     * @throws \Exception
+     */
+    public function addItem(string $title, string $icon, string $routeName, bool $auth, bool $admin, int $order, array $options = []) {
+        if (isset($this->items[$title])) {
+            throw new \Exception("This item already exists within the navigation: \"{$title}\"", '500');
+        }
+
+        return $this->items[$title] = new Item($title, $icon, $routeName, $auth, $admin, $order, $options);
+    }
+
+    /**
+     * Add a sub item to an existing item
+     *
+     * @param string $key
+     * @param string $title
+     * @param string $icon
+     * @param string $routeName
+     * @param bool   $auth
+     * @param bool   $admin
+     * @param int    $order
+     *
+     * @param array  $options
+     *
+     * @return \Stpronk\View\Services\Navigation\Item
+     * @throws \Exception
+     */
+    public function addSubItemToExisting (string $key, string $title, string $icon, string $routeName, bool $auth, bool $admin, int $order, array $options = [])
+    {
+        if (!isset($this->items[$key])) {
+            Throw new \Exception("The item you are trying to add an sub item to does not exists: \"{$key}\"", '500');
+        }
+
+        $this->items[$title]->addSubItem($title, $icon, $routeName, $auth, $admin, $order, $options);
+
+        return $this->items[$title];
     }
 
     /**
      * Generate a type for navigation that is desired
      *
+     * @param null|string $style
      * @param null|string $type
      *
-     * @return mixed
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      * @throws \Exception
      */
-    public function generate (string $type = null) {
+    public function generate (string $style = null, string $type = null) {
         if(!$type) {
-            Throw new \Exception('A type needs to be given to the generate function, please refer to the documentation to the available types', 500);
+            Throw new \Exception('A type needs to given to load the right items, please refer to the documentation for the available types or use one of the following: '.implode(', ', $this->types()), 500);
         }
 
-        if(isset($this->types()[$type])) {
-            return $this->{$this->types[$type]}();
+        if(!in_array($type, $this->types())) {
+            Throw new \Exception("The type that has been given is not known within our system, given type: \"{$type}\"", 500);
         }
 
-        Throw new \Exception('The type that has been given is not known within our system', 500);
-    }
-
-    /**
-     * generate the General side menu
-     *
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
-     */
-    protected function generateMenu () {
-        if(!$this->compiled) {
-            $this->initCompiler();
+        if(!$style) {
+            Throw new \Exception('A style needs to be given to the generate function, please refer to the documentation to the available styles or use one of the following: '.implode(', ', $this->styles()), 500);
         }
 
-        $navigation = Arr::where($this->navigation, function ($item, $key) {
-            if ($item['admin']) {
-                return false;
-            }
+        if(!isset($this->styles()[$style])) {
+            Throw new \Exception("The style that has been given is not known within our system, given style: \"{$style}\"", 500);
+        }
 
-            if ( $item['auth'] && !( $item['auth'] && Auth::check() )) {
-                return false;
-            }
+        $items = $this->filterNavigation($type);
 
-            return true;
-        });
-
-        return view(config('view.navigation.views.default'), [
-           'navigation' => $navigation
+        return view($this->styles()[$style], [
+            'navigation' => $items
         ]);
     }
 
-    /**
-     * Generate the Admin menu
-     *
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
-     */
-    protected function generateAdminMenu () {
-        if(!$this->compiled) {
-            $this->initCompiler();
-        }
-
-        $navigation = Arr::where($this->navigation, function ($item, $key) {
-            if (!$item['admin']) {
-                return false;
-            }
-
-            return true;
-        });
-
-        return view(config('view.navigation.views.admin'), [
-            'navigation' => $navigation
-        ]);
-    }
 
     /**
-     * Generate the top menu
+     * Filter the navigation based on the type given
      *
+     * @param string $type
+     *
+     * @return array|string|void
      * @throws \Exception
-     *
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|string
      */
-    protected function generateSubMenu () {
-        if(!$this->compiled) {
-            $this->initCompiler();
+    protected function filterNavigation (string $type) {
+        switch ($type) {
+            case 'general':
+                return $this->navigationToArray(Arr::where($this->items, function ($item) {
+                    if ($item->admin) return false;
+                    if ($item->auth && !( $item->auth && Auth::check() )) return false;
+
+                    return true;
+                }));
+
+            case 'auth':
+                // TODO: Create the auth filter
+
+            case 'admin':
+                return $this->navigationToArray(Arr::where($this->items, function ($item) {
+                    if (!$item->admin)return false;
+                    return true;
+                }));
+
+            case 'submenu':
+                // TODO: Make the sub menu filter more stable
+                $item = Arr::where($this->items, function ($item) {
+                    if ( ! Str::contains( url()->current(), $item->route()) ) return false;
+                    if ( !$item->subMenu ) return false;
+                    return true;
+                });
+
+                if( count($item) > 1 ) Throw new \Exception('There is more one item that fits the criteria...');
+                if( count($item) === 0 ) return [];
+
+                return Arr::first($this->navigationToArray($item))['sub-menu'];
+
+            default:
+                Throw new \Exception("The type that has been given is not a know action within our system, given type: \"{$type}\"", 500);
         }
-
-        $item = Arr::where($this->navigation, function ($item, $key) {
-            if ( ! Str::contains( url()->current(), $item['route']) ) {
-                return false;
-            }
-
-            if ( !$item['sub-menu'] ) {
-                return false;
-            }
-
-            return true;
-        });
-
-        if( count($item) > 1 ) {
-            Throw new \Exception('There is more one Sub Menu present...');
-        }
-
-        if( count($item) === 0 ) {
-            return '';
-        }
-
-        return view(config('view.navigation.views.submenu'), [
-            'navigation' => Arr::first($item)['sub-menu']
-        ]);
     }
 
-
-
-
-
-
-
-
-
-
-
     /**
-     * Compile navigation to setup variables for the front-end
+     * Set the navigation to an array to be used within the blades
+     *
+     * @param array $items
      *
      * @return array
      */
-    protected function initCompiler ()
-    {
-        $this->navigation = collect($this->navigation)->mapWithKeys(function ($item, $key) {
-            return [$key => $this->compiler($item)];
+    protected function navigationToArray(array $items) {
+        $items = collect($items)->mapWithKeys(function($item) {
+            $item = $item->toArray();
+
+            return [$item['order'] => $item];
         })->toArray();
 
-        $this->compiled = true;
-        return $this->navigation;
-    }
-
-    /**
-     *
-     *
-     * @param $item
-     *
-     * @return mixed
-     */
-    protected function compiler ($item)
-    {
-        if (isset($item['sub-menu'])) {
-            $item['sub-menu'] = collect($item['sub-menu'])->map(function ($item) {
-                return $this->compiler($item);
-            })->toArray();
-        }
-
-        $item['route'] = route($item['route']);
-        $item['sub-active'] = $this->isSubActive($item);
-        $item['active'] = $this->isActive($item);
-        $item['has-sub'] = $this->hasSubMenu($item);
-
-        return $item;
-    }
-
-    /**
-     * Look if there is a active sub menu item
-     *
-     * @param $item
-     *
-     * @return bool
-     */
-    protected function isSubActive($item) {
-        if (!isset($item['sub-menu'])) {
-            return false;
-        }
-
-        if (isset($item['hide-sub-menu'])) {
-            return false;
-        }
-
-        return $item['sub-menu'] && ( Str::contains( url()->current(), $item['route']) );
-    }
-
-    /**
-     * Look if the item is active
-     *
-     * @param $item
-     *
-     * @return bool
-     */
-    protected function isActive($item)
-    {
-        // Sub active and hide sub is active means active can't be true
-        if ($item['sub-active'] && !isset($item['hide-sub-menu'])) {
-            return false;
-        }
-
-        if($item['route'] === url()->current() && !isset($item['sub-menu'])) {
-            return true;
-        }
-
-        if(!isset($item['sub-menu'])) {
-            return false;
-        }
-
-        if ((( $item['sub-menu'] && isset($item['hide-sub-menu']) ) &&  Str::contains( url()->current(), $item['route']) ) || ( !$item['sub-menu'] && Str::contains( url()->current(), $item['route']) )) {
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * Look if the item has a sub menu
-     *
-     * @param $item
-     *
-     * @return bool
-     */
-    protected function hasSubMenu ($item)
-    {
-        if( isset($item['sub-menu']) && !isset($item['hide-sub-menu'])) {
-            return true;
-        }
-
-        return false;
+        return $items;
     }
 }
 

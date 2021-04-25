@@ -117,7 +117,6 @@ class Expenses extends Component
         return $this->values;
     }
 
-
     /**
      * Update a Expense
      *

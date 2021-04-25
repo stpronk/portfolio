@@ -1,9 +1,8 @@
 <?php
 
 return [
-    'views' => [
-        'default' => 'view::navigation.default',
+    'styles' => [
+        'general' => 'view::navigation.general',
         'submenu' => 'view::navigation.submenu',
-        'admin'   => 'view::navigation.admin'
     ]
 ];
