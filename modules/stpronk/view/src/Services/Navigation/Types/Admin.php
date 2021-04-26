@@ -3,7 +3,6 @@
 Namespace Stpronk\View\Services\Navigation\Types;
 
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Auth;
 use Stpronk\View\Services\Navigation\Interfaces\TypeInterface;
 
 class Admin extends BaseType implements TypeInterface {

@@ -3,7 +3,6 @@
 Namespace Stpronk\View\Services\Navigation\Types;
 
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Stpronk\View\Services\Navigation\Interfaces\TypeInterface;
 

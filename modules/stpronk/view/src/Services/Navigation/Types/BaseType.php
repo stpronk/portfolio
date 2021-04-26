@@ -4,8 +4,18 @@ Namespace Stpronk\View\Services\Navigation\Types;
 
 class BaseType {
 
+    /**
+     * All navigation items
+     *
+     * @var array
+     */
     protected $items = [];
 
+    /**
+     * BaseType constructor.
+     *
+     * @param array $items
+     */
     public function __construct(array $items)
     {
         $this->items = $this->navigationToArray($items);
