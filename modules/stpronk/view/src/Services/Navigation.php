@@ -5,12 +5,14 @@ namespace Stpronk\View\Services;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use Illuminate\Contracts\View\View;
 use Stpronk\View\Services\Navigation\Item;
 use \Illuminate\Contracts\View\View;
 
 class Navigation {
 
     // TODO: Redo all the http error messages and codes
+    // TODO: Setup the types as dynamically loading in classes
 
     /**
      * @var array
@@ -46,8 +48,20 @@ class Navigation {
      */
     public function __construct(array $styles = [], array $types = [])
     {
-        $this->styles = array_merge(config('view.navigation.styles'), $styles);
-        $this->types = array_merge($this->types, $types);
+        $this->setStyles($styles);
+        $this->setTypes($types);
+    }
+
+    /**
+     * Set styles for the navigation
+     *
+     * @param $styles
+     *
+     * @return array
+     */
+    private function setStyles(array $styles) : array
+    {
+        return $this->styles = array_merge(config('view.navigation.styles'), $styles);
     }
 
     /**
@@ -64,6 +78,18 @@ class Navigation {
     protected function styles() : array
     {
         return $this->styles;
+    }
+
+    /**
+     * set types for the navigation
+     *
+     * @param array $types
+     *
+     * @return array
+     */
+    private function setTypes(array $types) : array
+    {
+        return $this->types = array_merge($this->types, $types);
     }
 
     /**
