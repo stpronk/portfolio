@@ -3,11 +3,9 @@
 namespace Stpronk\View\Services;
 
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Contracts\View\View;
 use Stpronk\View\Services\Navigation\Item;
-use \Illuminate\Contracts\View\View;
 
 class Navigation {
 
@@ -201,40 +199,9 @@ class Navigation {
      */
     protected function filterNavigation (string $type) : array
     {
-        switch ($type) {
-            case 'general':
-                return $this->navigationToArray(Arr::where($this->items, function ($item) {
-                    if ($item->admin) return false;
-                    if ($item->auth && !( $item->auth && Auth::check() )) return false;
-
-                    return true;
-                }));
-
-            case 'auth':
-                // TODO: Create the auth filter
-
-            case 'admin':
-                return $this->navigationToArray(Arr::where($this->items, function ($item) {
-                    if (!$item->admin)return false;
-                    return true;
-                }));
-
-            case 'submenu':
-                // TODO: Make the sub menu filter more stable
-                $item = Arr::where($this->items, function ($item) {
-                    if ( ! Str::contains( url()->current(), $item->route()) ) return false;
-                    if ( !$item->subMenu ) return false;
-                    return true;
-                });
-
-                if( count($item) > 1 ) Throw new \Exception('There is more one item that fits the criteria...');
-                if( count($item) === 0 ) return [];
-
-                return Arr::first($this->navigationToArray($item))['sub-menu'];
-
-            default:
-                Throw new \Exception("The type that has been given is not a know action within our system, given type: \"{$type}\"", 500);
-        }
+        $type = Str::ucfirst($type);
+        $className = "Stpronk\\View\\Services\\Navigation\\Types\\{$type}";
+        return (new  $className($this->items))->filter();
     }
 
     /**
