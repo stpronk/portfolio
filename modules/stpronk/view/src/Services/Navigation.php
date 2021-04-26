@@ -63,6 +63,18 @@ class Navigation {
     }
 
     /**
+     * set types for the navigation
+     *
+     * @param array $types
+     *
+     * @return array
+     */
+    private function setTypes(array $types) : array
+    {
+        return $this->types = array_merge($this->types, $types);
+    }
+
+    /**
      * Returns all the styles that are available within the system
      *
      * if desired, could be overwritten within the app space when extending this class
@@ -76,18 +88,6 @@ class Navigation {
     protected function styles() : array
     {
         return $this->styles;
-    }
-
-    /**
-     * set types for the navigation
-     *
-     * @param array $types
-     *
-     * @return array
-     */
-    private function setTypes(array $types) : array
-    {
-        return $this->types = array_merge($this->types, $types);
     }
 
     /**
