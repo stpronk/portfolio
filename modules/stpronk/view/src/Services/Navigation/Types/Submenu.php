@@ -19,14 +19,14 @@ class Submenu extends BaseType implements TypeInterface {
     {
         // TODO: Refactor this code to make it more stable
         $item = Arr::where($this->items, function ($item) {
-            if ( ! Str::contains( url()->current(), $item->route()) ) return false;
-            if ( !$item->subMenu ) return false;
+            if ( ! Str::contains( url()->current(), $item['route']) ) return false;
+            if ( !$item['sub-menu'] ) return false;
             return true;
         });
 
         if( count($item) > 1 ) Throw new \Exception('There is more one item that fits the criteria...');
         if( count($item) === 0 ) return [];
 
-        return Arr::first($this->navigationToArray($item))['sub-menu'];
+        return Arr::first($item)['sub-menu'];
     }
 }

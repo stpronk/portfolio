@@ -15,10 +15,10 @@ class Admin extends BaseType implements TypeInterface {
      */
     public function filter() : array
     {
-        return $this->navigationToArray(Arr::where($this->items, function ($item) {
-            if (!$item->admin) return false;
+        return Arr::where($this->items, function ($item) {
+            if (!$item['admin']) return false;
 
             return true;
-        }));
+        });
     }
 }

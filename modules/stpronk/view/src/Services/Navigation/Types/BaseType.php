@@ -8,7 +8,7 @@ class BaseType {
 
     public function __construct(array $items)
     {
-        $this->items = $items;
+        $this->items = $this->navigationToArray($items);
     }
 
     /**
