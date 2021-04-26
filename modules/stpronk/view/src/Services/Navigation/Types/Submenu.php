@@ -17,6 +17,7 @@ class Submenu extends BaseType implements TypeInterface {
      */
     public function filter() : array
     {
+        // TODO: Refactor this code to make it more stable
         $item = Arr::where($this->items, function ($item) {
             if ( ! Str::contains( url()->current(), $item->route()) ) return false;
             if ( !$item->subMenu ) return false;
