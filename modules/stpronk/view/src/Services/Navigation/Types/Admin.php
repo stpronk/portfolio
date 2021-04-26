@@ -16,7 +16,9 @@ class Admin extends BaseType implements TypeInterface {
     public function filter() : array
     {
         return $this->navigationToArray(Arr::where($this->items, function ($item) {
-            if (!$item->admin)return false;
+            if ($item->admin) return false;
+            if ($item->auth && !( $item->auth && Auth::check() )) return false;
+
             return true;
         }));
     }

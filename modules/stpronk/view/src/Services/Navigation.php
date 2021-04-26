@@ -3,6 +3,7 @@
 namespace Stpronk\View\Services;
 
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 use Illuminate\Contracts\View\View;
 use Stpronk\View\Services\Navigation\Item;
@@ -28,15 +29,10 @@ class Navigation {
 
     /**
      * Available types for the navigation
-     * TODO: Maybe find a way to make this more dynamic
      *
      * @var array
      */
-    protected $types = [
-        'general',
-        'admin',
-        'submenu'
-    ];
+    protected $types = [];
 
     /**
      * Navigation constructor.
@@ -71,7 +67,7 @@ class Navigation {
      */
     private function setTypes(array $types) : array
     {
-        return $this->types = array_merge($this->types, $types);
+        return $this->types = array_merge(config('view.navigation.types'), $types);
     }
 
     /**
@@ -169,7 +165,7 @@ class Navigation {
             Throw new \Exception('A type needs to given to load the right items, please refer to the documentation for the available types or use one of the following: '.implode(', ', $this->types()), 500);
         }
 
-        if(!in_array($type, $this->types())) {
+        if(!isset($this->types()[$type])) {
             Throw new \Exception("The type that has been given is not known within our system, given type: \"{$type}\"", 500);
         }
 
@@ -199,9 +195,7 @@ class Navigation {
      */
     protected function filterNavigation (string $type) : array
     {
-        $type = Str::ucfirst($type);
-        $className = "Stpronk\\View\\Services\\Navigation\\Types\\{$type}";
-        return (new  $className($this->items))->filter();
+        return (new $this->types[$type]($this->items))->filter();
     }
 
     /**
