@@ -184,7 +184,6 @@ class Navigation {
         ]);
     }
 
-
     /**
      * Filter the navigation based on the type given
      *
