@@ -6,6 +6,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Stpronk\View\Services\Navigation\Item;
+use \Illuminate\Contracts\View\View;
 
 class Navigation {
 
@@ -60,7 +61,8 @@ class Navigation {
      *
      * @return array
      */
-    protected function styles() {
+    protected function styles() : array
+    {
         return $this->styles;
     }
 
@@ -71,7 +73,8 @@ class Navigation {
      *
      * @return array
      */
-    protected function types() {
+    protected function types() : array
+    {
         return $this->types;
     }
 
@@ -91,7 +94,8 @@ class Navigation {
      * @return \Stpronk\View\Services\Navigation\Item
      * @throws \Exception
      */
-    public function addItem(string $title, string $icon, string $routeName, bool $auth, bool $admin, int $order, array $options = []) {
+    public function addItem(string $title, string $icon, string $routeName, bool $auth, bool $admin, int $order, array $options = []) : Item
+    {
         if (isset($this->items[$title])) {
             throw new \Exception("This item already exists within the navigation: \"{$title}\"", '500');
         }
@@ -115,7 +119,7 @@ class Navigation {
      * @return \Stpronk\View\Services\Navigation\Item
      * @throws \Exception
      */
-    public function addSubItemToExisting (string $key, string $title, string $icon, string $routeName, bool $auth, bool $admin, int $order, array $options = [])
+    public function addSubItemToExisting (string $key, string $title, string $icon, string $routeName, bool $auth, bool $admin, int $order, array $options = []) : Item
     {
         if (!isset($this->items[$key])) {
             Throw new \Exception("The item you are trying to add an sub item to does not exists: \"{$key}\"", '500');
@@ -135,7 +139,8 @@ class Navigation {
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      * @throws \Exception
      */
-    public function generate (string $style = null, string $type = null) {
+    public function generate (string $style = null, string $type = null) : View
+    {
         if(!$type) {
             Throw new \Exception('A type needs to given to load the right items, please refer to the documentation for the available types or use one of the following: '.implode(', ', $this->types()), 500);
         }
@@ -168,7 +173,8 @@ class Navigation {
      * @return array|string|void
      * @throws \Exception
      */
-    protected function filterNavigation (string $type) {
+    protected function filterNavigation (string $type) : array
+    {
         switch ($type) {
             case 'general':
                 return $this->navigationToArray(Arr::where($this->items, function ($item) {
@@ -212,7 +218,8 @@ class Navigation {
      *
      * @return array
      */
-    protected function navigationToArray(array $items) {
+    protected function navigationToArray(array $items) : array
+    {
         $items = collect($items)->mapWithKeys(function($item) {
             $item = $item->toArray();
 
