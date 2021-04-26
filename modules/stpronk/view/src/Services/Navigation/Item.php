@@ -19,6 +19,17 @@ class Item
     public $isActive;
     public $hasSubMenu;
 
+    /**
+     * Item constructor.
+     *
+     * @param string $title
+     * @param string $icon
+     * @param string $route
+     * @param bool   $auth
+     * @param bool   $admin
+     * @param int    $order
+     * @param array  $options
+     */
     public function __construct(
         string $title,
         string $icon,
@@ -38,6 +49,16 @@ class Item
         $this->options = $options;
     }
 
+    /**
+     * @param string $title
+     * @param string $icon
+     * @param string $routeName
+     * @param bool   $auth
+     * @param bool   $admin
+     * @param int    $order
+     *
+     * @return $this
+     */
     public function addSubItem (string $title, string $icon, string $routeName, bool $auth, bool $admin, int $order)
     {
         $this->subMenu[] = new Item($title, $icon, $routeName, $auth, $admin, $order);
@@ -45,6 +66,9 @@ class Item
         return $this;
     }
 
+    /**
+     * @return array
+     */
     public function toArray() {
 
         return [
@@ -66,12 +90,17 @@ class Item
         ];
     }
 
-
+    /**
+     * @return null|string
+     */
     public function route()
     {
         return $this->route !== '' ? route($this->route) : null;
     }
 
+    /**
+     * @return bool
+     */
     protected function isSubActive ()
     {
         if ($this->subMenu) {
@@ -85,6 +114,9 @@ class Item
         return $this->subMenu && ( Str::contains( url()->current(), $this->route()) );
     }
 
+    /**
+     * @return bool
+     */
     protected function isActive ()
     {
         // Sub active and hide sub is active means active can't be true
@@ -107,6 +139,9 @@ class Item
         return false;
     }
 
+    /**
+     * @return bool
+     */
     protected function hasSubMenu ()
     {
         if( $this->subMenu && !isset($this->options['hide-sub-menu']) ) {
