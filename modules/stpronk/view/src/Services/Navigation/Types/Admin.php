@@ -6,7 +6,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Stpronk\View\Services\Navigation\Interfaces\TypeInterface;
 
-class General extends BaseType implements TypeInterface {
+class Admin extends BaseType implements TypeInterface {
 
     /**
      * Filter the navigation array
@@ -16,9 +16,7 @@ class General extends BaseType implements TypeInterface {
     public function filter() : array
     {
         return $this->navigationToArray(Arr::where($this->items, function ($item) {
-            if ($item->admin) return false;
-            if ($item->auth && !( $item->auth && Auth::check() )) return false;
-
+            if (!$item->admin)return false;
             return true;
         }));
     }
