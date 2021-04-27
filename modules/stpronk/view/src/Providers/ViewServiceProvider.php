@@ -56,8 +56,8 @@ class ViewServiceProvider extends ServiceProvider
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'view');
 
         $this->publishes([
-            __DIR__.'/../resources/views' => resource_path('views/vendor/view')
-        ]);
+            __DIR__.'/../resources/views' => resource_path('views/vendor/stpronk/view')
+        ], 'stpronk:resources');
     }
 
     /**
@@ -68,7 +68,7 @@ class ViewServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(__DIR__.'/../config/navigation.php', 'view.navigation');
 
         $this->publishes([
-            __DIR__.'/../config/navigation.php' => config_path('view/navigation.php')
-        ]);
+            __DIR__.'/../config/navigation.php' => config_path('stpronk/view/navigation.php')
+        ], 'stpronk:config');
     }
 }
