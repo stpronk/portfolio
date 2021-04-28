@@ -22,7 +22,11 @@
 </head>
 <body>
 
+    @include('view::navigation.main')
+
     <div id="app" class="d-flex h-100">
+
+
         {{-- TODO: Style tag should be removed when ready --- Should find an alternative to the inline style --}}
         <div style="min-width: 200px" class="h-100 bg-secondary shadow-lg">
             <div class="d-flex flex-column justify-content-between h-100 py-4">
@@ -54,7 +58,7 @@
                                 Admin Area
                             </span>
 
-                            {{ \Stpronk\View\Facades\Navigation::generate('general', 'admin')  }}
+                            {{ \Stpronk\View\Facades\Navigation::generate('admin', 'general')  }}
                         </div>
                     @endif
                     {{-- End --- Admin nav --}}

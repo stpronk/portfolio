@@ -153,13 +153,13 @@ class Navigation {
     /**
      * Generate a type for navigation that is desired
      *
-     * @param null|string $style
      * @param null|string $type
+     * @param null|string $style
      *
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      * @throws \Exception
      */
-    public function generate (string $style = null, string $type = null) : View
+    public function generate (string $type = null, string $style = null) : View
     {
         if(!$type) {
             Throw new \Exception('A type needs to given to load the right items, please refer to the documentation for the available types or use one of the following: '.implode(', ', $this->types()), 500);
