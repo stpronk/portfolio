@@ -81,6 +81,7 @@ class Item
      */
     public function toArray() : array
     {
+        $this->additionVariables();
 
         return [
             'title'      => $this->title,
@@ -90,9 +91,9 @@ class Item
             'admin'      => $this->admin,
             'order'      => $this->order,
             'group'      => $this->group,
-            'sub-active' => $this->isSubActive(),
-            'active'     => $this->isActive(),
-            'has-sub'    => $this->hasSubMenu(),
+            'sub-active' => $this->subIsActive,
+            'active'     => $this->isActive,
+            'has-sub'    => $this->hasSubMenu,
             'hide-sub-menu' => isset($this->options['hide-sub-menu']),
 
             'sub-menu' => ! $this->subMenu ? null
@@ -108,6 +109,18 @@ class Item
     public function route() : ?string
     {
         return $this->route ? route($this->route) : null;
+    }
+
+    /**
+     * Add addition variables to the class
+     *
+     * @return void
+     */
+    protected function additionVariables () : void
+    {
+        $this->subIsActive = $this->isSubActive();
+        $this->isActive    = $this->isActive();
+        $this->hasSubMenu  = $this->hasSubMenu();
     }
 
     /**
