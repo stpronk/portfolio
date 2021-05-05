@@ -103,7 +103,7 @@ class Item
      */
     protected function isSubActive ()
     {
-        if ($this->subMenu) {
+        if (!$this->subMenu) {
             return false;
         }
 
