@@ -6,6 +6,8 @@ use Illuminate\Support\Str;
 
 class Item
 {
+    // TODO: Clean up this class and add PHPDOCS
+
     public $title;
     public $icon;
     public $route;
@@ -54,6 +56,8 @@ class Item
     }
 
     /**
+     * Add a sub item to an item
+     *
      * @param string      $title
      * @param string      $icon
      * @param null|string $routeName
