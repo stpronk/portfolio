@@ -47,7 +47,7 @@ class Navigation {
     /**
      * Set styles for the navigation
      *
-     * @param $styles
+     * @param array $styles
      *
      * @return array
      */
