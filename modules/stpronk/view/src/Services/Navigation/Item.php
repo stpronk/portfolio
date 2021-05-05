@@ -118,6 +118,12 @@ class Item
             return false;
         }
 
+        foreach ($this->subMenu as $key => $item) {
+            if($this->subMenu && ( Str::contains( url()->current(), $item->route()))) {
+                return true;
+            }
+        }
+
         return $this->subMenu && ( Str::contains( url()->current(), $this->route()) );
     }
 
