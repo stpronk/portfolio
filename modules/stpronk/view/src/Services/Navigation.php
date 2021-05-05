@@ -9,7 +9,7 @@ class Navigation {
 
     // TODO: Redo all the http error messages and codes
     // TODO: Setup the types as dynamically loading in classes
-    // TODO: Add a category option to the navigation
+    // TODO: Add a group option to the navigation
 
     /**
      * @var array
@@ -122,20 +122,20 @@ class Navigation {
      * @param null|string $routeName
      * @param bool        $auth
      * @param bool        $admin
-     * @param int         $order
-     * @param null|string $category
+     * @param null|string $group
+     * @param null|int    $order
      * @param array       $options
      *
      * @return \Stpronk\View\Services\Navigation\Item
      * @throws \Exception
      */
-    public function addItem(string $title, string $icon, ?string $routeName, bool $auth, bool $admin, int $order, ?string $category = null, array $options = []) : Item
+    public function addItem(string $title, string $icon, ?string $routeName, bool $auth, bool $admin, ?string $group = null, ?int $order = null, array $options = []) : Item
     {
         if (isset($this->items[$title])) {
             throw new \Exception("This item already exists within the navigation: \"{$title}\"", '500');
         }
 
-        return $this->items[$title] = new Item($title, $icon, $routeName, $auth, $admin, $order, $category, $options);
+        return $this->items[$title] = new Item($title, $icon, $routeName, $auth, $admin, $group, $order, $options);
     }
 
     /**
@@ -147,20 +147,20 @@ class Navigation {
      * @param null|string $routeName
      * @param bool        $auth
      * @param bool        $admin
-     * @param int         $order
-     * @param null|string $category
+     * @param null|string $group
+     * @param null|int    $order
      * @param array       $options
      *
      * @return \Stpronk\View\Services\Navigation\Item
      * @throws \Exception
      */
-    public function addSubItemToExisting (string $key, string $title, string $icon, ?string $routeName, bool $auth, bool $admin, int $order, ?string $category = null, array $options = []) : Item
+    public function addSubItemToExisting (string $key, string $title, string $icon, ?string $routeName, bool $auth, bool $admin, ?string $group = null, ?int $order = null, array $options = []) : Item
     {
         if (!isset($this->items[$key])) {
             Throw new \Exception("The item you are trying to add an sub item to does not exists: \"{$key}\"", '500');
         }
 
-        $this->items[$title]->addSubItem($title, $icon, $routeName, $auth, $admin, $order, $category, $options);
+        $this->items[$title]->addSubItem($title, $icon, $routeName, $auth, $admin, $group, $order, $options);
 
         return $this->items[$title];
     }

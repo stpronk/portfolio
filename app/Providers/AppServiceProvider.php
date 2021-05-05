@@ -37,23 +37,23 @@ class AppServiceProvider extends ServiceProvider
      */
     public function bootNavigation()
     {
-        Navigation::addItem('Dashboard', 'th', 'home', true, false, 0);
+        Navigation::addItem('Dashboard', 'th', 'home', true, false, null, 0);
 
-        Navigation::addItem('Assignments','files-o', 'assignments', false, false, 1)
-            ->addSubItem('Dealer', 'car', 'assignment.dealer', false, false, 0)
-            ->addSubItem('Event planner', 'calendar', 'assignment.event-planner', false, false, 1);
+        Navigation::addItem('Assignments','files-o', null, false, false, null, 1)
+            ->addSubItem('Dealer', 'car', 'assignment.dealer', false, false, null, 0)
+            ->addSubItem('Event planner', 'calendar', 'assignment.event-planner', false, false, null, 1);
 
-        Navigation::addItem('Finance', 'money', 'finance.index', true, false, 2);
+        Navigation::addItem('Finance', 'money', 'finance.index', true, false, null, 2);
 
         /**
          * ---------- ADMIN ROUTES ----------
          */
-        Navigation::addItem('Users', 'users', 'users.index', true, true, 3);
+        Navigation::addItem('Users', 'users', 'users.index', true, true, null, 3);
 
-        Navigation::addItem('Site', 'globe', 'site.index', true, true, 4, null,['hide-sub-menu' => true])
-            ->addSubItem('', 'home', 'site.index', true, true, 0)
-            ->addSubItem('Analytics', 'search', 'site.analytics', true, true, 1)
-            ->addSubItem('Portfolio', 'briefcase', 'site.portfolio', true, true, 2);
+        Navigation::addItem('Site', 'globe', 'site.index', true, true, null, 4, ['hide-sub-menu' => true])
+            ->addSubItem('', 'home', 'site.index', true, true, null, 0)
+            ->addSubItem('Analytics', 'search', 'site.analytics', true, true, null, 1)
+            ->addSubItem('Portfolio', 'briefcase', 'site.portfolio', true, true, null, 2);
 
     }
 }
