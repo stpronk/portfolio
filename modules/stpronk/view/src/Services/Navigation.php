@@ -119,7 +119,7 @@ class Navigation {
      *
      * @param string      $title
      * @param string      $icon
-     * @param string      $routeName
+     * @param null|string $routeName
      * @param bool        $auth
      * @param bool        $admin
      * @param int         $order
@@ -129,7 +129,7 @@ class Navigation {
      * @return \Stpronk\View\Services\Navigation\Item
      * @throws \Exception
      */
-    public function addItem(string $title, string $icon, string $routeName, bool $auth, bool $admin, int $order, ?string $category = null, array $options = []) : Item
+    public function addItem(string $title, string $icon, ?string $routeName, bool $auth, bool $admin, int $order, ?string $category = null, array $options = []) : Item
     {
         if (isset($this->items[$title])) {
             throw new \Exception("This item already exists within the navigation: \"{$title}\"", '500');
@@ -144,7 +144,7 @@ class Navigation {
      * @param string      $key
      * @param string      $title
      * @param string      $icon
-     * @param string      $routeName
+     * @param null|string $routeName
      * @param bool        $auth
      * @param bool        $admin
      * @param int         $order
@@ -154,7 +154,7 @@ class Navigation {
      * @return \Stpronk\View\Services\Navigation\Item
      * @throws \Exception
      */
-    public function addSubItemToExisting (string $key, string $title, string $icon, string $routeName, bool $auth, bool $admin, int $order, ?string $category = null, array $options = []) : Item
+    public function addSubItemToExisting (string $key, string $title, string $icon, ?string $routeName, bool $auth, bool $admin, int $order, ?string $category = null, array $options = []) : Item
     {
         if (!isset($this->items[$key])) {
             Throw new \Exception("The item you are trying to add an sub item to does not exists: \"{$key}\"", '500');

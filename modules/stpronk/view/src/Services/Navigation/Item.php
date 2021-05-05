@@ -25,7 +25,7 @@ class Item
      *
      * @param string      $title
      * @param string      $icon
-     * @param string      $route
+     * @param null|string $route
      * @param bool        $auth
      * @param bool        $admin
      * @param int         $order
@@ -35,7 +35,7 @@ class Item
     public function __construct(
         string $title,
         string $icon,
-        string $route,
+        ?string $route,
         bool $auth,
         bool $admin,
         int $order,
@@ -54,18 +54,18 @@ class Item
     }
 
     /**
-     * @param string $title
-     * @param string $icon
-     * @param string $routeName
-     * @param bool   $auth
-     * @param bool   $admin
-     * @param string $category
-     * @param int    $order
-     * @param array  $options
+     * @param string      $title
+     * @param string      $icon
+     * @param null|string $routeName
+     * @param bool        $auth
+     * @param bool        $admin
+     * @param int         $order
+     * @param null|string $category
+     * @param array       $options
      *
      * @return $this
      */
-    public function addSubItem (string $title, string $icon, string $routeName, bool $auth, bool $admin, int $order, ?string $category = null, array $options = []) : Item
+    public function addSubItem (string $title, string $icon, ?string $routeName, bool $auth, bool $admin, int $order, ?string $category = null, array $options = []) : Item
     {
         $this->subMenu[] = new Item($title, $icon, $routeName, $auth, $admin, $order, $category, $options);
 
@@ -102,7 +102,7 @@ class Item
      */
     public function route() : ?string
     {
-        return $this->route !== '' ? route($this->route) : null;
+        return $this->route ? route($this->route) : null;
     }
 
     /**
