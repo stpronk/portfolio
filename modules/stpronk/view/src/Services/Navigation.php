@@ -95,6 +95,23 @@ class Navigation {
         return $this->types;
     }
 
+    /**
+     * Filter the navigation based on the type given
+     *
+     * @param string $type
+     *
+     * @return array|string|void
+     * @throws \Exception
+     */
+    protected function filterNavigation (string $type) : array
+    {
+        return (new $this->types[$type]($this->items))->filter();
+    }
+
+
+    /**
+     * ********************** FACADE FUNCTIONS **********************
+     */
 
     /**
      * Add an item to the navigation menu
@@ -179,19 +196,6 @@ class Navigation {
         return view($this->styles()[$style], [
             'navigation' => $items
         ]);
-    }
-
-    /**
-     * Filter the navigation based on the type given
-     *
-     * @param string $type
-     *
-     * @return array|string|void
-     * @throws \Exception
-     */
-    protected function filterNavigation (string $type) : array
-    {
-        return (new $this->types[$type]($this->items))->filter();
     }
 }
 
