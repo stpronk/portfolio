@@ -11,13 +11,17 @@ class BaseType {
      */
     protected $items = [];
 
+    protected $options = [];
+
     /**
      * BaseType constructor.
      *
      * @param array $items
+     * @param array $options
      */
-    public function __construct(array $items)
+    public function __construct(array $items, array $options)
     {
+        $this->options = $options;
         $this->items = $this->navigationToArray($items);
     }
 

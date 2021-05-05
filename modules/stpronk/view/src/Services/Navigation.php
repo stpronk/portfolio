@@ -100,13 +100,13 @@ class Navigation {
      * Filter the navigation based on the type given
      *
      * @param string $type
+     * @param array  $options
      *
      * @return array|string|void
-     * @throws \Exception
      */
-    protected function filterNavigation (string $type) : array
+    protected function filterNavigation (string $type, array $options) : array
     {
-        return (new $this->types[$type]($this->items))->filter();
+        return (new $this->types[$type]($this->items, $options))->filter();
     }
 
 
@@ -170,11 +170,12 @@ class Navigation {
      *
      * @param null|string $type
      * @param null|string $style
+     * @param array       $options
      *
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      * @throws \Exception
      */
-    public function generate (string $type = null, string $style = null) : View
+    public function generate (string $type = null, string $style = null, array $options = []) : View
     {
         if(!$type) {
             Throw new \Exception('A type needs to given to load the right items, please refer to the documentation for the available types or use one of the following: '.implode(', ', $this->types()), 500);
@@ -192,7 +193,7 @@ class Navigation {
             Throw new \Exception("The style that has been given is not known within our system, given style: \"{$style}\"", 500);
         }
 
-        $items = $this->filterNavigation($type);
+        $items = $this->filterNavigation($type, $options);
 
         return view($this->styles()[$style], [
             'navigation' => $items
