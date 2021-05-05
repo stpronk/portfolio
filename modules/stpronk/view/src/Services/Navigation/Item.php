@@ -123,6 +123,11 @@ class Item
         $this->hasSubMenu  = $this->hasSubMenu();
     }
 
+
+    /**
+     * ********************** HELPER FUNCTIONS **********************
+     */
+
     /**
      * @return bool
      */
