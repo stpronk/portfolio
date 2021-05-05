@@ -8,8 +8,8 @@ use Stpronk\View\Services\Navigation\Item;
 class Navigation {
 
     // TODO: Redo all the http error messages and codes
-    // TODO: Setup the types as dynamically loading in classes
-    // TODO: Add a group option to the navigation
+
+    // TODO: Add a default group option to every type if a group has been given in the options
 
     /**
      * @var array
