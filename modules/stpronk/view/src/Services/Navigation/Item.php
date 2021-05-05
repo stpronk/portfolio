@@ -59,7 +59,7 @@ class Item
      * @param null|string $routeName
      * @param bool        $auth
      * @param bool        $admin
-     * @param null|string $category
+     * @param null|string $group
      * @param null|int    $order
      * @param array       $options
      *
