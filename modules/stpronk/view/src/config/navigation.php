@@ -2,8 +2,8 @@
 
 return [
     'styles' => [
-        'general' => 'view::navigation.general',
-        'submenu' => 'view::navigation.submenu',
+        'general' => 'view::navigation.styles.general',
+        'submenu' => 'view::navigation.styles.submenu',
     ],
 
     'types' => [

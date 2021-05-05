@@ -22,8 +22,6 @@
 </head>
 <body>
 
-    @include('view::navigation.main')
-
     <div id="app" class="d-flex h-100">
 
 

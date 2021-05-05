@@ -56,7 +56,7 @@ class ViewServiceProvider extends ServiceProvider
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'view');
 
         $this->publishes([
-            __DIR__.'/../resources/views' => resource_path('views/vendor/stpronk/view')
+            __DIR__.'/../resources/views' => resource_path('views/vendor/view')
         ], 'stpronk:resources');
     }
 

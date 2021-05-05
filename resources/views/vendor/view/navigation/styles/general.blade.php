@@ -20,7 +20,7 @@
             </a>
 
             @if($item['has-sub'])
-                <div class="collapse {{ $item['sub-active'] ? ' show' : '' }}" id="{{ $item['title'] }}">
+                <div class="collapse{{ $item['sub-active'] ? ' show' : '' }}" id="{{ $item['title'] }}">
                     @foreach($item['sub-menu'] as $key => $item)
                         <a class="btn btn-secondary text-light rounded-0 d-flex justify-content-between align-items-center px-4 list-item{{ $item['active'] ? ' --active' : '' }}" href="{{ $item['route'] }}">
                             <span><i class="fa fa-angle-right px-1"></i> {{ __($item['title']) }}</span>
