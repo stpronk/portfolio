@@ -59,7 +59,7 @@ class Item
      *
      * @return $this
      */
-    public function addSubItem (string $title, string $icon, string $routeName, bool $auth, bool $admin, int $order)
+    public function addSubItem (string $title, string $icon, string $routeName, bool $auth, bool $admin, int $order) : Item
     {
         $this->subMenu[] = new Item($title, $icon, $routeName, $auth, $admin, $order);
 
@@ -93,7 +93,7 @@ class Item
     /**
      * @return null|string
      */
-    public function route()
+    public function route() : ?string
     {
         return $this->route !== '' ? route($this->route) : null;
     }
@@ -101,7 +101,7 @@ class Item
     /**
      * @return bool
      */
-    protected function isSubActive ()
+    protected function isSubActive () : bool
     {
         if (!$this->subMenu) {
             return false;
@@ -117,7 +117,7 @@ class Item
     /**
      * @return bool
      */
-    protected function isActive ()
+    protected function isActive () : bool
     {
         // Sub active and hide sub is active means active can't be true
         if ($this->subIsActive && !isset($this->options['hide-sub-menu'])) {
@@ -142,7 +142,7 @@ class Item
     /**
      * @return bool
      */
-    protected function hasSubMenu ()
+    protected function hasSubMenu () : bool
     {
         if( $this->subMenu && !isset($this->options['hide-sub-menu']) ) {
             return true;
