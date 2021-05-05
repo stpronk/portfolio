@@ -50,7 +50,7 @@ class Navigation {
      *
      * @return array
      */
-    private function setStyles(array $styles) : array
+    protected function setStyles(array $styles) : array
     {
         return $this->styles = array_merge(config('view.navigation.styles'), $styles);
     }
@@ -62,7 +62,7 @@ class Navigation {
      *
      * @return array
      */
-    private function setTypes(array $types) : array
+    protected function setTypes(array $types) : array
     {
         return $this->types = array_merge(config('view.navigation.types'), $types);
     }
