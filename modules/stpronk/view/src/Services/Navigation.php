@@ -9,6 +9,7 @@ class Navigation {
 
     // TODO: Redo all the http error messages and codes
     // TODO: Setup the types as dynamically loading in classes
+    // TODO: Add a category option to the navigation
 
     /**
      * @var array
@@ -116,50 +117,50 @@ class Navigation {
     /**
      * Add an item to the navigation menu
      *
-     * @param string $title
-     * @param string $icon
-     * @param string $routeName
-     * @param bool   $auth
-     * @param bool   $admin
-     * @param int    $order
-     *
-     * @param array  $options
+     * @param string      $title
+     * @param string      $icon
+     * @param string      $routeName
+     * @param bool        $auth
+     * @param bool        $admin
+     * @param int         $order
+     * @param null|string $category
+     * @param array       $options
      *
      * @return \Stpronk\View\Services\Navigation\Item
      * @throws \Exception
      */
-    public function addItem(string $title, string $icon, string $routeName, bool $auth, bool $admin, int $order, array $options = []) : Item
+    public function addItem(string $title, string $icon, string $routeName, bool $auth, bool $admin, int $order, ?string $category = null, array $options = []) : Item
     {
         if (isset($this->items[$title])) {
             throw new \Exception("This item already exists within the navigation: \"{$title}\"", '500');
         }
 
-        return $this->items[$title] = new Item($title, $icon, $routeName, $auth, $admin, $order, $options);
+        return $this->items[$title] = new Item($title, $icon, $routeName, $auth, $admin, $order, $category, $options);
     }
 
     /**
      * Add a sub item to an existing item
      *
-     * @param string $key
-     * @param string $title
-     * @param string $icon
-     * @param string $routeName
-     * @param bool   $auth
-     * @param bool   $admin
-     * @param int    $order
-     *
-     * @param array  $options
+     * @param string      $key
+     * @param string      $title
+     * @param string      $icon
+     * @param string      $routeName
+     * @param bool        $auth
+     * @param bool        $admin
+     * @param int         $order
+     * @param null|string $category
+     * @param array       $options
      *
      * @return \Stpronk\View\Services\Navigation\Item
      * @throws \Exception
      */
-    public function addSubItemToExisting (string $key, string $title, string $icon, string $routeName, bool $auth, bool $admin, int $order, array $options = []) : Item
+    public function addSubItemToExisting (string $key, string $title, string $icon, string $routeName, bool $auth, bool $admin, int $order, ?string $category = null, array $options = []) : Item
     {
         if (!isset($this->items[$key])) {
             Throw new \Exception("The item you are trying to add an sub item to does not exists: \"{$key}\"", '500');
         }
 
-        $this->items[$title]->addSubItem($title, $icon, $routeName, $auth, $admin, $order, $options);
+        $this->items[$title]->addSubItem($title, $icon, $routeName, $auth, $admin, $order, $category, $options);
 
         return $this->items[$title];
     }

@@ -12,6 +12,7 @@ class Item
     public $auth;
     public $admin;
     public $order;
+    public $category = null;
     public $subMenu = [];
     public $options = [];
 
@@ -22,13 +23,14 @@ class Item
     /**
      * Item constructor.
      *
-     * @param string $title
-     * @param string $icon
-     * @param string $route
-     * @param bool   $auth
-     * @param bool   $admin
-     * @param int    $order
-     * @param array  $options
+     * @param string      $title
+     * @param string      $icon
+     * @param string      $route
+     * @param bool        $auth
+     * @param bool        $admin
+     * @param int         $order
+     * @param null|string $category
+     * @param array       $options
      */
     public function __construct(
         string $title,
@@ -37,6 +39,7 @@ class Item
         bool $auth,
         bool $admin,
         int $order,
+        ?string $category,
         array $options = []
     ) {
         $this->title = $title;
@@ -45,6 +48,7 @@ class Item
         $this->auth = $auth;
         $this->admin = $admin;
         $this->order = $order;
+        $this->category = $category;
         $this->subMenu = [];
         $this->options = $options;
     }
@@ -55,13 +59,15 @@ class Item
      * @param string $routeName
      * @param bool   $auth
      * @param bool   $admin
+     * @param string $category
      * @param int    $order
+     * @param array  $options
      *
      * @return $this
      */
-    public function addSubItem (string $title, string $icon, string $routeName, bool $auth, bool $admin, int $order) : Item
+    public function addSubItem (string $title, string $icon, string $routeName, bool $auth, bool $admin, int $order, ?string $category = null, array $options = []) : Item
     {
-        $this->subMenu[] = new Item($title, $icon, $routeName, $auth, $admin, $order);
+        $this->subMenu[] = new Item($title, $icon, $routeName, $auth, $admin, $order, $category, $options);
 
         return $this;
     }
@@ -78,6 +84,7 @@ class Item
             'auth'       => $this->auth,
             'admin'      => $this->admin,
             'order'      => $this->order,
+            'category'   => $this->category,
             'sub-active' => $this->isSubActive(),
             'active'     => $this->isActive(),
             'has-sub'    => $this->hasSubMenu(),

@@ -50,7 +50,7 @@ class AppServiceProvider extends ServiceProvider
          */
         Navigation::addItem('Users', 'users', 'users.index', true, true, 3);
 
-        Navigation::addItem('Site', 'globe', 'site.index', true, true, 4, ['hide-sub-menu' => true])
+        Navigation::addItem('Site', 'globe', 'site.index', true, true, 4, null,['hide-sub-menu' => true])
             ->addSubItem('', 'home', 'site.index', true, true, 0)
             ->addSubItem('Analytics', 'search', 'site.analytics', true, true, 1)
             ->addSubItem('Portfolio', 'briefcase', 'site.portfolio', true, true, 2);
