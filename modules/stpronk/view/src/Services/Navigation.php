@@ -2,9 +2,6 @@
 
 namespace Stpronk\View\Services;
 
-use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Str;
 use Illuminate\Contracts\View\View;
 use Stpronk\View\Services\Navigation\Item;
 
@@ -195,24 +192,6 @@ class Navigation {
     protected function filterNavigation (string $type) : array
     {
         return (new $this->types[$type]($this->items))->filter();
-    }
-
-    /**
-     * Set the navigation to an array to be used within the blades
-     *
-     * @param array $items
-     *
-     * @return array
-     */
-    protected function navigationToArray(array $items) : array
-    {
-        $items = collect($items)->mapWithKeys(function($item) {
-            $item = $item->toArray();
-
-            return [$item['order'] => $item];
-        })->toArray();
-
-        return $items;
     }
 }
 
