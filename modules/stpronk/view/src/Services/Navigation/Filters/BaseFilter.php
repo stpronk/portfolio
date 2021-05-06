@@ -23,7 +23,8 @@ class BaseFilter {
     {
         $this->options = $options;
         $this->items = $items;
-        $this->items = $this->navigationToArray();
+
+        $this->navigationToArray();
     }
 
     /**
@@ -41,6 +42,6 @@ class BaseFilter {
             return strcmp($a['order'], $b['order']);
         });
 
-        return $items;
+        return $this->items = $items;
     }
 }
