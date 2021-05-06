@@ -22,23 +22,24 @@ class BaseFilter {
     public function __construct(array $items, array $options)
     {
         $this->options = $options;
-        $this->items = $this->navigationToArray($items);
+        $this->items = $items;
+        $this->items = $this->navigationToArray();
     }
 
     /**
      * Set the navigation to an array to be used within the blades
      *
-     * @param array $items
-     *
      * @return array
      */
-    protected function navigationToArray(array $items) : array
+    protected function navigationToArray() : array
     {
-        $items = collect($items)->mapWithKeys(function($item) {
-            $item = $item->toArray();
-
-            return [$item['order'] => $item];
+        $items = collect($this->items)->map(function($item) {
+            return $item->toArray();
         })->toArray();
+
+        usort($items, function ($a, $b) {
+            return strcmp($a['order'], $b['order']);
+        });
 
         return $items;
     }
