@@ -5,7 +5,7 @@ Namespace Stpronk\View\Services\Navigation\Filters;
 use Illuminate\Support\Arr;
 use Stpronk\View\Services\Navigation\Interfaces\FilterInterface;
 
-class Group extends BaseType implements FilterInterface {
+class Group extends BaseFilter implements FilterInterface {
 
     /**
      * Filter the navigation array

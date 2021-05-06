@@ -6,7 +6,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Stpronk\View\Services\Navigation\Interfaces\FilterInterface;
 
-class General extends BaseType implements FilterInterface {
+class General extends BaseFilter implements FilterInterface {
 
     /**
      * Filter the navigation array

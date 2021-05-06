@@ -2,7 +2,7 @@
 
 Namespace Stpronk\View\Services\Navigation\Filters;
 
-class BaseType {
+class BaseFilter {
 
     /**
      * All navigation items

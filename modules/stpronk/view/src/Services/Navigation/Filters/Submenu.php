@@ -6,7 +6,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Stpronk\View\Services\Navigation\Interfaces\FilterInterface;
 
-class Submenu extends BaseType implements FilterInterface {
+class Submenu extends BaseFilter implements FilterInterface {
 
     /**
      * Filter the navigation array
