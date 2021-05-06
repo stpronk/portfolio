@@ -6,10 +6,10 @@ return [
         'submenu' => 'view::navigation.styles.submenu',
     ],
 
-    'types' => [
-        'general' => 'Stpronk\\View\\Services\\Navigation\\Types\\General',
-        'group'   => 'Stpronk\\View\\Services\\Navigation\\Types\\Group',
-        'admin'   => 'Stpronk\\View\\Services\\Navigation\\Types\\Admin',
-        'submenu' => 'Stpronk\\View\\Services\\Navigation\\Types\\Submenu',
+    'filters' => [
+        'general' => 'Stpronk\\View\\Services\\Navigation\\Filters\\General',
+        'group'   => 'Stpronk\\View\\Services\\Navigation\\Filters\\Group',
+        'admin'   => 'Stpronk\\View\\Services\\Navigation\\Filters\\Admin',
+        'submenu' => 'Stpronk\\View\\Services\\Navigation\\Filters\\Submenu',
     ]
 ];

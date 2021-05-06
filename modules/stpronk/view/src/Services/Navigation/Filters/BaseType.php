@@ -1,6 +1,6 @@
 <?php
 
-Namespace Stpronk\View\Services\Navigation\Types;
+Namespace Stpronk\View\Services\Navigation\Filters;
 
 class BaseType {
 

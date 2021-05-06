@@ -2,6 +2,6 @@
 
 Namespace Stpronk\View\Services\Navigation\Interfaces;
 
-interface TypeInterface {
+interface FilterInterface {
     public function filter();
 }

@@ -1,12 +1,12 @@
 <?php
 
-Namespace Stpronk\View\Services\Navigation\Types;
+Namespace Stpronk\View\Services\Navigation\Filters;
 
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
-use Stpronk\View\Services\Navigation\Interfaces\TypeInterface;
+use Stpronk\View\Services\Navigation\Interfaces\FilterInterface;
 
-class Submenu extends BaseType implements TypeInterface {
+class Submenu extends BaseType implements FilterInterface {
 
     /**
      * Filter the navigation array

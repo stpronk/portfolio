@@ -8,8 +8,7 @@ use Stpronk\View\Services\Navigation\Item;
 class Navigation {
 
     // TODO: Redo all the http error messages and codes
-
-    // TODO: Add a default group option to every type if a group has been given in the options
+    // TODO: Add a default group option to every filter if a group has been given in the options
 
     /**
      * @var array
@@ -26,22 +25,22 @@ class Navigation {
     protected $styles = [];
 
     /**
-     * Available types for the navigation
+     * Available filters for the navigation
      *
      * @var array
      */
-    protected $types = [];
+    protected $filters = [];
 
     /**
      * Navigation constructor.
      *
      * @param array $styles
-     * @param array $types
+     * @param array $filters
      */
-    public function __construct(array $styles = [], array $types = [])
+    public function __construct(array $styles = [], array $filters = [])
     {
         $this->setStyles($styles);
-        $this->setTypes($types);
+        $this->setFilters($filters);
     }
 
     /**
@@ -57,15 +56,15 @@ class Navigation {
     }
 
     /**
-     * set types for the navigation
+     * set filters for the navigation
      *
-     * @param array $types
+     * @param array $filters
      *
      * @return array
      */
-    protected function setTypes(array $types) : array
+    protected function setFilters(array $filters) : array
     {
-        return $this->types = array_merge(config('view.navigation.types'), $types);
+        return $this->filters = array_merge(config('view.navigation.filters'), $filters);
     }
 
     /**
@@ -73,7 +72,7 @@ class Navigation {
      *
      * if desired, could be overwritten within the app space when extending this class
      *
-     * Types should be added within an array in the following fashion: [
+     * filters should be added within an array in the following fashion: [
      *      'Name' => 'path.to.blade'
      * ]
      *
@@ -85,28 +84,28 @@ class Navigation {
     }
 
     /**
-     * Returns all the types that are available within the system
+     * Returns all the filters that are available within the system
      *
      * if desired, could be overwritten within the app space when extending this class
      *
      * @return array
      */
-    protected function types() : array
+    protected function filters() : array
     {
-        return $this->types;
+        return $this->filters;
     }
 
     /**
-     * Filter the navigation based on the type given
+     * Filter the navigation based on the filter given
      *
-     * @param string $type
+     * @param string $filter
      * @param array  $options
      *
      * @return array|string|void
      */
-    protected function filterNavigation (string $type, array $options) : array
+    protected function filterNavigation (string $filter, array $options) : array
     {
-        return (new $this->types[$type]($this->items, $options))->filter();
+        return (new $this->filters[$filter]($this->items, $options))->filter();
     }
 
 
@@ -166,23 +165,23 @@ class Navigation {
     }
 
     /**
-     * Generate a type for navigation that is desired
+     * Generate a filter for navigation that is desired
      *
-     * @param null|string $type
+     * @param null|string $filter
      * @param null|string $style
      * @param array       $options
      *
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      * @throws \Exception
      */
-    public function generate (string $type = null, string $style = null, array $options = []) : View
+    public function generate (string $filter = null, string $style = null, array $options = []) : View
     {
-        if(!$type) {
-            Throw new \Exception('A type needs to given to load the right items, please refer to the documentation for the available types or use one of the following: '.implode(', ', $this->types()), 500);
+        if(!$filter) {
+            Throw new \Exception('A filter needs to given to load the right items, please refer to the documentation for the available filters or use one of the following: '.implode(', ', $this->filters()), 500);
         }
 
-        if(!isset($this->types()[$type])) {
-            Throw new \Exception("The type that has been given is not known within our system, given type: \"{$type}\"", 500);
+        if(!isset($this->filters()[$filter])) {
+            Throw new \Exception("The filter that has been given is not known within our system, given filter: \"{$filter}\"", 500);
         }
 
         if(!$style) {
@@ -193,7 +192,7 @@ class Navigation {
             Throw new \Exception("The style that has been given is not known within our system, given style: \"{$style}\"", 500);
         }
 
-        $items = $this->filterNavigation($type, $options);
+        $items = $this->filterNavigation($filter, $options);
 
         return view($this->styles()[$style], [
             'navigation' => $items

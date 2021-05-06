@@ -1,11 +1,11 @@
 <?php
 
-Namespace Stpronk\View\Services\Navigation\Types;
+Namespace Stpronk\View\Services\Navigation\Filters;
 
 use Illuminate\Support\Arr;
-use Stpronk\View\Services\Navigation\Interfaces\TypeInterface;
+use Stpronk\View\Services\Navigation\Interfaces\FilterInterface;
 
-class Admin extends BaseType implements TypeInterface {
+class Admin extends BaseType implements FilterInterface {
 
     /**
      * Filter the navigation array
