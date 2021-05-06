@@ -7,6 +7,7 @@ use Illuminate\Support\Str;
 class Item
 {
     // TODO: Clean up this class and add PHPDOCS
+    // TODO: Create docs for the options and what can be given through to the items
 
     public $title;
     public $icon;
