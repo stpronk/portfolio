@@ -8,14 +8,12 @@ class Item
 {
     // TODO: Clean up this class and add PHPDOCS
     // TODO: Create docs for the options and what can be given through to the items
+    // TODO | Change the place where this class will be set to an array (Might need more work then expected (Expected place is the compiler class))
 
     public $title;
     public $icon;
     public $route;
-    public $auth;
-    public $admin;
     public $order;
-    public $group = null;
     public $subMenu = [];
     public $options = [];
 
@@ -38,43 +36,18 @@ class Item
     public function __construct(
         string $title,
         string $icon,
-        ?string $route,
-        bool $auth,
-        bool $admin,
-        ?string $group,
+        ?string $routeName,
         ?int $order,
-        array $options = []
+        ?array $options,
+        ?Builder $submenu
     ) {
         $this->title = $title;
         $this->icon = $icon;
-        $this->route = $route;
-        $this->auth = $auth;
-        $this->admin = $admin;
+        $this->route = $routeName;
         $this->order = $order ?? 0;
-        $this->group = $group;
         $this->subMenu = [];
-        $this->options = $options;
-    }
-
-    /**
-     * Add a sub item to an item
-     *
-     * @param string      $title
-     * @param string      $icon
-     * @param null|string $routeName
-     * @param bool        $auth
-     * @param bool        $admin
-     * @param null|string $group
-     * @param null|int    $order
-     * @param array       $options
-     *
-     * @return $this
-     */
-    public function addSubItem (string $title, string $icon, ?string $routeName, bool $auth, bool $admin, ?string $group = null, ?int $order = null, array $options = []) : Item
-    {
-        $this->subMenu[] = new Item($title, $icon, $routeName, $auth, $admin, $group, $order, $options);
-
-        return $this;
+        $this->options = $options ?? [];
+        $this->subMenu = $submenu;
     }
 
     /**

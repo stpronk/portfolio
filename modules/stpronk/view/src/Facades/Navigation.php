@@ -9,9 +9,8 @@ use \Illuminate\Support\Facades\Facade;
  *
  * @package Stpronk\View\Facades
  *
- * @method static \Stpronk\View\Services\Navigation\Item addItem(string $title, string $icon, string $routeName, bool $auth, bool $admin, string $group = null, int $order = null, array $options = []) Add item to navigation
- * @method static \Stpronk\View\Services\Navigation\Item addSubItemToExisting(string $key, string $title, string $icon, string $routeName, bool $auth, bool $admin, string $group = null, int $order = null, array $options = []) Add sub-item to existing navigation item
- * @method static \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View generate(string $style, string $type, array $options = []) Generate a navigation
+ * @method static \Stpronk\View\Services\Navigation\Builder group(string $name)
+ * @method static \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View generate(string $group, string $style, array $filters = [], array $options = []) Generate a navigation
  */
 class Navigation extends Facade
 {

@@ -2,24 +2,21 @@
 
 Namespace Stpronk\View\Services\Navigation\Filters;
 
-use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Auth;
 use Stpronk\View\Services\Navigation\Interfaces\FilterInterface;
+use Stpronk\View\Services\Navigation\Item;
 
 class General extends BaseFilter implements FilterInterface {
 
     /**
      * Filter the navigation array
      *
-     * @return array
+     * @param \Stpronk\View\Services\Navigation\Item $item
+     *
+     * @return bool
      */
-    public function filter() : array
+    public function filter(Item $item) : bool
     {
-        return Arr::where($this->items, function ($item) {
-            if ($item['admin']) return false;
-            if ($item['auth'] && !( $item['auth'] && Auth::check() )) return false;
-
-            return true;
-        });
+        // TODO | Create this filter
+        return true;
     }
 }
