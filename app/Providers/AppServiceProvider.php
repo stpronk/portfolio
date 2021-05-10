@@ -84,10 +84,21 @@ class AppServiceProvider extends ServiceProvider
 
         Navigation::group('general')
             ->addItem('Dashboard', 'th', 'home', 0)
-            ->addItem('Assignments','files-o', null, 1, null, function (Builder $builder) {
-                $builder->addItem('Dealer', 'car', 'assignment.dealer', 0)
-                        ->addItem('Event planner', 'calendar', 'assignment.event-planner', 1);
+            ->addItem('Assignments','files-o', null, 1, function (Builder $b) {
+                $b->addItem('Dealer', 'car', 'assignment.dealer', 0)
+                  ->addItem('Event planner', 'calendar', 'assignment.event-planner', 1);
             })
             ->addItem('Finance', 'money', 'finance.index', 2);
+        /**
+         * ---------- ADMIN ROUTES ----------
+         */
+
+        Navigation::group('admin')
+            ->addItem('Users', 'users', 'users.index', 3)
+            ->addItem('Site', 'globe', 'site.index', 4, function (Builder $b) {
+               $b->addItem('', 'home', 'site.index', 0)
+                 ->addItem('Analytics', 'search', 'site.analytics', 1)
+                 ->addItem('Portfolio', 'briefcase', 'site.portfolio', 2);
+            }, ['hide-sub-menu' => true]);
     }
 }

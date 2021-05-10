@@ -12,7 +12,7 @@ class Builder
     /**
      * @var string
      */
-    protected $name;
+    public $name;
 
     /**
      * Builder constructor.
@@ -31,57 +31,27 @@ class Builder
      * @param string        $icon
      * @param null|string   $routeName
      * @param null|int      $order
-     * @param null|array    $options
-     * @param null|callable $callback
+     * @param null|callable $submenu
+     *  @param null|array    $options
      *
      * @return \Stpronk\View\Services\Navigation\Builder
      * @throws \Exception
      */
-    public function addItem(string $title, string $icon, ?string $routeName, ?int $order = null, ?array $options = [], ?callable $callback = null) : Builder
+    public function addItem(string $title, string $icon, ?string $routeName, ?int $order = null, ?callable $submenu = null, ?array $options = []) : Builder
     {
+        // Check if there is an item with the same title already in the item array
         if (isset($this->items[$title])) {
             throw new \Exception("This item already exists within the group: \"{$title}\"", '500');
         }
 
         // Execute the call back if it exists
-        if ( $callback ) {
-            $callback($submenu = new Builder('submenu'));
+        if ( $submenu ) {
+            $submenu($submenu = new Builder('submenu'));
         }
 
+        // Set the item within the item array
         $this->items[$title] = new Item($title, $icon, $routeName, $order, $options, $submenu ?? null);
 
         return $this;
     }
-
-
-
-//
-//    TODO | create and way to add sub items to an existing item with sub menu
-//
-//    /**
-//     * Add a sub item to an existing item
-//     *
-//     * @param string      $key
-//     * @param string      $title
-//     * @param string      $icon
-//     * @param null|string $routeName
-//     * @param bool        $auth
-//     * @param bool        $admin
-//     * @param null|string $group
-//     * @param null|int    $order
-//     * @param array       $options
-//     *
-//     * @return \Stpronk\View\Services\Navigation\Item
-//     * @throws \Exception
-//     */
-//    public function addSubItemToExisting (string $key, string $title, string $icon, ?string $routeName, bool $auth, bool $admin, ?string $group = null, ?int $order = null, array $options = []) : Item
-//    {
-//        if (!isset($this->items[$key])) {
-//            Throw new \Exception("The item you are trying to add an sub item to does not exists: \"{$key}\"", '500');
-//        }
-//
-//        $this->items[$title]->addSubItem($title, $icon, $routeName, $auth, $admin, $group, $order, $options);
-//
-//        return $this->items[$title];
-//    }
 }

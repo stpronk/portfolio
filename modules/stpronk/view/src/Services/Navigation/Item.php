@@ -12,7 +12,8 @@ class Item
 
     public $title;
     public $icon;
-    public $route;
+    public $routeName;
+    public $url;
     public $order;
     public $subMenu = [];
     public $options = [];
@@ -24,14 +25,12 @@ class Item
     /**
      * Item constructor.
      *
-     * @param string      $title
-     * @param string      $icon
-     * @param null|string $route
-     * @param bool        $auth
-     * @param bool        $admin
-     * @param null|string $group
-     * @param null|int    $order
-     * @param array       $options
+     * @param string                                         $title
+     * @param string                                         $icon
+     * @param null|string                                    $routeName
+     * @param null|int                                       $order
+     * @param null|array                                     $options
+     * @param null|\Stpronk\View\Services\Navigation\Builder $submenu
      */
     public function __construct(
         string $title,
@@ -43,46 +42,44 @@ class Item
     ) {
         $this->title = $title;
         $this->icon = $icon;
-        $this->route = $routeName;
+        $this->routeName = $routeName;
         $this->order = $order ?? 0;
         $this->subMenu = [];
         $this->options = $options ?? [];
         $this->subMenu = $submenu;
     }
 
-    /**
-     * @return array
-     */
-    public function toArray() : array
-    {
-        $this->additionVariables();
-
-        return [
-            'title'      => $this->title,
-            'icon'       => $this->icon,
-            'route'      => $this->route(),
-            'auth'       => $this->auth,
-            'admin'      => $this->admin,
-            'order'      => $this->order,
-            'group'      => $this->group,
-            'sub-active' => $this->subIsActive,
-            'active'     => $this->isActive,
-            'has-sub'    => $this->hasSubMenu,
-            'hide-sub-menu' => isset($this->options['hide-sub-menu']),
-
-            'sub-menu' => ! $this->subMenu ? null
-                : collect($this->subMenu)->map(function ($item) {
-                    return $item->toArray();
-                })->toArray(),
-        ];
-    }
+//    /**
+//     * @return array
+//     */
+//    public function toArray() : array
+//    {
+//        $this->additionVariables();
+//
+//        return [
+//            'title'         => $this->title,
+//            'icon'          => $this->icon,
+//            'url'           => $this->route(),
+//            'routeName'     => $this->routeName,
+//            'order'         => $this->order,
+//            'sub-active'    => $this->subIsActive,
+//            'active'        => $this->isActive,
+//            'has-sub'       => $this->hasSubMenu,
+//            'hide-sub-menu' => isset($this->options['hide-sub-menu']),
+//
+//            'sub-menu' => ! $this->subMenu ? null
+//                : collect($this->subMenu)->map(function ($item) {
+//                    return $item->toArray();
+//                })->toArray(),
+//        ];
+//    }
 
     /**
      * @return null|string
      */
     public function route() : ?string
     {
-        return $this->route ? route($this->route) : null;
+        return $this->routeName ? route($this->routeName) : null;
     }
 
     /**
@@ -90,11 +87,12 @@ class Item
      *
      * @return void
      */
-    protected function additionVariables () : void
+    public function addAdditionalVariables () : void
     {
         $this->subIsActive = $this->isSubActive();
         $this->isActive    = $this->isActive();
         $this->hasSubMenu  = $this->hasSubMenu();
+        $this->url         = $this->route();
     }
 
 

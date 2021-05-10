@@ -29,7 +29,6 @@ class Navigation {
      * Navigation constructor.
      *
      * @param array $styles
-     * @param array $filters
      */
     public function __construct(array $styles = [])
     {
@@ -74,6 +73,7 @@ class Navigation {
         return $this->groups;
     }
 
+
     /**
      * ********************** FACADE FUNCTIONS **********************
      */
@@ -96,13 +96,11 @@ class Navigation {
         return $this->groups[$name] = new Builder($name);
     }
 
-
     /**
      * Generate a filter for navigation that is desired
      *
      * @param string      $group
      * @param null|string $style
-     * @param array       $filters
      * @param array       $options
      *
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
@@ -128,14 +126,11 @@ class Navigation {
             Throw new \Exception("The style that has been given is not known within our system, given style: \"{$style}\"", 500);
         }
 
-        dump($this->getGroups()[$group]);
-
         // Compile the group to the right format through the compiler
         $items = (new Compiler($this->getGroups()[$group], $options))->compile();
 
-        dd($items);
-
-        return view($this->styles()[$style], [
+        // Return the blade to the front-end
+        return view($this->getStyles()[$style], [
             'navigation' => $items
         ]);
     }

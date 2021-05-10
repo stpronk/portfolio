@@ -24,7 +24,9 @@ Route::get('/', function () {
  * These router all have the admin prefix (Except for the auth routes)
  */
 Auth::routes(['register' => false]);
-Route::get('/dashboard', 'HomeController@index')->name('home');
+Route::group(['middleware' => ['auth']], function () {
+    Route::get('/dashboard', 'HomeController@index')->name('home');
+});
 
 /**
  * ASSIGNMENTS ROUTES

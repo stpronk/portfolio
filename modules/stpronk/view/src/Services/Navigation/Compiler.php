@@ -2,8 +2,15 @@
 
 Namespace Stpronk\View\Services\Navigation;
 
+use Illuminate\Support\Arr;
+
 class Compiler
 {
+
+    /**
+     * @var array
+     */
+    protected $groups;
 
     /**
      * @var \Stpronk\View\Services\Navigation\Builder
@@ -23,6 +30,11 @@ class Compiler
     /**
      * @var array
      */
+    protected $middleware = [];
+
+    /**
+     * @var array
+     */
     protected $options;
 
     /**
@@ -37,8 +49,10 @@ class Compiler
     {
         // Set all values to the right variables
         $this->builder = $builder;
-        $this->items   = $builder->items;
         $this->options = $options;
+
+        // Get all items from the group that os specified
+        $this->items = $this->getItemsFromBuilder($builder);
 
         // Setup some additional variables
         $this->setFilters();
@@ -60,11 +74,11 @@ class Compiler
         // name of the filter they are trying to pass through
         if(isset($this->options['filters'])) {
             collect($this->options['filters'])->map(function ($value, $key) {
-                if (is_array($value) && !isset($this->getFilters()[$key])) {
+                if (is_array($value) && !isset($this->filters[$key])) {
                     Throw new \Exception("The given filter does not exists in our system: \"{$key}\"", 500);
                 }
 
-                if (!is_array($value) && !isset($this->getFilters()[$value])) {
+                if (!is_array($value) && !isset($this->filters[$value])) {
                     Throw new \Exception("The given filter does not exists in our system: \"{$value}\"", 500);
                 }
             });
@@ -82,18 +96,27 @@ class Compiler
     }
 
     /**
-     * Get the defined filters
+     * Get items from the builder that is passed through
+     * -- Sub menu included --
+     *
+     * @param \Stpronk\View\Services\Navigation\Builder $builder
      *
      * @return array
      */
-    protected function getFilters() : array
+    protected function getItemsFromBuilder(Builder $builder) : array
     {
-        return $this->filters;
+        return collect($builder->items)->mapWithKeys(function ($item, $key) {
+            if( $item->subMenu ) {
+                $item->subMenu = $this->getItemsFromBuilder($item->subMenu);
+            }
+
+            return [$key => $item];
+        })->toArray();
     }
 
 
     /**
-     * *************** COMPILE FUNCTIONS ***************
+     * *************** COMPILE FUNCTIONALITIES ***************
      */
 
     /**
@@ -103,9 +126,17 @@ class Compiler
      */
     public function compile() : array
     {
-        $this->executeFilters();
+        // Execute the filters that are given from the front-end
+        if (!isset($options['ignore_filters'])) {
+            $this->filter();
+        }
 
-        return $this->items;
+        if (!isset($options['ignore_middleware'])) {
+            $this->middleware();
+        }
+
+        // Clean up the items and return these to be used in the blade
+        return $this->cleanup($this->items);
     }
 
     /**
@@ -113,15 +144,15 @@ class Compiler
      *
      * @return array
      */
-    protected function executeFilters () : array
+    protected function filter () : array
     {
         if( isset($this->options['filters'])) {
             collect($this->options['filters'])->map(function ($value, $key) {
-                if (is_array($value) && ! isset($this->getFilters()[$key])) {
-                    return $this->items = $this->filter($key, $value);
+                if (is_array($value) && ! isset($this->filters[$key])) {
+                    return $this->items = (new $this->filters[$key]($value))->loopFilter($this->items);
                 }
 
-                return $this->items = $this->filter($value);
+                return $this->items = (new $this->filters[$value]([]))->loopFilter($this->items);
             });
         }
 
@@ -129,16 +160,106 @@ class Compiler
     }
 
     /**
-     * Filter the navigation based on the filter given
+     * find out if middleware passes on routes and such see which items need to be removed
+     * -- Middleware that needs to be checked needs to be specified within the config file
      *
-     * @param string $filter
-     * @param array  $options
-     *
-     * @return array|string|void
+     * @return array
      */
-    protected function filter (string $filter, array $options = []) : array
+    protected function middleware () : array
     {
-        return (new $this->filters[$filter]($options))->loopFilter($this->items);
+        $this->middleware = collect(config('view.navigation.middleware-filters'))->mapWithKeys(function($class, $name) {
+            try {
+                // Try to access the middleware and see if it passes
+                // When it doesn't pass, it will return something so making that the opposite will return false.
+                // When passing, it will access the callback and will in return return false which makes it true in the end.
+                $result = !app($class)->handle(request(), function () { return false; });
+
+            } catch (\Exception $e) {
+                // When an exceptions pops up, we will catch this and this means the middleware has failed.
+                // When it fails, we will simply set the result to false
+                $result = false;
+            }
+
+            // Return de name of the middleware with the given result
+            return [$name => $result];
+        })->toArray();
+
+        return $this->items = $this->filterByMiddleware($this->items);
     }
 
+    /**
+     * Filter the items based on the middleware
+     *
+     * @param array $items
+     *
+     * @return array
+     */
+    protected function filterByMiddleware (array $items) : array
+    {
+        return Arr::where($items, function ($item) {
+            // Get current middleware of the route
+            $currentMiddlewareInRoute = $item->routeName ? \Illuminate\Support\Facades\Route::getRoutes()->getByName($item->routeName)->middleware() : null;
+
+            // Check the middleware for if it passes
+            if( is_array($currentMiddlewareInRoute) ) {
+                foreach ($currentMiddlewareInRoute as $middlewareName) {
+                    if(isset($this->middleware[$middlewareName]) && $this->middleware[$middlewareName] !== true) {
+                        return false;
+                    }
+                }
+            };
+
+            // If something else has been send through then an array or null then we will throw an error
+            if( !is_null($currentMiddlewareInRoute) && !is_array($currentMiddlewareInRoute)) {
+                Throw new \Exception("Current route middleware is different then expended, route: \"{$item->routeName}\"", 500);
+            }
+
+            // Filter the sub menu as well if it's present
+            if( $item->subMenu && !empty($item->subMenu)) {
+                $this->filterByMiddleware($item->subMenu);
+            }
+
+            // Everything is good :ok_hand:
+            return true;
+        });
+    }
+
+    /**
+     * Clean up the items in the navigation
+     * -- By removing items that don't have a route and sub menu
+     * -- Sort the items by the order given
+     *
+     * @param array $items
+     *
+     * @return array
+     */
+    protected function cleanup(array $items) : array
+    {
+        // Remove items that don't have a route and sub menu
+        // and add additional variables
+        $items = collect($items)->mapWithKeys(function($item, $key) {
+            // Begin with the cleanup on the sub items if they are set
+            if( $item->subMenu || !empty($item->subMenu) ) {
+                $item->subMenu = $this->cleanup($item->subMenu);
+            }
+
+            // Remove the item if it's route and sub menu are null or empty
+            if( !$item->route() && ( !$item->subMenu || empty($item->subMenu) ) ) {
+                return [];
+            }
+
+            // Add the additional variables that are needed
+            $item->addAdditionalVariables();
+
+            return [$key => $item];
+        })->toArray();
+
+        // Sort the items on order
+        usort($items, function ($a, $b) {
+            return strcmp($a->order, $b->order);
+        });
+
+        // return the items again
+        return $items;
+    }
 }

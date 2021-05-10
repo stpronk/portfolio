@@ -56,7 +56,10 @@
                                 Admin Area
                             </span>
 
-{{--                            {{ \Stpronk\View\Facades\Navigation::generate('admin', 'general')  }}--}}
+                            {{ \Stpronk\View\Facades\Navigation::generate('admin', 'general', [
+                                    'ignore_middleware' => true,
+                                    'ignore_filters' => true
+                                ])  }}
                         </div>
                     @endif
                     {{-- End --- Admin nav --}}

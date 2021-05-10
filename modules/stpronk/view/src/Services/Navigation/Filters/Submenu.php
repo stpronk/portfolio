@@ -2,8 +2,6 @@
 
 Namespace Stpronk\View\Services\Navigation\Filters;
 
-use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
 use Stpronk\View\Services\Navigation\Interfaces\FilterInterface;
 use Stpronk\View\Services\Navigation\Item;
 
@@ -12,8 +10,9 @@ class Submenu extends BaseFilter implements FilterInterface {
     /**
      * Filter the navigation array
      *
-     * @return array
-     * @throws \Exception
+     * @param \Stpronk\View\Services\Navigation\Item $item
+     *
+     * @return bool
      */
     public function filter(Item $item) : bool
     {
