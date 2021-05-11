@@ -52,7 +52,6 @@ class AppServiceProvider extends ServiceProvider
             })
             ->addItem('Finance', 'money', 'finance.index', 2);
 
-
         /**
          * ---------- ADMIN MENU ----------
          */
