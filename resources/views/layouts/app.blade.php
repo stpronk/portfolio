@@ -40,7 +40,7 @@
                 </div>
                 {{-- End --- Profile section --}}
 
-                {{ \Stpronk\View\Facades\Navigation::generate('general', 'general', ['filters' => ['general']]) }}
+                {{ \Stpronk\View\Facades\Navigation::generateMenu('general', 'general', ['filters' => ['general']]) }}
 
                 {{-- Login/Logout section --}}
                 @guest
@@ -56,7 +56,7 @@
                                 Admin Area
                             </span>
 
-                            {{ \Stpronk\View\Facades\Navigation::generate('admin', 'general', [
+                            {{ \Stpronk\View\Facades\Navigation::generateMenu('admin', 'general', [
                                     'ignore_middleware' => true,
                                     'ignore_filters' => true
                                 ])  }}

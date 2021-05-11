@@ -10,7 +10,7 @@ use \Illuminate\Support\Facades\Facade;
  * @package Stpronk\View\Facades
  *
  * @method static \Stpronk\View\Services\Navigation\Builder group(string $name)
- * @method static \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View generate(string $group, string $style, array $filters = [], array $options = []) Generate a navigation
+ * @method static \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View generateMenu(string $group, string $style, array $filters = [], array $options = []) Generate a navigation
  */
 class Navigation extends Facade
 {

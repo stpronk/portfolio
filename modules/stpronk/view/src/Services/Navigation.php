@@ -106,7 +106,7 @@ class Navigation {
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      * @throws \Exception
      */
-    public function generate (string $group, string $style, array $options = []) : View
+    public function generateMenu (string $group, string $style, array $options = []) : View
     {
         // Groups validation
         if(!$group) {
