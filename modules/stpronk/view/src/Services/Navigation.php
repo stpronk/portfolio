@@ -9,8 +9,6 @@ use Stpronk\View\Services\Navigation\Compiler;
 
 class Navigation {
 
-    // TODO: Redo all the http error messages and codes
-
     /**
      * @var array
      */
@@ -110,20 +108,20 @@ class Navigation {
     {
         // Groups validation
         if(!$group) {
-            Throw new Exception('A group needs to given to load the right items, please use one of the following: '.implode(', ', array_keys($this->getGroups())), 500);
+            Throw new Exception('A group needs to given to load the right items, please use one of the following: '.implode(', ', array_keys($this->getGroups())), 412);
         }
 
         if(!isset($this->getGroups()[$group])) {
-            Throw new Exception("The group that has been given is not known within our system, given group: \"{$group}\"", 500);
+            Throw new Exception("The group that has been given is not known within our system, given group: \"{$group}\"", 400);
         }
 
         // Style validation
         if(!$style) {
-            Throw new Exception('A style needs to be given to the generate function, please refer to the documentation to the available styles or use one of the following: '.implode(', ', array_keys($this->getStyles())), 500);
+            Throw new Exception('A style needs to be given to the generate function, please refer to the documentation to the available styles or use one of the following: '.implode(', ', array_keys($this->getStyles())), 412);
         }
 
         if(!isset($this->getStyles()[$style])) {
-            Throw new Exception("The style that has been given is not known within our system, given style: \"{$style}\"", 500);
+            Throw new Exception("The style that has been given is not known within our system, given style: \"{$style}\"", 400);
         }
 
         // Compile the group to the right format through the compiler
