@@ -1,0 +1,11 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="GroupTest.test_user_can_create_a_new_finance_group_and_redirects_to_the_new_group_page" type="PHPUnitRunConfigurationType" factoryName="PHPUnit">
+    <CommandLine>
+      <PhpTestInterpreterSettings>
+        <option name="interpreterName" value="PHP 7.3" />
+      </PhpTestInterpreterSettings>
+    </CommandLine>
+    <TestRunner class="Tests\Feature\Finance\GroupTest" configuration_file="$PROJECT_DIR$/phpunit.xml" coverage_engine="PHPDBG" file="$PROJECT_DIR$/tests/Feature/Finance/GroupTest.php" method="test_user_can_create_a_new_finance_group_and_redirects_to_the_new_group_page" scope="Method" />
+    <method v="2" />
+  </configuration>
+</component>

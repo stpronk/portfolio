@@ -1,0 +1,11 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="CategoryTest.test_user_should_be_able_to_updated_an_existing_category_while_being_validated" type="PHPUnitRunConfigurationType" factoryName="PHPUnit">
+    <CommandLine>
+      <PhpTestInterpreterSettings>
+        <option name="interpreterName" value="PHP 7.3" />
+      </PhpTestInterpreterSettings>
+    </CommandLine>
+    <TestRunner class="Tests\Unit\Finance\Livewire\CategoryTest" configuration_file="$PROJECT_DIR$/phpunit.xml" coverage_engine="PHPDBG" file="$PROJECT_DIR$/tests/Unit/Finance/Livewire/CategoryTest.php" method="test_user_should_be_able_to_updated_an_existing_category_while_being_validated" scope="Method" />
+    <method v="2" />
+  </configuration>
+</component>

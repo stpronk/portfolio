@@ -95,7 +95,7 @@ class Navigation {
     }
 
     /**
-     * Generate a filter for navigation that is desired
+     * Generate a filter for navigation group that is desired
      *
      * @param string      $group
      * @param null|string $style

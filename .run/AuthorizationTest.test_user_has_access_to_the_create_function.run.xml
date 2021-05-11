@@ -1,0 +1,11 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="AuthorizationTest.test_user_has_access_to_the_create_function" type="PHPUnitRunConfigurationType" factoryName="PHPUnit">
+    <CommandLine>
+      <PhpTestInterpreterSettings>
+        <option name="interpreterName" value="PHP 7.3" />
+      </PhpTestInterpreterSettings>
+    </CommandLine>
+    <TestRunner class="Tests\unit\Finance\AuthorizationTest" configuration_file="$PROJECT_DIR$/phpunit.xml" coverage_engine="PHPDBG" file="$PROJECT_DIR$/tests/Unit/Finance/AuthorizationTest.php" method="test_user_has_access_to_the_create_function" scope="Method" />
+    <method v="2" />
+  </configuration>
+</component>
