@@ -42,45 +42,58 @@
 
                 {{ \Stpronk\View\Facades\Navigation::generateMenu('general', 'general', ['filters' => ['general']]) }}
 
-                {{-- Login/Logout section --}}
-                @guest
-                    <a class="btn btn-link text-light d-fill" href="{{ route('login') }}">
-                        <i class="fa fa-sign-in"></i> {{ __('Login') }}
-                    </a>
-                @else
+                {{-- Admin nav --}}
+                @if(Auth::user()->is_admin)
+                    <div class="d-block pb-5">
+                        <span class="text-white text-uppercase avenir-bold pb-2 px-4">
+                            Admin Area
+                        </span>
 
-                    {{-- Admin nav --}}
-                    @if(Auth::user()->is_admin)
-                        <div class="d-block pb-5">
-                            <span class="text-white text-uppercase avenir-bold pb-2 px-4">
-                                Admin Area
-                            </span>
-
-                            {{ \Stpronk\View\Facades\Navigation::generateMenu('admin', 'general', [
-                                    'ignore_middleware' => true,
-                                    'ignore_filters' => true
-                                ])  }}
-                        </div>
-                    @endif
-                    {{-- End --- Admin nav --}}
-
-                    <a class="btn btn-link text-light d-fill" href="{{ route('logout') }}"
-                       onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                        <i class="fa fa-sign-out"></i> {{ __('Logout') }} </a>
-
-                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                        @csrf
-                    </form>
-                @endguest
-                {{-- End --- Login/Logout section --}}
-
+                        {{ \Stpronk\View\Facades\Navigation::generateMenu('admin', 'general', [
+                                'ignore_middleware' => true,
+                                'ignore_filters' => true
+                            ])  }}
+                    </div>
+                @endif
+                {{-- End --- Admin nav --}}
             </div>
         </div>
 
         <div class="flex-fill d-flex flex-column">
             {{-- Top navigation --}}
-{{--                {{ \Stpronk\View\Facades\Navigation::generate('submenu', 'submenu')  }}--}}
+{{-- TODO: Style tag should be removed when ready --- Should find an alternative to the inline style --}}
+            <div class="w-100 bg-light shadow px-2" style="height: 50px">
+                <div class="d-flex flex-row h-100">
+                    <div class="flex-fill">
+{{-- TODO | Make implementation for breadcrums --}}
+                    </div>
+                    <div class="h-100">
+                        @guest
+                            <a class="btn btn-link h-100 rounded-0 d-fill py-2 px-2 mx-2" href="{{ route('login') }}">
+                                <i class="fa fa-sign-in"></i> {{ __('Login') }}
+                            </a>
+                        @else
+                            <a class="btn btn-link h-100 px-2 mx-2 d-flex align-items-center rounded-0 dropdown-toggle" href="#{{ auth()->user()->name }}" data-toggle="dropdown">
+                                <span class="pl-1 pr-1 text">{{ auth()->user()->name }}</span>
+                            </a>
+
+                            <div class="dropdown-menu py-0">
+                                {{ \Stpronk\View\Facades\Navigation::generateMenu('user', 'dropdown', ['ignore_middleware' => true]) }}
+
+                                <div class="dropdown-divider my-0"></div>
+                                <a class="btn btn-dark rounded-0 d-flex justify-content-between align-items-center px-2" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                    <span>{{ __("Logout") }}</span>
+                                    <i class="fa fa-sign-out pb-1 pr-1"></i>
+                                </a>
+
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                    @csrf
+                                </form>
+                            </div>
+                        @endguest
+                    </div>
+                </div>
+            </div>
             {{-- End --- Top navigation --}}
 
             {{-- Extension top navigation for assignment --}}

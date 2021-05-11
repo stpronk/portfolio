@@ -2,7 +2,8 @@
 
 return [
     'styles' => [
-        'general' => 'view::navigation.styles.general',
+        'general'  => 'view::navigation.styles.general',
+        'dropdown' => 'view::navigation.styles.dropdown'
     ],
 
     'filters' => [
