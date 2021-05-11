@@ -41,58 +41,21 @@ class AppServiceProvider extends ServiceProvider
      */
     public function bootNavigation()
     {
-//        Navigation::addItem('Dashboard', 'th', 'home', true, false, 'dashboard', 0);
-//
-//        Navigation::addItem('Assignments','files-o', null, false, false, 'assignments', 1)
-//            ->addSubItem('Dealer', 'car', 'assignment.dealer', false, false, 'assignments', 0)
-//            ->addSubItem('Event planner', 'calendar', 'assignment.event-planner', false, false, 'assignments', 1);
-//
-//        Navigation::addItem('Finance', 'money', 'finance.index', true, false, 'finance', 2);
-//
-//        /**
-//         * ---------- ADMIN ROUTES ----------
-//         */
-//        Navigation::addItem('Users', 'users', 'users.index', true, true, 'users', 3);
-//
-//        Navigation::addItem('Site', 'globe', 'site.index', true, true, 'site', 4, ['hide-sub-menu' => true])
-//            ->addSubItem('', 'home', 'site.index', true, true, 'site', 0)
-//            ->addSubItem('Analytics', 'search', 'site.analytics', true, true, 'site', 1)
-//            ->addSubItem('Portfolio', 'briefcase', 'site.portfolio', true, true, 'site', 2);
-
-//        /**
-//         * ---------- USER ROUTES ----------
-//         */
-//        Navigation::addItem('Profile', 'user', null, true, false, 'auth',3)
-//            ->addSubItem('Settings', 'cog', 'site.analytics', true, false, 'auth',0);
-
-
-
-        // TODO | Desired format:
-
-//        Navigation::group('group_name')                                                           // Select a group that you will add items to
-//            ->addItem('title', 'icon', 'route_name', 0)                                           // Add item with the least amount off parameters
-//            ->addItem('title', 'icon', 'route_name', 0, ['option' => 'value'])                    // Add item with an options array
-//            ->addItem('title', 'icon', 'route_name', 0, null, function ($item) {                  // Use callback to create sub-items
-//                $item->addItem('title', 'icon', 'route_name', 0);                                     // Create sub item in the same way as before
-//                $item->addItem('title', 'icon', 'route_name', 0, ['option' => 'value']);              // Create sub item in the same way with option
-//            })                                                                                        // Can also give another callback to the sub item to create another submenu
-//            ->addItem('title', 'icon', 'route_name', 0, ['option' => 'value']);                   // Add items again to the main group
-
-
-
-        // TODO | Testing items in desired format:
-
+        /**
+         * ---------- GENERAL MENU ----------
+         */
         Navigation::group('general')
             ->addItem('Dashboard', 'th', 'home', 0)
             ->addItem('Assignments','files-o', null, 1, function (Builder $b) {
-                $b->addItem('Dealer', 'car', 'assignment.dealer', 0)
-                  ->addItem('Event planner', 'calendar', 'assignment.event-planner', 1);
+               $b->addItem('Dealer', 'car', 'assignment.dealer', 0)
+                 ->addItem('Event planner', 'calendar', 'assignment.event-planner', 1);
             })
             ->addItem('Finance', 'money', 'finance.index', 2);
-        /**
-         * ---------- ADMIN ROUTES ----------
-         */
 
+
+        /**
+         * ---------- ADMIN MENU ----------
+         */
         Navigation::group('admin')
             ->addItem('Users', 'users', 'users.index', 3)
             ->addItem('Site', 'globe', 'site.index', 4, function (Builder $b) {
@@ -100,5 +63,14 @@ class AppServiceProvider extends ServiceProvider
                  ->addItem('Analytics', 'search', 'site.analytics', 1)
                  ->addItem('Portfolio', 'briefcase', 'site.portfolio', 2);
             }, ['hide-sub-menu' => true]);
+
+        /**
+         * ---------- USER MENU ----------
+         *
+         * This menu will already be under an submenu
+         */
+        Navigation::group('user')
+            ->addItem('Profile', 'user', null, 0)
+            ->addItem('Settings', 'cog', null, 1);
     }
 }
