@@ -3,7 +3,6 @@
 return [
     'styles' => [
         'general' => 'view::navigation.styles.general',
-        'submenu' => 'view::navigation.styles.submenu',
     ],
 
     'filters' => [
