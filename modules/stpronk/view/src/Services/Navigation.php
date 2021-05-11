@@ -119,7 +119,7 @@ class Navigation {
 
         // Style validation
         if(!$style) {
-            Throw new Exception('A style needs to be given to the generate function, please refer to the documentation to the available styles or use one of the following: '.implode(', ', $this->styles()), 500);
+            Throw new Exception('A style needs to be given to the generate function, please refer to the documentation to the available styles or use one of the following: '.implode(', ', array_keys($this->getStyles())), 500);
         }
 
         if(!isset($this->getStyles()[$style])) {
