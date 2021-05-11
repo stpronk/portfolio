@@ -28,6 +28,14 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/dashboard', 'HomeController@index')->name('home');
 });
 
+Route::group([
+    'middleware' => ['auth'],
+    'prefix' => 'user'
+], function () {
+    Route::get('/profile', function () { return 'WIP'; })->name('user.profile');
+    Route::get('/settings', function () { return 'WIP'; })->name('user.settings');
+});
+
 /**
  * ASSIGNMENTS ROUTES
  */

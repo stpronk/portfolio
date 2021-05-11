@@ -65,11 +65,10 @@ class AppServiceProvider extends ServiceProvider
 
         /**
          * ---------- USER MENU ----------
-         *
-         * This menu will already be under an submenu
+         * -- This menu will already be under an submenu
          */
         Navigation::group('user')
-            ->addItem('Profile', 'user', null, 0)
-            ->addItem('Settings', 'cog', null, 1);
+            ->addItem('Profile', 'user', 'user.profile', 0)
+            ->addItem('Settings', 'cog', 'user.settings', 1);
     }
 }
