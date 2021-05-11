@@ -2,6 +2,8 @@
 
 Namespace Stpronk\View\Services\Navigation;
 
+use Exception;
+
 class Builder
 {
     /**
@@ -41,7 +43,7 @@ class Builder
     {
         // Check if there is an item with the same title already in the item array
         if (isset($this->items[$title])) {
-            throw new \Exception("This item already exists within the group: \"{$title}\"", '500');
+            throw new Exception("This item already exists within the group: \"{$title}\"", '500');
         }
 
         // Execute the call back if it exists

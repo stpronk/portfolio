@@ -2,10 +2,10 @@
 
 namespace Stpronk\View\Services;
 
+use Exception;
 use Illuminate\Contracts\View\View;
 use Stpronk\View\Services\Navigation\Builder;
 use Stpronk\View\Services\Navigation\Compiler;
-use Stpronk\View\Services\Navigation\Item;
 
 class Navigation {
 
@@ -110,20 +110,20 @@ class Navigation {
     {
         // Groups validation
         if(!$group) {
-            Throw new \Exception('A group needs to given to load the right items, please use one of the following: '.implode(', ', array_keys($this->getGroups())), 500);
+            Throw new Exception('A group needs to given to load the right items, please use one of the following: '.implode(', ', array_keys($this->getGroups())), 500);
         }
 
         if(!isset($this->getGroups()[$group])) {
-            Throw new \Exception("The group that has been given is not known within our system, given group: \"{$group}\"", 500);
+            Throw new Exception("The group that has been given is not known within our system, given group: \"{$group}\"", 500);
         }
 
         // Style validation
         if(!$style) {
-            Throw new \Exception('A style needs to be given to the generate function, please refer to the documentation to the available styles or use one of the following: '.implode(', ', $this->styles()), 500);
+            Throw new Exception('A style needs to be given to the generate function, please refer to the documentation to the available styles or use one of the following: '.implode(', ', $this->styles()), 500);
         }
 
         if(!isset($this->getStyles()[$style])) {
-            Throw new \Exception("The style that has been given is not known within our system, given style: \"{$style}\"", 500);
+            Throw new Exception("The style that has been given is not known within our system, given style: \"{$style}\"", 500);
         }
 
         // Compile the group to the right format through the compiler

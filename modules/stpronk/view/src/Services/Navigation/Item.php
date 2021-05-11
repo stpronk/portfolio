@@ -6,9 +6,7 @@ use Illuminate\Support\Str;
 
 class Item
 {
-    // TODO: Clean up this class and add PHPDOCS
     // TODO: Create docs for the options and what can be given through to the items
-    // TODO | Change the place where this class will be set to an array (Might need more work then expected (Expected place is the compiler class))
 
     public $title;
     public $icon;
@@ -49,35 +47,12 @@ class Item
         $this->subMenu = $submenu;
     }
 
-//    /**
-//     * @return array
-//     */
-//    public function toArray() : array
-//    {
-//        $this->additionVariables();
-//
-//        return [
-//            'title'         => $this->title,
-//            'icon'          => $this->icon,
-//            'url'           => $this->route(),
-//            'routeName'     => $this->routeName,
-//            'order'         => $this->order,
-//            'sub-active'    => $this->subIsActive,
-//            'active'        => $this->isActive,
-//            'has-sub'       => $this->hasSubMenu,
-//            'hide-sub-menu' => isset($this->options['hide-sub-menu']),
-//
-//            'sub-menu' => ! $this->subMenu ? null
-//                : collect($this->subMenu)->map(function ($item) {
-//                    return $item->toArray();
-//                })->toArray(),
-//        ];
-//    }
-
     /**
+     * get the full url based on the route name
+     *
      * @return null|string
      */
-    public function route() : ?string
+    public function getUrl() : ?string
     {
         return $this->routeName ? route($this->routeName) : null;
     }
@@ -89,10 +64,11 @@ class Item
      */
     public function addAdditionalVariables () : void
     {
+        $this->url         = $this->getUrl();
         $this->subIsActive = $this->isSubActive();
         $this->isActive    = $this->isActive();
         $this->hasSubMenu  = $this->hasSubMenu();
-        $this->url         = $this->route();
+        $this->url         = $this->getUrl();
     }
 
 
@@ -101,9 +77,12 @@ class Item
      */
 
     /**
+     * Find of if an sub menu item is active
+     * TODO | Change this function, it is mostly based on the url containing some of the sub item url
+     *
      * @return bool
      */
-    protected function isSubActive () : bool
+    private function isSubActive () : bool
     {
         if (!$this->subMenu) {
             return false;
@@ -114,25 +93,28 @@ class Item
         }
 
         foreach ($this->subMenu as $key => $item) {
-            if($this->subMenu && ( Str::contains( url()->current(), $item->route()))) {
+            if($this->subMenu && ( Str::contains( url()->current(), $item->url))) {
                 return true;
             }
         }
 
-        return $this->subMenu && ( Str::contains( url()->current(), $this->route()) );
+        return $this->subMenu && ( Str::contains( url()->current(), $this->url) );
     }
 
     /**
+     * Find out if the current item is active
+     * TODO | Might want to reconsider this function if we change the "isSubActive()" function
+     *
      * @return bool
      */
-    protected function isActive () : bool
+    private function isActive () : bool
     {
         // Sub active and hide sub is active means active can't be true
         if ($this->subIsActive && !isset($this->options['hide-sub-menu'])) {
             return false;
         }
 
-        if($this->route() === url()->current() && !$this->subMenu) {
+        if($this->url === url()->current() && !$this->subMenu) {
             return true;
         }
 
@@ -140,7 +122,7 @@ class Item
             return false;
         }
 
-        if ((( $this->subMenu && isset($this->options['hide-sub-menu']) ) &&  Str::contains( url()->current(), $this->route()) ) || ( !$this->subMenu && Str::contains( url()->current(), $this->route()) )) {
+        if ((( $this->subMenu && isset($this->options['hide-sub-menu']) ) &&  Str::contains( url()->current(), $this->url) ) || ( !$this->subMenu && Str::contains( url()->current(), $this->url) )) {
             return true;
         }
 
@@ -148,9 +130,11 @@ class Item
     }
 
     /**
+     * Find out if this item has a submenu
+     *
      * @return bool
      */
-    protected function hasSubMenu () : bool
+    private function hasSubMenu () : bool
     {
         if( $this->subMenu && !isset($this->options['hide-sub-menu']) ) {
             return true;

@@ -2,7 +2,9 @@
 
 Namespace Stpronk\View\Services\Navigation;
 
+use Exception;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Route;
 
 class Compiler
 {
@@ -75,11 +77,11 @@ class Compiler
         if(isset($this->options['filters'])) {
             collect($this->options['filters'])->map(function ($value, $key) {
                 if (is_array($value) && !isset($this->filters[$key])) {
-                    Throw new \Exception("The given filter does not exists in our system: \"{$key}\"", 500);
+                    Throw new Exception("The given filter does not exists in our system: \"{$key}\"", 500);
                 }
 
                 if (!is_array($value) && !isset($this->filters[$value])) {
-                    Throw new \Exception("The given filter does not exists in our system: \"{$value}\"", 500);
+                    Throw new Exception("The given filter does not exists in our system: \"{$value}\"", 500);
                 }
             });
         }
@@ -127,11 +129,11 @@ class Compiler
     public function compile() : array
     {
         // Execute the filters that are given from the front-end
-        if (!isset($options['ignore_filters'])) {
+        if (!isset($this->options['ignore_filters'])) {
             $this->filter();
         }
 
-        if (!isset($options['ignore_middleware'])) {
+        if (!isset($this->options['ignore_middleware'])) {
             $this->middleware();
         }
 
@@ -167,7 +169,8 @@ class Compiler
      */
     protected function middleware () : array
     {
-        $this->middleware = collect(config('view.navigation.middleware-filters'))->mapWithKeys(function($class, $name) {
+        // Loop through the middleware which are specified in the config in order to find out which middleware passes
+        $this->middleware = collect(config('view.navigation.middleware-filters'))->mapWithKeys(function($class, $name) : array {
             try {
                 // Try to access the middleware and see if it passes
                 // When it doesn't pass, it will return something so making that the opposite will return false.
@@ -184,6 +187,7 @@ class Compiler
             return [$name => $result];
         })->toArray();
 
+        // Loop through the items to filter the items based on the results of the middleware
         return $this->items = $this->filterByMiddleware($this->items);
     }
 
@@ -198,7 +202,7 @@ class Compiler
     {
         return Arr::where($items, function ($item) {
             // Get current middleware of the route
-            $currentMiddlewareInRoute = $item->routeName ? \Illuminate\Support\Facades\Route::getRoutes()->getByName($item->routeName)->middleware() : null;
+            $currentMiddlewareInRoute = $item->routeName ? Route::getRoutes()->getByName($item->routeName)->middleware() : null;
 
             // Check the middleware for if it passes
             if( is_array($currentMiddlewareInRoute) ) {
@@ -207,11 +211,11 @@ class Compiler
                         return false;
                     }
                 }
-            };
+            }
 
             // If something else has been send through then an array or null then we will throw an error
             if( !is_null($currentMiddlewareInRoute) && !is_array($currentMiddlewareInRoute)) {
-                Throw new \Exception("Current route middleware is different then expended, route: \"{$item->routeName}\"", 500);
+                Throw new Exception("Current route middleware is different then expended and should be an array, route: \"{$item->routeName}\"", 500);
             }
 
             // Filter the sub menu as well if it's present
@@ -243,8 +247,8 @@ class Compiler
                 $item->subMenu = $this->cleanup($item->subMenu);
             }
 
-            // Remove the item if it's route and sub menu are null or empty
-            if( !$item->route() && ( !$item->subMenu || empty($item->subMenu) ) ) {
+            // Remove the item if the url and sub menu are null or empty
+            if( !$item->getUrl() && ( !$item->subMenu || empty($item->subMenu) ) ) {
                 return [];
             }
 
@@ -254,7 +258,7 @@ class Compiler
             return [$key => $item];
         })->toArray();
 
-        // Sort the items on order
+        // Sort the items on the order variable
         usort($items, function ($a, $b) {
             return strcmp($a->order, $b->order);
         });
