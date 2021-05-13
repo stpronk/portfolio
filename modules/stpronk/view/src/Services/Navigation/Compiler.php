@@ -171,7 +171,7 @@ class Compiler
     protected function middleware () : array
     {
         // Loop through the middleware which are specified in the config in order to find out which middleware passes
-        $this->middleware = collect(config('view.navigation.middleware-filters'))->mapWithKeys(function(&$class, $name) : array {
+        $this->middleware = collect(config('view.navigation.middleware-filters'))->mapWithKeys(function($class, $name) : array {
             try {
                 // Try to access the middleware and see if it passes
                 // When it doesn't pass, it won't be passing the handle request and will not change the passed variable.
