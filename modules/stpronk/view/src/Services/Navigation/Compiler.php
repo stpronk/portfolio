@@ -166,26 +166,35 @@ class Compiler
      * -- Middleware that needs to be checked needs to be specified within the config file
      *
      * @return array
+     * @throws \Exception
      */
     protected function middleware () : array
     {
         // Loop through the middleware which are specified in the config in order to find out which middleware passes
-        $this->middleware = collect(config('view.navigation.middleware-filters'))->mapWithKeys(function($class, $name) : array {
+        $this->middleware = collect(config('view.navigation.middleware-filters'))->mapWithKeys(function(&$class, $name) : array {
             try {
                 // Try to access the middleware and see if it passes
-                // When it doesn't pass, it will return something so making that the opposite will return false.
-                // When passing, it will access the callback and will in return return false which makes it true in the end.
-                $result = !app($class)->handle(request(), function () { return false; });
+                // When it doesn't pass, it won't be passing the handle request and will not change the passed variable.
+                // When we
+                !app($class)->handle(request(), function () use (&$passed) {
+                    $passed = true;
+                });
 
             } catch (\Exception $e) {
                 // When an exceptions pops up, we will catch this and this means the middleware has failed.
-                // When it fails, we will simply set the result to false
-                $result = false;
+                // When it fails, we will simply set passed variable to false
+                $passed = false;
+            }
+
+            // When the variable passed is not set, the middleware failed and we didn't got an exception back to we will set it to false
+            if(!isset($passed)) {
+                $passed = false;
             }
 
             // Return de name of the middleware with the given result
-            return [$name => $result];
+            return [$name => $passed];
         })->toArray();
+
 
         // Loop through the items to filter the items based on the results of the middleware
         return $this->items = $this->filterByMiddleware($this->items);
@@ -197,25 +206,24 @@ class Compiler
      * @param array $items
      *
      * @return array
+     * @throws \Exception;
      */
     protected function filterByMiddleware (array $items) : array
     {
         return Arr::where($items, function ($item) {
             // Get current middleware of the route
-            $currentMiddlewareInRoute = $item->routeName ? Route::getRoutes()->getByName($item->routeName)->middleware() : null;
-
-            // Check the middleware for if it passes
-            if( is_array($currentMiddlewareInRoute) ) {
-                foreach ($currentMiddlewareInRoute as $middlewareName) {
-                    if(isset($this->middleware[$middlewareName]) && $this->middleware[$middlewareName] !== true) {
-                        return false;
-                    }
-                }
-            }
+            $currentMiddlewareInRoute = $item->routeName ? Route::getRoutes()->getByName($item->routeName)->middleware() : [];
 
             // If something else has been send through then an array or null then we will throw an error
-            if( !is_null($currentMiddlewareInRoute) && !is_array($currentMiddlewareInRoute)) {
+            if(!is_array($currentMiddlewareInRoute)) {
                 Throw new Exception("Current route middleware is different then expended and should be an array, route: \"{$item->routeName}\"", 500);
+            }
+
+            // Check the middleware for if it passes
+            foreach ($currentMiddlewareInRoute as $middlewareName) {
+                if(isset($this->middleware[$middlewareName]) && $this->middleware[$middlewareName] !== true) {
+                    return false;
+                }
             }
 
             // Filter the sub menu as well if it's present
