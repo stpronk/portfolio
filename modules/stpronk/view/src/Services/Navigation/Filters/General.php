@@ -16,7 +16,6 @@ class General extends BaseFilter implements FilterInterface {
      */
     public function filter(Item $item) : bool
     {
-        // TODO | Create this filter
         return true;
     }
 }

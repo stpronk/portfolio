@@ -125,6 +125,7 @@ class Compiler
      * Compile the given values to the right format to be used by the blade
      *
      * @return array
+     * @throws \Exception
      */
     public function compile() : array
     {
@@ -186,13 +187,8 @@ class Compiler
                 $passed = false;
             }
 
-            // When the variable passed is not set, the middleware failed and we didn't got an exception back to we will set it to false
-            if(!isset($passed)) {
-                $passed = false;
-            }
-
             // Return de name of the middleware with the given result
-            return [$name => $passed];
+            return [$name => ($passed ?? false)];
         })->toArray();
 
 
@@ -255,8 +251,8 @@ class Compiler
                 $item->subMenu = $this->cleanup($item->subMenu);
             }
 
-            // Remove the item if the url and sub menu are null or empty
-            if( !$item->getUrl() && ( !$item->subMenu || empty($item->subMenu) ) ) {
+            // Remove the item if the route name and sub menu are null or empty
+            if( !$item->routeName && ( !$item->subMenu || empty($item->subMenu) ) ) {
                 return [];
             }
 

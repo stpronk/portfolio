@@ -3,6 +3,7 @@
 Namespace Stpronk\View\Services\Navigation;
 
 use Exception;
+use Illuminate\Support\Str;
 
 class Builder
 {
@@ -41,19 +42,23 @@ class Builder
      */
     public function addItem(string $title, string $icon, ?string $routeName, ?int $order = null, ?callable $submenu = null, ?array $options = []) : Builder
     {
-        // Check if there is an item with the same title already in the item array
-        if (isset($this->items[$title])) {
-            throw new Exception("This item already exists within the group: \"{$title}\"", '500');
-        }
-
         // Execute the call back if it exists
         if ( $submenu ) {
             $submenu($submenu = new Builder('submenu'));
         }
 
-        // Set the item within the item array
-        $this->items[$title] = new Item($title, $icon, $routeName, $order, $options, $submenu ?? null);
+        // Create the item if able
+        $item = new Item($title, $icon, $routeName, $order, $options, $submenu ?? null);
 
+        // Check if there is an item with the same title already in the item array
+        if (isset($this->items[$item->slug])) {
+            throw new Exception("This item already exists within the group: \"{$title}\"", '500');
+        }
+
+        // Set the item within the array under the slug
+        $this->items[$item->slug] = $item;
+
+        // Return the builder itself again
         return $this;
     }
 }

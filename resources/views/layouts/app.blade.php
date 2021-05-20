@@ -43,14 +43,13 @@
                 {{ \Stpronk\View\Facades\Navigation::generateMenu('general', 'general', ['filters' => ['general']]) }}
 
                 {{-- Admin nav --}}
-                @if(Auth::user()->is_admin)
+                @if(Auth()->check() && Auth::user()->is_admin)
                     <div class="d-block pb-5">
                         <span class="text-white text-uppercase avenir-bold pb-2 px-4">
                             Admin Area
                         </span>
 
                         {{ \Stpronk\View\Facades\Navigation::generateMenu('admin', 'general', [
-                                'ignore_middleware' => true,
                                 'ignore_filters' => true
                             ])  }}
                     </div>
