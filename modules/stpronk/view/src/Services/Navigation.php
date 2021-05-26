@@ -4,6 +4,9 @@ namespace Stpronk\View\Services;
 
 use Exception;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Stpronk\View\Services\Navigation\Builder;
 use Stpronk\View\Services\Navigation\Compiler;
 
@@ -124,12 +127,25 @@ class Navigation {
             Throw new Exception("The style that has been given is not known within our system, given style: \"{$style}\"", 400);
         }
 
-        // Compile the group to the right format through the compiler
-        $items = (new Compiler($this->getGroups()[$group], $options))->compile();
+        // Create a unique ID that is constant with the group and options to be used as caching key
+        // TODO | Might want to transfer this to it's own function
+        // TODO | When roles are implemented within the application, this unique id should also implement the role string
+        $uniqueID = md5(Auth::check().$group.'.'.implode('.', Arr::flatten($options)));
+
+        // In case of development, you might want to remove the cache for debugging purpose
+        if ( Cache::has($uniqueID) && !env('APP_REMIND_CACHE') ) {
+            Cache::forget($uniqueID);
+        }
+
+        // If the cache has not been set, compile and set the cache
+        if ( !Cache::has($uniqueID) ) {
+            // Compile the group to the right format through the compiler
+            Cache::put($uniqueID, (new Compiler($this->getGroups()[$group], $options))->compile());
+        }
 
         // Return the blade to the front-end
         return view($this->getStyles()[$style], [
-            'navigation' => $items
+            'navigation' => Cache::get($uniqueID)
         ]);
     }
 }
