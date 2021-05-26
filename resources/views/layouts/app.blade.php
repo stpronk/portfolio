@@ -25,7 +25,7 @@
     <div id="app" class="d-flex h-100">
 
 
-        {{-- TODO: Style tag should be removed when ready --- Should find an alternative to the inline style --}}
+        {{-- TODO | Style tag should be removed when ready --- Should find an alternative to the inline style --}}
         <div style="min-width: 200px" class="h-100 bg-secondary shadow-lg">
             <div class="d-flex flex-column justify-content-between h-100 py-4">
 
@@ -60,7 +60,7 @@
 
         <div class="flex-fill d-flex flex-column">
             {{-- Top navigation --}}
-{{-- TODO: Style tag should be removed when ready --- Should find an alternative to the inline style --}}
+{{-- TODO | Style tag should be removed when ready --- Should find an alternative to the inline style --}}
             <div class="w-100 bg-light shadow px-2" style="height: 50px">
                 <div class="d-flex flex-row h-100">
                     <div class="flex-fill">
@@ -77,7 +77,7 @@
                             </a>
 
                             <div class="dropdown-menu py-0">
-                                {{ \Stpronk\View\Facades\Navigation::generateMenu('user', 'dropdown', ['ignore_middleware' => true]) }}
+                                {{ \Stpronk\View\Facades\Navigation::generateMenu('user', 'dropdown') }}
 
                                 <div class="dropdown-divider my-0"></div>
                                 <a class="btn btn-dark rounded-0 d-flex justify-content-between align-items-center px-2" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">

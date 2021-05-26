@@ -3,7 +3,6 @@
 Namespace Stpronk\View\Services\Navigation;
 
 use Exception;
-use Illuminate\Support\Str;
 
 class Builder
 {

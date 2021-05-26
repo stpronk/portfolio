@@ -10,7 +10,7 @@
             </div>
 
             <p class="text-light px-4">
-                {{-- TODO: Text should be set within a translation script --}}
+                {{-- TODO | Text should be set within a translation script --}}
                 If you forgotten your password, we can send you a e-mail with a link to reset your password. Enter you e-mail address underneath here and we will send you a link if your e-mail address is known in our database.
             </p>
 

@@ -7,7 +7,7 @@
         </ul>
     @endif
 
-{{--  TODO: Should make buttons to let this work better  --}}
+{{--  TODO | Should make buttons to let this work better  --}}
 {{--    <div class="btn-group">--}}
 {{--        <button class="btn btn-outline-secondary"><i class="fa fa-bold"></i></button>--}}
 {{--        <button class="btn btn-outline-secondary"><i class="fa fa-italic"></i></button>--}}

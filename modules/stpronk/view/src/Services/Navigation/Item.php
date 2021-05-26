@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Item
 {
-    // TODO: Create docs for the options and what can be given through to the items
+    // TODO | Create docs for the options and what can be given through to the items
 
     public $title;
     public $icon;
