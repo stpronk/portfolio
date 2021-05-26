@@ -4,7 +4,6 @@ namespace Stpronk\View\Services;
 
 use Exception;
 use Illuminate\Contracts\View\View;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Stpronk\View\Services\Navigation\Builder;
@@ -130,23 +129,38 @@ class Navigation {
         // Create a unique ID that is constant with the group and options to be used as caching key
         // TODO | Might want to transfer this to it's own function
         // TODO | When roles are implemented within the application, this unique id should also implement the role string
-        $uniqueID = md5(Auth::check().$group.'.'.implode('.', Arr::flatten($options)));
+        $cacheKey = $this->createCacheKey($group, $options);
 
         // In case of development, you might want to remove the cache for debugging purpose
-        if ( Cache::has($uniqueID) && !env('APP_DEBUG') ) {
-            Cache::forget($uniqueID);
+        if ( Cache::has($cacheKey) && !env('APP_DEBUG') ) {
+            Cache::forget($cacheKey);
         }
 
         // If the cache has not been set, compile and set the cache
-        if ( !Cache::has($uniqueID) ) {
+        if ( !Cache::has($cacheKey) ) {
             // Compile the group to the right format through the compiler
-            Cache::put($uniqueID, (new Compiler($this->getGroups()[$group], $options))->compile());
+            Cache::put($cacheKey, (new Compiler($this->getGroups()[$group], $options))->compile());
         }
 
         // Return the blade to the front-end
         return view($this->getStyles()[$style], [
-            'navigation' => Cache::get($uniqueID)
+            'navigation' => Cache::get($cacheKey)
         ]);
+    }
+
+    /**
+     * Create the cache key for the navigation that will be create or already is created
+     * TODO | Might want to use a way to inject these rules dynamically?
+     *
+     * @param string $group
+     * @param array  $options
+     * @param string $separator
+     *
+     * @return string
+     */
+    private function createCacheKey(string $group, array $options, string $separator = '|') : string
+    {
+        return md5('auth:'.(Auth::check()?'true':'false').$separator."group:{$group}".$separator.'options:'.json_encode($options));
     }
 }
 
