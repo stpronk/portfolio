@@ -133,7 +133,7 @@ class Navigation {
         $uniqueID = md5(Auth::check().$group.'.'.implode('.', Arr::flatten($options)));
 
         // In case of development, you might want to remove the cache for debugging purpose
-        if ( Cache::has($uniqueID) && !env('APP_REMIND_CACHE') ) {
+        if ( Cache::has($uniqueID) && !env('APP_DEBUG') ) {
             Cache::forget($uniqueID);
         }
 
