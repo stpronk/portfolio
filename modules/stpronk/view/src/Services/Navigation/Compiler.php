@@ -32,7 +32,7 @@ class Compiler
     /**
      * @var array
      */
-    protected $middleware = [];
+    protected $middlewares = [];
 
     /**
      * @var array
@@ -58,6 +58,7 @@ class Compiler
 
         // Setup some additional variables
         $this->setFilters();
+        $this->setMiddlewares();
 
         // Validate the values before passing constructor
         $this->validateValues();
@@ -98,6 +99,16 @@ class Compiler
     }
 
     /**
+     * Set middlewares that can be used for compiling
+     *
+     * @return array
+     */
+    protected function setMiddlewares() : array
+    {
+        return $this->middlewares = config('view.navigation.middleware-filters');
+    }
+
+    /**
      * Get items from the builder that is passed through
      * -- Sub menu included --
      *
@@ -129,6 +140,10 @@ class Compiler
      */
     public function compile() : array
     {
+        // TODO | Create a way to only ignore specific filters and/or middlewares as well
+        // This could maybe be done when setting up the filters and middlewares to the global variables
+        // Before returning the value with array, remove and/or add the filters and middlewares that are specified
+
         // Execute the filters that are given from the front-end
         if (!isset($this->options['ignore_filters'])) {
             $this->filter();
@@ -172,7 +187,7 @@ class Compiler
     protected function middleware () : array
     {
         // Loop through the middleware which are specified in the config in order to find out which middleware passes
-        $this->middleware = collect(config('view.navigation.middleware-filters'))->mapWithKeys(function($class, $name) : array {
+        $this->middlewares = collect($this->middlewares)->mapWithKeys(function($class, $name) : array {
             try {
                 // Try to access the middleware and see if it passes
                 // When it doesn't pass, it won't be passing the handle request and will not change the passed variable.
@@ -217,7 +232,7 @@ class Compiler
 
             // Check the middleware for if it passes
             foreach ($currentMiddlewareInRoute as $middlewareName) {
-                if(isset($this->middleware[$middlewareName]) && $this->middleware[$middlewareName] !== true) {
+                if(isset($this->middlewares[$middlewareName]) && $this->middlewares[$middlewareName] !== true) {
                     return false;
                 }
             }
