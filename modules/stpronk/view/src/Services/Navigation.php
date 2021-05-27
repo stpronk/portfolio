@@ -99,12 +99,12 @@ class Navigation {
         ]);
 
         // In case of development, you might want to remove the cache for debugging purpose
-        if ( Cache::has($cacheKey) && !env('APP_DEBUG') ) {
+        if (Cache::has($cacheKey) && ! env('APP_DEBUG')) {
             Cache::forget($cacheKey);
         }
 
         // If the cache has not been set, compile and set the cache
-        if ( !Cache::has($cacheKey) ) {
+        if ( ! Cache::has($cacheKey)) {
             // Compile the group to the right format through the compiler
             Cache::put($cacheKey, $items = (new Compiler($this->getGroups()[$group], $options))->compile());
         } else {

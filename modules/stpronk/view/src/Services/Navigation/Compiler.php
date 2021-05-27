@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Route;
 
 class Compiler
 {
+    // TODO | SUGGESTION | When setting filters, there needs to be a check to see if every filter does implement the filterInterface
 
     /**
      * @var array
