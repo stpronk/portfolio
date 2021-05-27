@@ -120,12 +120,12 @@ class Navigation {
      * TODO | Might want to use a way to inject these rules dynamically?
      *
      * @param array  $array
-     * @param string $seperator
+     * @param string $separator
      * @param string $string
      *
      * @return string
      */
-    private function createCacheKey(array $array, string $seperator = '|', string $string = '') : string
+    private function createCacheKey(array $array, string $separator = '|', string $string = '') : string
     {
         // Loop over the array and format everything correctly
         $array = collect($array)->map(function ($value, $key) {
@@ -133,7 +133,7 @@ class Navigation {
         })->toArray();
 
         // Return the formatted imploded array back within a md5 hash, md5 is used for a simpler alternative to the cache key
-        return md5(($string ? $string . $seperator : null) . implode($seperator, $array));
+        return md5(($string ? $string . $separator : null) . implode($separator, $array));
     }
 
 
