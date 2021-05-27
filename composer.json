@@ -17,7 +17,8 @@
         "laravel/ui": "^2.0",
         "livewire/livewire": "^2.0",
         "stpronk/core": "dev-module-structure",
-        "stpronk/view": "dev-module-structure"
+        "stpronk/view": "dev-module-structure",
+        "ext-json": "*"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^2.6",
