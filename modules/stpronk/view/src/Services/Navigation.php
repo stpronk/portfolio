@@ -75,6 +75,69 @@ class Navigation {
 
 
     /**
+     * ********************** CACHE FUNCTIONS **********************
+     * TODO | SUGGESTION | Might want to place these function within a separate class within the core package
+     */
+
+    /**
+     * Get the items of the selected group with options from the compiler or cache
+     *
+     * @param string     $group
+     * @param null|array $options
+     *
+     * @return array
+     * @throws \Exception
+     */
+    protected function getItems (string $group, ?array $options) : array
+    {
+        // Create a unique ID that is constant with the group and options to be used as caching key
+        // TODO | When roles are implemented within the application, this unique id should also implement the role string
+        $cacheKey = $this->createCacheKey([
+            'auth'    => Auth::check() ? 'true' : 'false',
+            'group'   => $group,
+            'options' => $options,
+        ]);
+
+        // In case of development, you might want to remove the cache for debugging purpose
+        if ( Cache::has($cacheKey) && !env('APP_DEBUG') ) {
+            Cache::forget($cacheKey);
+        }
+
+        // If the cache has not been set, compile and set the cache
+        if ( !Cache::has($cacheKey) ) {
+            // Compile the group to the right format through the compiler
+            Cache::put($cacheKey, $items = (new Compiler($this->getGroups()[$group], $options))->compile());
+        } else {
+            $items = Cache::get($cacheKey);
+        }
+
+        return $items;
+    }
+
+    /**
+     * Create the cache key for the navigation that will be create or already is created
+     *
+     * TODO | Might want to use a way to inject these rules dynamically?
+     *
+     * @param array  $array
+     * @param string $seperator
+     * @param string $string
+     *
+     * @return string
+     */
+    private function createCacheKey(array $array, string $seperator = '|', string $string = '') : string
+    {
+        // Loop over the array and format everything correctly
+        $array = collect($array)->map(function ($value, $key) {
+            return $key . ':' . (is_string($value) ? $value : json_encode($value));
+        })->toArray();
+
+        // Return the formatted imploded array back within a md5 hash, md5 is used for a simpler alternative to the cache key
+        return md5(($string ? $string . $seperator : null) . implode($seperator, $array));
+    }
+
+
+    /**
      * ********************** FACADE FUNCTIONS **********************
      */
 
@@ -126,58 +189,10 @@ class Navigation {
             Throw new Exception("The style that has been given is not known within our system, given style: \"{$style}\"", 400);
         }
 
-        // Return the blade to the front-end
+        // Return the blade to the front-end with the items
         return view($this->getStyles()[$style], [
             'navigation' => $this->getItems($group, $options)
         ]);
-    }
-
-    /**
-     * Get the items of the selected group with options from the compiler or cache
-     *
-     * @param string     $group
-     * @param null|array $options
-     *
-     * @return array
-     * @throws \Exception
-     */
-    private function getItems (string $group, ?array $options) : array
-    {
-        // Create a unique ID that is constant with the group and options to be used as caching key
-        $cacheKey = $this->createCacheKey($group, $options);
-
-        // In case of development, you might want to remove the cache for debugging purpose
-        if ( Cache::has($cacheKey) && !env('APP_DEBUG') ) {
-            Cache::forget($cacheKey);
-        }
-
-        // If the cache has not been set, compile and set the cache
-        if ( !Cache::has($cacheKey) ) {
-            // Compile the group to the right format through the compiler
-            Cache::put($cacheKey, $items = (new Compiler($this->getGroups()[$group], $options))->compile());
-        } else {
-            $items = Cache::get($cacheKey);
-        }
-
-        return $items;
-    }
-
-    /**
-     * Create the cache key for the navigation that will be create or already is created
-     *
-     * TODO | When roles are implemented within the application, this unique id should also implement the role string
-     * TODO | Might want to use a way to inject these rules dynamically?
-     * SUGGESTION | Might be useful to pass through and array and separator only and compile the passed through array to a cacheKey format?
-     *
-     * @param string $group
-     * @param array  $options
-     * @param string $separator
-     *
-     * @return string
-     */
-    private function createCacheKey(string $group, array $options, string $separator = '|') : string
-    {
-        return md5('auth:'.(Auth::check()?'true':'false').$separator."group:{$group}".$separator.'options:'.json_encode($options));
     }
 }
 
