@@ -87,10 +87,8 @@ class Item
      */
     public function addAdditionalVariables () : void
     {
-        $this->url = $this->getUrlAttribute();
+        $this->url         = $this->getUrlAttribute();
         $this->hasSubMenu  = $this->hasSubMenu();
-        $this->subIsActive = $this->isSubActive();
-        $this->isActive    = $this->isActive();
     }
 
     /**
@@ -100,23 +98,27 @@ class Item
      *
      * @return bool
      */
-    private function isSubActive () : bool
+    public function isSubActive () : bool
     {
+        if( isset($this->subIsActive) ) {
+            return $this->subIsActive;
+        }
+
         if ( isset($this->options['track-sub-active']) && Str::contains( url()->current(), $this->url) && $this->url !== url()->current()) {
-            return true;
+            return $this->subIsActive = true;
         }
 
         if ( ! $this->subMenu || isset($this->options['hide-sub-menu'])) {
-            return false;
+            return $this->subIsActive = false;
         }
 
         foreach ($this->subMenu as $item) {
             if($this->subMenu && ( Str::contains( url()->current(), $item->url))) {
-                return true;
+                return $this->subIsActive = true;
             }
         }
 
-        return ($this->subMenu && Str::contains( url()->current(), $this->url) );
+        return $this->subIsActive = ($this->subMenu && Str::contains( url()->current(), $this->url) );
     }
 
     /**
@@ -126,29 +128,33 @@ class Item
      *
      * @return bool
      */
-    private function isActive () : bool
+    public function isActive () : bool
     {
+        if( isset($this->isActive) ) {
+            return $this->isActive;
+        }
+
         // Sub active and hide sub is active means active can't be true
-        if ($this->subIsActive && !(!isset($this->options['hide-sub-menu']) || !isset($this->options['track-sub-active']))) {
-            return false;
+        if ($this->isSubActive() && !(!isset($this->options['hide-sub-menu']) || !isset($this->options['track-sub-active']))) {
+            return $this->isActive = false;
         }
 
         if($this->url === url()->current() && !$this->subMenu) {
-            return true;
+            return $this->isActive = true;
         }
 
         if(!$this->subMenu && !isset($this->options['track-sub-active'])) {
-            return false;
+            return $this->isActive = false;
         }
 
         if ( (( $this->subMenu && isset($this->options['hide-sub-menu']) ) &&  Str::contains( url()->current(), $this->url))
             || ( !$this->subMenu && Str::contains( url()->current(), $this->url) )
-            || ( $this->subIsActive && isset($this->options['track-sub-active']) )
+            || ( $this->isSubActive() && isset($this->options['track-sub-active']) )
         ) {
-            return true;
+            return $this->isActive = true;
         }
 
-        return false;
+        return $this->isActive = false;
     }
 
     /**

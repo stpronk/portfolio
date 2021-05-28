@@ -91,7 +91,6 @@ class Navigation {
     protected function getItems (string $group, ?array $options) : array
     {
         // Create a unique ID that is constant with the group and options to be used as caching key
-        // TODO | When roles are implemented within the application, this unique id should also implement the role string
         $cacheKey = $this->createCacheKey([
             'auth'    => Auth::check() ? 'true' : 'false',
             'group'   => $group,
@@ -99,7 +98,7 @@ class Navigation {
         ]);
 
         // In case of development, you might want to remove the cache for debugging purpose
-        if (Cache::has($cacheKey) && ! env('APP_DEBUG')) {
+        if (Cache::has($cacheKey) && env('APP_DEBUG')) {
             Cache::forget($cacheKey);
         }
 
@@ -118,6 +117,7 @@ class Navigation {
      * Create the cache key for the navigation that will be create or already is created
      *
      * TODO | Might want to use a way to inject these rules dynamically?
+     * TODO | When roles are implemented within the application, this unique id should also implement the role string
      *
      * @param array  $array
      * @param string $separator
@@ -195,4 +195,3 @@ class Navigation {
         ]);
     }
 }
-
