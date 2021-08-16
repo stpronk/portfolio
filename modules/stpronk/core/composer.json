@@ -26,7 +26,8 @@
   "extra": {
     "laravel": {
       "providers" : [
-        "Stpronk\\Core\\Providers\\CoreServiceProvider"
+        "Stpronk\\Core\\Providers\\CoreServiceProvider",
+	"Stpronk\\Core\\Providers\\LogServiceProvider"x
       ]
     }
   },
